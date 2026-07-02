@@ -30,6 +30,7 @@ import Insurance from './pages/Insurance';
 import InsuranceStatus from './pages/InsuranceStatus';
 import Certificate from './pages/Certificate';
 import Bulletin from './pages/Bulletin';
+import TrainingBackpack from './pages/TrainingBackpack';
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
           <Route path="/registration" element={<Registration />} />
           <Route path="/store" element={<Store />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/training-backpack" element={<TrainingBackpack />} />
           <Route path="/financial-timeline" element={<FinancialTimeline />} />
           <Route path="/verification" element={<Verification />} />
           <Route path="/registration-history" element={<RegistrationHistory />} />

@@ -1,5 +1,6 @@
+@import "vazirmatn/Vazirmatn-font-face.css";
+
 /* ─── RESET & BASE ─────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
 
 *,
 *::before,
@@ -870,7 +871,8 @@ img {
 }
 
 .profile-card {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: linear-gradient(to bottom right, color-mix(in srgb, var(--primary), white 85%), color-mix(in srgb, var(--primary), white 95%));
+    ;
     color: #fff;
     padding: 16px;
     border-radius: var(--radius-lg);
@@ -880,7 +882,7 @@ img {
 }
 
 .profile-actions-box {
-    background: rgba(255, 255, 255, 0.05);
+    background: white;
     border-radius: 10px;
     padding: 12px;
     margin-top: 0;
@@ -1614,6 +1616,36 @@ img {
     width: 100%;
 }
 
+@media (min-width: 768px) {
+    .profile-frame {
+        padding: 6px 12px;
+        margin-bottom: 8px;
+    }
+
+    .frame-title {
+        margin-bottom: 6px;
+        padding-bottom: 4px;
+        font-size: 0.8rem;
+    }
+
+    .frame-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+    }
+
+    .frame-item {
+        padding: 4px 4px;
+        gap: 4px;
+        font-size: 0.65rem;
+    }
+
+    .frame-icon-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.85rem;
+    }
+}
+
 /* ─── BOTTOM NAV ───────────────────────────────────────────── */
 .bottom-nav {
     position: fixed;
@@ -1828,7 +1860,7 @@ img {
     /* Dashboard */
     .dashboard-grid {
         grid-template-columns: repeat(3, 1fr);
-        gap: 24px;
+        gap: 15px;
         align-items: stretch;
     }
 
@@ -1935,15 +1967,21 @@ img {
     .stat-label {
         font-size: 0.85rem;
         margin-bottom: 4px;
+        white-space: normal;
     }
 
     .stat-val {
         font-size: 1.15rem;
     }
 
+    .main-wrapper {
+        margin-top: 55px;
+    }
+
     .media-group-wrapper {
         grid-template-columns: 2fr 1fr;
         gap: 24px;
+        margin-top: 0px;
     }
 
     .dash-action-grid {
@@ -2015,7 +2053,6 @@ img {
         width: 65px;
         height: 65px;
         font-size: 1.7rem;
-        margin-bottom: 12px;
     }
 
     .frame-title {
@@ -2180,41 +2217,50 @@ img {
     .recent-transactions-card {
         padding: 35px;
         border-radius: 20px;
+        max-height: 400px;
+        display: flex;
+        flex-direction: column;
     }
 
     .transactions-title {
-        font-size: 1.3rem;
-        margin-bottom: 24px;
-        padding-bottom: 16px;
+        font-size: 1.1rem;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
     }
 
     .transactions-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 16px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 8px;
     }
 
     .transaction-item {
-        padding: 20px 24px;
-        border-radius: 16px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 0;
     }
 
     .tr-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.4rem;
-        border-radius: 12px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+        border-radius: 10px;
     }
 
     .tr-info strong {
-        font-size: 1.1rem;
-        margin-bottom: 6px;
+        font-size: 1rem;
+        margin-bottom: 4px;
     }
 
     .tr-info .tr-date {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
     }
 
     .tr-amount {
-        font-size: 1.2rem;
+        font-size: 1.05rem;
         flex-direction: row;
         align-items: center;
         gap: 12px;
@@ -2226,6 +2272,8 @@ img {
         font-size: 0.8rem;
         border-radius: 8px;
     }
+
+
 }
 
 @media (max-width: 500px) {
@@ -2238,4 +2286,796 @@ img {
 
 #root {
     display: contents;
+}
+
+/* ─── NEW DASHBOARD TOP ROW FIXES ───────────────────────────────────────────── */
+.dashboard-top-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.club-intro-card {
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+.club-intro-card:hover {
+    box-shadow: var(--shadow-xl);
+}
+
+.club-logo-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.club-logo-interactive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.club-phone-number-btn {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    background: #facc15;
+    /* Yellow */
+    padding: 6px 16px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    box-shadow: 0 4px 6px -1px rgba(250, 204, 21, 0.4);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.club-phone-number-btn:hover {
+    transform: translateY(-2px);
+    background: #eab308;
+}
+
+.beautiful-modal-btn {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.beautiful-modal-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.02);
+}
+
+.social-column {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.social-column .social-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: 0.2s;
+}
+
+.social-column .social-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.online-reg-card {
+    display: none;
+    /* Only visible on laptops */
+}
+
+/* Base Mobile: Social Row 4 columns */
+.responsive-social-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    width: 100%;
+}
+
+.responsive-social-row .social-btn {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}
+
+/* Training Backpack Card */
+.card-backpack {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    display: none;
+    /* Only on laptops */
+}
+
+.card-backpack i {
+    color: white !important;
+}
+
+/* ─── DASH ACTION GRID (Gallery, Store, Backpack) ─── */
+.dash-action-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.dash-action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dash-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.dash-action-card i {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.dash-action-card h4 {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+/* Lighter theme colors */
+.card-store {
+    background: #f0fdf4;
+    /* Light green */
+    color: #166534;
+}
+
+.card-store i {
+    color: #22c55e;
+}
+
+.card-gallery {
+    background: #fefce8;
+    /* Light yellow */
+    color: #854d0e;
+}
+
+.card-gallery i {
+    color: #eab308;
+}
+
+.card-backpack {
+    background: #eff6ff;
+    /* Light blue */
+    color: #1e40af;
+    display: flex !important;
+    /* Overriding previous hidden display */
+}
+
+.card-backpack i {
+    color: #3b82f6 !important;
+}
+
+.registration-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (min-width: 1024px) {
+    .dashboard-top-row {
+        grid-template-columns: repeat(4, 1fr);
+        grid-column: span 3;
+    }
+
+    .club-intro-card {
+        grid-column: span 2;
+    }
+
+    .debt-card {
+        grid-column: span 1;
+    }
+
+    .online-reg-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        border: 2px dashed #eab308;
+        border-radius: 24px;
+        padding: 24px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .online-reg-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .registration-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .specialized-top-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: stretch;
+        margin-bottom: 16px;
+    }
+
+    .specialized-top-grid .card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .specialized-top-grid .css-chart-wrap {
+        flex: 1;
+        min-height: 140px;
+    }
+
+    .specialized-top-grid .stats-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        align-content: center;
+    }
+
+    .specialized-top-grid .stat-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .specialized-top-grid .stat-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+    }
+
+    .specialized-top-grid .stat-label {
+        font-size: 0.75rem;
+        margin-bottom: 4px;
+    }
+
+    .specialized-top-grid .stat-val {
+        font-size: 1rem;
+    }
+
+    .spec-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 20px;
+    }
+
+    .reg-icon-circle {
+        width: 64px;
+        height: 64px;
+        background: #fefce8;
+        color: #eab308;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin-bottom: 16px;
+    }
+
+    .online-reg-card h3 {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+    }
+
+    .online-reg-card p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        text-align: center;
+    }
+
+    .responsive-social-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dash-action-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 columns on laptop */
+    }
+
+    .profile-hub-sections-wrapper {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto auto;
+        gap: 16px;
+        margin-top: 12px;
+        align-items: stretch;
+    }
+
+    .profile-hub-sections-wrapper .verify-banner {
+        grid-column: span 4;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        border-radius: 16px;
+    }
+
+    .profile-hub-sections-wrapper .verify-banner-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        text-align: right;
+    }
+
+    .profile-hub-sections-wrapper .verify-banner-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.4rem;
+        flex-shrink: 0;
+    }
+
+    .profile-hub-sections-wrapper .verify-banner h4 {
+        font-size: 1.1rem;
+        margin-bottom: 2px;
+    }
+
+    .profile-hub-sections-wrapper .verify-banner p {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+
+    .profile-hub-sections-wrapper .btn-verify-action {
+        width: auto;
+        padding: 8px 24px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+
+    .profile-hub-sections-wrapper .profile-frame {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+        height: 100%;
+        border-radius: 16px;
+        padding: 16px;
+    }
+
+    .profile-hub-sections-wrapper .frame-title {
+        font-size: 1.05rem;
+        font-weight: 900;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .profile-hub-sections-wrapper .frame-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .profile-hub-sections-wrapper .frame-item {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 10px 12px;
+        gap: 12px;
+        font-size: 0.9rem;
+        text-align: right;
+        border-radius: 10px;
+    }
+
+    .profile-hub-sections-wrapper .frame-icon-circle {
+        width: 36px;
+        height: 36px;
+        font-size: 1.05rem;
+        flex-shrink: 0;
+    }
+
+    .profile-hub-sections-wrapper .frame-item-label {
+        font-size: 0.95rem;
+        font-weight: 800;
+        white-space: normal;
+    }
+}
+
+/* ─── MODAL CSS ───────────────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.modal-box {
+    background: #fff;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modal-pop {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-header-gradient {
+    background: linear-gradient(135deg, #facc15 0%, #ca8a04 100%);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.1);
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.modal-close-btn:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.modal-logo-wrap {
+    width: 96px;
+    height: 96px;
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.modal-logo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-header-gradient h2 {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.modal-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+}
+
+.modal-body-content {
+    padding: 24px;
+}
+
+.modal-body-content h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.modal-info-item h4 {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.modal-info-item p {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.phone-numbers {
+    display: flex;
+    gap: 16px;
+}
+
+.btn-modal-close-large {
+    width: 100%;
+    padding: 12px;
+    margin-top: 24px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-modal-close-large:hover {
+    background: #e2e8f0;
+}
+
+/* ─── TRAINING BACKPACK CSS ───────────────────────────────────────────── */
+.backpack-container {
+    padding: 16px 24px;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.backpack-header {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 24px;
+    padding: 24px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow-lg);
+}
+
+.backpack-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.backpack-title-box h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.backpack-title-box p {
+    font-size: 0.85rem;
+    color: #bfdbfe;
+}
+
+.backpack-form-card {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+}
+
+.backpack-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.btn-backpack-submit {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    margin-top: 16px;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+    transition: background 0.2s;
+}
+
+.btn-backpack-submit:hover {
+    background: #1d4ed8;
+}
+
+.profile-actions-box {
+    margin-top: 15px;
+    margin-bottom: -15px;
+}
+
+@media (max-width: 768px) {
+
+    .profile-club-row {
+        flex-wrap: nowrap;
+
+    }
+
+    .social-column {
+        justify-content: center;
+    }
+
+    .dash-action-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        margin-bottom: 0px;
+    }
+
+    .media-group-wrapper {
+        margin-top: 0px;
+    }
+
+    .profile-actions-box {
+        margin-top: 15px;
+        margin-bottom: -5px;
+    }
+}
+
+.profile-club-row {
+    margin-top: 0px;
+}
+
+.club-info h3 {
+    color: black;
+}
+
+.term-pill {
+    background: color-mix(in srgb, var(--primary), white 80%);
+    color: var(--primary);
+}
+
+.action-label {
+    color: black;
+}
+
+.btn-mini {
+    background: color-mix(in srgb, var(--primary), white 80%);
+    color: rgb(39 39 42 / var(--tw-text-opacity, 1));
+}
+
+.progress-bar-wrap {
+    background-color: rgb(228 228 231 / var(--tw-bg-opacity, 1));
+}
+
+.beautiful-modal-btn {
+    color: black;
+}
+
+.beautiful-modal-btn:hover {
+    background-color: black;
+    color: var(--primary);
+}
+
+.social-column .social-btn {
+    border-radius: 9999px;
+    background-color: white;
+}
+
+.btn-credit {
+    background-color: var(--success);
+    color: white;
+}
+
+@media (min-width: 1023px) {
+    .social-column {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .social-column .social-btn {
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .social-column {
+        flex-direction: row;
+        transform: translateX(15px) translateY(-25px);
+    }
+
+    .club-logo-wrapper {
+        margin-left: 7px;
+        margin-bottom: auto;
+    }
+
+    .profile-actions-box {
+        margin-top: -16px;
+    }
+
 }

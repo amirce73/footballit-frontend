@@ -11,71 +11,73 @@ export default function SpecializedHub() {
                 <div style={{"width":"80px"}}></div>
             </div>
 
-            <div className="card" style={{"marginBottom":"16px"}}>
-                <div className="section-title" style={{"padding":"0 16px","marginTop":"16px"}}>
-                    <i className="fa fa-dashboard" style={{"color":"var(--primary)"}}></i> شاخص‌های عملکرد (KPI) - باشگاهی
-                </div>
-                <div className="stats-grid" style={{"padding":"0 16px 16px"}}>
-                    <div className="stat-card">
-                        <div className="stat-icon ic-matches"><i className="fa fa-play-circle"></i></div>
-                        <div className="stat-info"><span className="stat-label">مسابقات (فیکس/ذخیره)</span><span className="stat-val">۱۴ (۱۰ فیکس)</span></div>
+            <div className="specialized-top-grid">
+                <div className="card" style={{"marginBottom":"0"}}>
+                    <div className="section-title" style={{"padding":"0 16px","marginTop":"16px"}}>
+                        <i className="fa fa-dashboard" style={{"color":"var(--primary)"}}></i> شاخص‌های عملکرد (KPI) - باشگاهی
                     </div>
-                    <div className="stat-card">
-                        <div className="stat-icon ic-green"><i className="fa fa-calendar-check-o"></i></div>
-                        <div className="stat-info"><span className="stat-label">حضور در تمرینات</span><span className="stat-val">۸۵٪</span></div>
-                    </div>
-                    <div className="stat-card">
-                        <div className="stat-icon ic-yellow-card"><i className="fa fa-times-rectangle"></i></div>
-                        <div className="stat-info"><span className="stat-label">کارت زرد</span><span className="stat-val">۲</span>
+                    <div className="stats-grid" style={{"padding":"0 16px 16px"}}>
+                        <div className="stat-card">
+                            <div className="stat-icon ic-matches"><i className="fa fa-play-circle"></i></div>
+                            <div className="stat-info"><span className="stat-label">مسابقات (فیکس/ذخیره)</span><span className="stat-val">۱۴ (۱۰ فیکس)</span></div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-icon ic-green"><i className="fa fa-calendar-check-o"></i></div>
+                            <div className="stat-info"><span className="stat-label">حضور در تمرینات</span><span className="stat-val">۸۵٪</span></div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-icon ic-yellow-card"><i className="fa fa-times-rectangle"></i></div>
+                            <div className="stat-info"><span className="stat-label">کارت زرد</span><span className="stat-val">۲</span>
+                            </div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-icon ic-red-card"><i className="fa fa-times-rectangle"></i></div>
+                            <div className="stat-info"><span className="stat-label">کارت قرمز</span><span className="stat-val">۰</span>
+                            </div>
                         </div>
                     </div>
-                    <div className="stat-card">
-                        <div className="stat-icon ic-red-card"><i className="fa fa-times-rectangle"></i></div>
-                        <div className="stat-info"><span className="stat-label">کارت قرمز</span><span className="stat-val">۰</span>
-                        </div>
-                    </div>
                 </div>
-            </div>
 
-            <div className="card" style={{"marginBottom":"16px","padding":"16px"}}>
-                <div className="section-title" style={{"marginTop":"0"}}>
-                    <i className="fa fa-area-chart" style={{"color":"var(--warning)"}}></i> شاخص فشار تمرین (RPE) - هفته اخیر
-                </div>
-                <div className="css-chart-wrap">
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"40%"}}><span className="css-bar-val">4</span></div>
-                        </div><span className="css-bar-label">شنبه</span>
+                <div className="card" style={{"marginBottom":"0","padding":"16px"}}>
+                    <div className="section-title" style={{"marginTop":"0"}}>
+                        <i className="fa fa-area-chart" style={{"color":"var(--warning)"}}></i> شاخص فشار تمرین (RPE) - هفته اخیر
                     </div>
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"60%"}}><span className="css-bar-val">6</span></div>
-                        </div><span className="css-bar-label">۱شنبه</span>
-                    </div>
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"80%","background":"var(--warning)"}}><span className="css-bar-val">8</span></div>
-                        </div><span className="css-bar-label">۲شنبه</span>
-                    </div>
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"30%"}}><span className="css-bar-val">3</span></div>
-                        </div><span className="css-bar-label">۳شنبه</span>
-                    </div>
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"70%"}}><span className="css-bar-val">7</span></div>
-                        </div><span className="css-bar-label">۴شنبه</span>
-                    </div>
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"50%"}}><span className="css-bar-val">5</span></div>
-                        </div><span className="css-bar-label">۵شنبه</span>
-                    </div>
-                    <div className="css-bar-col">
-                        <div className="css-bar">
-                            <div className="css-bar-fill" style={{"height":"0%"}}><span className="css-bar-val">0</span></div>
-                        </div><span className="css-bar-label">جمعه</span>
+                    <div className="css-chart-wrap">
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"40%"}}><span className="css-bar-val">4</span></div>
+                            </div><span className="css-bar-label">شنبه</span>
+                        </div>
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"60%"}}><span className="css-bar-val">6</span></div>
+                            </div><span className="css-bar-label">۱شنبه</span>
+                        </div>
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"80%","background":"var(--warning)"}}><span className="css-bar-val">8</span></div>
+                            </div><span className="css-bar-label">۲شنبه</span>
+                        </div>
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"30%"}}><span className="css-bar-val">3</span></div>
+                            </div><span className="css-bar-label">۳شنبه</span>
+                        </div>
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"70%"}}><span className="css-bar-val">7</span></div>
+                            </div><span className="css-bar-label">۴شنبه</span>
+                        </div>
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"50%"}}><span className="css-bar-val">5</span></div>
+                            </div><span className="css-bar-label">۵شنبه</span>
+                        </div>
+                        <div className="css-bar-col">
+                            <div className="css-bar">
+                                <div className="css-bar-fill" style={{"height":"0%"}}><span className="css-bar-val">0</span></div>
+                            </div><span className="css-bar-label">جمعه</span>
+                        </div>
                     </div>
                 </div>
             </div>
