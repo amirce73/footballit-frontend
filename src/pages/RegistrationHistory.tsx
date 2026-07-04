@@ -1,21 +1,25 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import sepahanLogo from '../images/logo/Sepahan_New_Logo.svg';
+import damghanLogo from '../images/logo/damghan.jpg';
+import stareganLogo from '../images/logo/staregan-logo.jpg';
+import tamLogo from '../images/logo/tam logo.png';
 
 export default function RegistrationHistory() {
-  const navigate = useNavigate();
-  return (
-    <div id="view-registration-history" className="view-section fade-in">
+    const navigate = useNavigate();
+    return (
+        <div id="view-registration-history" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/specialized-hub')}><i className="fa fa-arrow-right"></i> تخصصی</button>
                 <h3 className="sticky-title">تاریخچه ثبت‌نام‌ها</h3>
-                <div style={{"width":"80px"}}></div>
+                <div style={{ "width": "80px" }}></div>
             </div>
 
-            <div className="card" style={{"background":"transparent","border":"none","boxShadow":"none"}}>
+            <div className="card" style={{ "background": "transparent", "border": "none", "boxShadow": "none" }}>
                 <div className="timeline-container">
                     <div className="timeline-item">
                         <div className="timeline-logo success">
-                            <img src="src/images/logo/Sepahan_New_Logo.svg" alt="logo" onError={(e) => { e.currentTarget.src='https://via.placeholder.com/100'; }} />
+                            <img src={sepahanLogo} alt="logo" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100'; }} />
                         </div>
                         <div className="timeline-content success">
                             <div className="tl-header success">
@@ -30,7 +34,7 @@ export default function RegistrationHistory() {
                     </div>
                     <div className="timeline-item">
                         <div className="timeline-logo success">
-                            <img src="src/images/logo/damghan.jpg" alt="logo" onError={(e) => { e.currentTarget.src='https://via.placeholder.com/100'; }} />
+                            <img src={damghanLogo} alt="logo" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100'; }} />
                         </div>
                         <div className="timeline-content success">
                             <div className="tl-header success">
@@ -45,7 +49,7 @@ export default function RegistrationHistory() {
                     </div>
                     <div className="timeline-item">
                         <div className="timeline-logo success">
-                            <img src="src/images/logo/staregan-logo.jpg" alt="logo" onError={(e) => { e.currentTarget.src='https://via.placeholder.com/100'; }} />
+                            <img src={stareganLogo} alt="logo" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100'; }} />
                         </div>
                         <div className="timeline-content success">
                             <div className="tl-header success">
@@ -60,7 +64,7 @@ export default function RegistrationHistory() {
                     </div>
                     <div className="timeline-item">
                         <div className="timeline-logo fail">
-                            <img src="src/images/logo/tam%20logo.png" alt="logo" onError={(e) => { e.currentTarget.src='https://via.placeholder.com/100'; }} />
+                            <img src={tamLogo} alt="logo" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/100'; }} />
                         </div>
                         <div className="timeline-content fail">
                             <div className="tl-header fail">
@@ -76,5 +80,5 @@ export default function RegistrationHistory() {
                 </div>
             </div>
         </div>
-  );
+    );
 }

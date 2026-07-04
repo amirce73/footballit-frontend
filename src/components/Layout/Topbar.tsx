@@ -1,5 +1,6 @@
 import React from 'react';
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import messiProfile from '../../images/messi-profile.jpg';
 
 export default function Topbar() {
     const navigate = useNavigate();
@@ -9,7 +10,7 @@ export default function Topbar() {
                 {/*  Header Profile & Dropdown  */}
                 <div className="header-profile" onClick={(e) => { e.stopPropagation(); document.getElementById('profileMenu')?.classList.toggle('show'); }}>
                     <div className="header-profile-avatar">
-                        <img src="src/images/messi-profile.jpg" alt="user" onError={(e) => { e.currentTarget.src = ''; }} />
+                        <img src={messiProfile} alt="user" onError={(e) => { e.currentTarget.src = ''; }} />
                     </div>
                     <div>
                         <div className="header-profile-info">

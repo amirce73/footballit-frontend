@@ -1,4 +1,5 @@
 import React from 'react';
+import sepahanLogo from '../images/logo/Sepahan_New_Logo.svg';
 
 interface ClubDetailsModalProps {
     isOpen: boolean;
@@ -16,7 +17,7 @@ export default function ClubDetailsModal({ isOpen, onClose }: ClubDetailsModalPr
                         <i className="fa fa-times"></i>
                     </button>
                     <div className="modal-logo-wrap">
-                        <img src="src/images/logo/Sepahan_New_Logo.svg" alt="لوگو باشگاه" onError={(e) => { e.currentTarget.src = ''; }} />
+                        <img src={sepahanLogo} alt="لوگو باشگاه" onError={(e) => { e.currentTarget.src = ''; }} />
                     </div>
                     <h2>استعداد برتر دامغان</h2>
                     <span className="modal-badge">کد ثبت: 10452</span>
