@@ -49,7 +49,7 @@ export default function FinancialTimeline() {
                                 <span className="tl-date">۱۴۰۴/۱۲/۲۰</span>
                             </div>
                             <div className="tl-row"><span>مبلغ تراکنش:</span> <strong>۶,۸۰۰,۰۰۰ تومان</strong></div>
-                            <div className="tl-row"><span>بابت:</span> <strong>کلاس استعداد برتر</strong></div>
+                            <div className="tl-row"><span>بابت:</span> <strong>کلاس سپاهان</strong></div>
                             <div className="tl-status success"><i className="fa fa-check-circle"></i> پرداخت موفق - فیش واریزی
                             </div>
                         </div>

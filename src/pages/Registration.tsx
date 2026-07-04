@@ -1,36 +1,76 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Registration() {
   const navigate = useNavigate();
+  const { user, refreshUser } = useAuth();
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+      currentTerm: '1',
+      currentClass: '1'
+  });
+  const [accepted, setAccepted] = useState(false);
+
+  useEffect(() => {
+      if (user) {
+          setFormData({
+              currentTerm: user.currentTerm || '1',
+              currentClass: user.currentClass || '1'
+          });
+      }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async () => {
+      if (!accepted) {
+          alert('لطفاً قوانین و مقررات را بپذیرید.');
+          return;
+      }
+      setLoading(true);
+      try {
+          await api.put('/users/registration-pref', formData);
+          await refreshUser();
+          alert('ثبت‌نام با موفقیت انجام شد!');
+      } catch (error) {
+          console.error(error);
+          alert('خطا در ثبت‌نام');
+      } finally {
+          setLoading(false);
+      }
+  };
+
   return (
     <div id="view-registration" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> داشبورد</button>
                 <h3 className="sticky-title">ثبت‌نام در دوره</h3>
-                <button className="btn-top-action btn-submit-top" onClick={() => {}}><i className="fa fa-check"></i> تایید
-                    نهایی</button>
+                <button className="btn-top-action btn-submit-top" onClick={handleSubmit} disabled={loading}><i className="fa fa-check"></i> {loading ? '...' : 'تایید نهایی'}</button>
             </div>
             <div className="registration-grid">
                 <div className="card">
                     <div className="form-grid">
                         <div className="input-group" style={{"gridColumn":"1 / -1"}}>
                             <label>دوره انتخابی:</label>
-                            <select>
-                                <option value="1">ترم تابستان ۱۴۰۵</option>
-                                <option value="2">ترم پاییز ۱۴۰۵</option>
+                            <select name="currentTerm" value={formData.currentTerm} onChange={handleChange}>
+                                <option value="ترم تابستان ۱۴۰۵">ترم تابستان ۱۴۰۵</option>
+                                <option value="ترم پاییز ۱۴۰۵">ترم پاییز ۱۴۰۵</option>
                             </select>
                         </div>
                         <div className="input-group" style={{"gridColumn":"1 / -1"}}>
                             <label>کلاس / رده سنی:</label>
-                            <select>
-                                <option value="1">رده سنی ۱۴ و ۱۵ سال</option>
-                                <option value="2">رده سنی ۱۶ و ۱۷ سال</option>
+                            <select name="currentClass" value={formData.currentClass} onChange={handleChange}>
+                                <option value="رده سنی ۱۴ و ۱۵ سال">رده سنی ۱۴ و ۱۵ سال</option>
+                                <option value="رده سنی ۱۶ و ۱۷ سال">رده سنی ۱۶ و ۱۷ سال</option>
                             </select>
                         </div>
                         <div className="input-group" style={{"gridColumn":"1 / -1","background":"var(--primary-light)","padding":"12px","borderRadius":"var(--radius-base)","border":"1px solid rgba(234,179,8,0.3)","color":"var(--text-dark)"}}>
                             <label style={{"color":"var(--text-dark)","display":"flex","alignItems":"center","gap":"8px"}}>
-                                <input type="checkbox" style={{"width":"auto","transform":"scale(1.2)"}} />
+                                <input type="checkbox" style={{"width":"auto","transform":"scale(1.2)"}} checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
                                 قوانین و مقررات باشگاه را مطالعه کرده و می‌پذیرم.
                             </label>
                         </div>

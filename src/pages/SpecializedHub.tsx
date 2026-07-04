@@ -12,7 +12,7 @@ export default function SpecializedHub() {
             </div>
 
             <div className="specialized-top-grid">
-                <div className="card" style={{"marginBottom":"0"}}>
+                <div className="card">
                     <div className="section-title" style={{"padding":"0 16px","marginTop":"16px"}}>
                         <i className="fa fa-dashboard" style={{"color":"var(--primary)"}}></i> شاخص‌های عملکرد (KPI) - باشگاهی
                     </div>
@@ -38,7 +38,7 @@ export default function SpecializedHub() {
                     </div>
                 </div>
 
-                <div className="card" style={{"marginBottom":"0","padding":"16px"}}>
+                <div className="card" style={{"padding":"16px"}}>
                     <div className="section-title" style={{"marginTop":"0"}}>
                         <i className="fa fa-area-chart" style={{"color":"var(--warning)"}}></i> شاخص فشار تمرین (RPE) - هفته اخیر
                     </div>

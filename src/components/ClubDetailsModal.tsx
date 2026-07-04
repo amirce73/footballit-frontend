@@ -19,7 +19,7 @@ export default function ClubDetailsModal({ isOpen, onClose }: ClubDetailsModalPr
                     <div className="modal-logo-wrap">
                         <img src={sepahanLogo} alt="لوگو باشگاه" onError={(e) => { e.currentTarget.src = ''; }} />
                     </div>
-                    <h2>استعداد برتر دامغان</h2>
+                    <h2>باشگاه فولاد مبارکه سپاهان</h2>
                     <span className="modal-badge">کد ثبت: 10452</span>
                 </div>
                 

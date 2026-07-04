@@ -1,20 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function TrainingBackpack() {
     const navigate = useNavigate();
+    const { user, refreshUser } = useAuth();
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        sport: '',
-        topic: '',
-        ageGroup: '',
-        trainingType: ''
+        backpackSport: '',
+        backpackTopic: '',
+        backpackAgeGroup: '',
+        backpackTrainingType: ''
     });
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                backpackSport: user.backpackSport || '',
+                backpackTopic: user.backpackTopic || '',
+                backpackAgeGroup: user.backpackAgeGroup || '',
+                backpackTrainingType: user.backpackTrainingType || ''
+            });
+        }
+    }, [user]);
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+    };
+
+    const handleSubmit = async () => {
+        setLoading(true);
+        try {
+            await api.put('/users/backpack', formData);
+            await refreshUser();
+            alert('تنظیمات کوله با موفقیت ذخیره شد!');
+        } catch (error) {
+            console.error(error);
+            alert('خطا در ذخیره اطلاعات');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -40,7 +69,7 @@ export default function TrainingBackpack() {
                     <form className="backpack-form">
                         <div className="form-group">
                             <label>رشته ورزشی</label>
-                            <select name="sport" value={formData.sport} onChange={handleChange} className="form-control">
+                            <select name="backpackSport" value={formData.backpackSport} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="football">فوتبال</option>
                                 <option value="futsal">فوتسال</option>
@@ -49,7 +78,7 @@ export default function TrainingBackpack() {
 
                         <div className="form-group">
                             <label>موضوع تمرین</label>
-                            <select name="topic" value={formData.topic} onChange={handleChange} className="form-control">
+                            <select name="backpackTopic" value={formData.backpackTopic} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="tactical">تاکتیکی</option>
                                 <option value="technical">تکنیکی</option>
@@ -59,7 +88,7 @@ export default function TrainingBackpack() {
 
                         <div className="form-group">
                             <label>رده سنی</label>
-                            <select name="ageGroup" value={formData.ageGroup} onChange={handleChange} className="form-control">
+                            <select name="backpackAgeGroup" value={formData.backpackAgeGroup} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="u10">زیر ۱۰ سال</option>
                                 <option value="u14">نونهالان (زیر ۱۴ سال)</option>
@@ -71,7 +100,7 @@ export default function TrainingBackpack() {
 
                         <div className="form-group">
                             <label>نوع تمرین</label>
-                            <select name="trainingType" value={formData.trainingType} onChange={handleChange} className="form-control">
+                            <select name="backpackTrainingType" value={formData.backpackTrainingType} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="group">گروهی</option>
                                 <option value="individual">انفرادی</option>
@@ -79,8 +108,8 @@ export default function TrainingBackpack() {
                             </select>
                         </div>
 
-                        <button type="button" className="btn-backpack-submit">
-                            مشاهده برنامه‌ها
+                        <button type="button" className="btn-backpack-submit" onClick={handleSubmit} disabled={loading}>
+                            {loading ? 'در حال ذخیره...' : 'ذخیره تنظیمات و مشاهده برنامه‌ها'}
                         </button>
                     </form>
                 </div>

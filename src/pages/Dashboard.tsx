@@ -3,10 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import { AgeIcon, AttendanceIcon, InsuranceIcon, TalentIcon } from '../components/icons';
 import sepahanLogo from '../images/logo/Sepahan_New_Logo.svg';
 import ClubDetailsModal from '../components/ClubDetailsModal';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function Dashboard() {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { user } = useAuth();
+
+    const fullName = user?.firstName && user?.lastName
+        ? `${user.firstName} ${user.lastName}`
+        : 'کاربر بدون نام';
+
     return (
         <div id="view-dashboard" className="view-section fade-in">
             <ClubDetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
@@ -25,12 +32,12 @@ export default function Dashboard() {
                                     </a>
                                 </div>
                                 <div className="club-info" style={{ margin: 0 }}>
-                                    <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', color: 'black' }}>استعداد برتر دامغان</h3>
-                                    <div className="term-pill">ترم تابستان ۱۴۰۵</div>
-                                    <div style={{ "fontSize": "0.75rem", "marginTop": "4px", "marginBottom": "12px", "opacity": 1, "color": "rgb(113 113 122 / var(--tw-text-opacity, 1))" }}>کلاس آموزشی</div>
+                                    <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', color: 'black' }}>باشگاه سپاهان</h3>
+                                    <div style={{ "fontSize": "0.75rem", "marginTop": "4px", "marginBottom": "12px", "opacity": 1, "color": "rgb(113 113 122 / var(--tw-text-opacity, 1))" }}>{user?.currentClass || 'ثبت‌نام نشده'}</div>
+                                    <div className="term-pill">{user?.currentTerm || 'ترم تابستان ۱۴۰۵'}</div>                                
 
                                     <button className="beautiful-modal-btn" onClick={() => setIsModalOpen(true)}>
-                                        مشاهده اطلاعات باشگاه
+                                        اطلاعات باشگاه
                                     </button>
                                 </div>
                             </div>

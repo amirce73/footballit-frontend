@@ -5,6 +5,7 @@ import Sidebar from './components/Layout/Sidebar';
 import BottomNav from './components/Layout/BottomNav';
 import './index.css';
 
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ProfileHub from './pages/ProfileHub';
 import FinancialHub from './pages/FinancialHub';
@@ -39,7 +40,8 @@ export default function App() {
       <Sidebar />
       <main className="main-wrapper">
         <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile-hub" element={<ProfileHub />} />
           <Route path="/financial-hub" element={<FinancialHub />} />

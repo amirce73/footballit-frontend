@@ -42,7 +42,7 @@ export default function RegistrationHistory() {
                                 <span className="tl-date">۱۴۰۴/۱۲/۲۰</span>
                             </div>
                             <div className="tl-row"><span>رده سنی:</span> <strong>۱۴ و ۱۵ سال</strong></div>
-                            <div className="tl-row"><span>نام کلاس:</span> <strong>استعداد برتر</strong></div>
+                            <div className="tl-row"><span>نام کلاس:</span> <strong>سپاهان</strong></div>
                             <div className="tl-row"><span>هزینه دوره:</span> <strong>۶,۸۰۰,۰۰۰ تومان</strong></div>
                             <div className="tl-status success"><i className="fa fa-check-circle"></i> ثبت‌نام موفق و قطعی</div>
                         </div>
