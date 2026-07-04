@@ -2277,8 +2277,12 @@ img {
         padding: 6px 12px;
         font-size: 0.8rem;
         border-radius: var(--radius-sm);
+        text-align: center;
     }
 
+    .badge-fail {
+        width: 125px;
+    }
 
 }
 
