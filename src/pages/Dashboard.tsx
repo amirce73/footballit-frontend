@@ -18,7 +18,7 @@ export default function Dashboard() {
                             <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
                                 <div className="club-logo-wrapper">
                                     <div className="club-logo club-logo-interactive">
-                                        <img src="src/images/logo/Sepahan_New_Logo.svg" alt="logo" onError={(e) => { e.currentTarget.src = ''; }} />
+                                        <img src={sepahanLogo} alt="logo" onError={(e) => { e.currentTarget.src = ''; }} />
                                     </div>
                                     <a href="tel:09123456789" className="club-phone-number-btn dir-ltr">
                                         <i className="fa fa-phone"></i> 09123456789
