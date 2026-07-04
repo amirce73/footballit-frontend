@@ -1883,7 +1883,6 @@ img {
         grid-row: auto;
         padding: 35px;
         border-radius: var(--radius-lg);
-        box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.2);
     }
 
     .club-logo {
@@ -2308,7 +2307,7 @@ img {
 }
 
 .club-intro-card:hover {
-    box-shadow: var(--shadow-xl);
+    box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.2);
 }
 
 .club-logo-wrapper {
