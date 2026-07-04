@@ -28,7 +28,7 @@ export default function Registration() {
                                 <option value="2">رده سنی ۱۶ و ۱۷ سال</option>
                             </select>
                         </div>
-                        <div className="input-group" style={{"gridColumn":"1 / -1","background":"var(--primary-light)","padding":"12px","borderRadius":"10px","border":"1px solid rgba(234,179,8,0.3)","color":"var(--text-dark)"}}>
+                        <div className="input-group" style={{"gridColumn":"1 / -1","background":"var(--primary-light)","padding":"12px","borderRadius":"var(--radius-base)","border":"1px solid rgba(234,179,8,0.3)","color":"var(--text-dark)"}}>
                             <label style={{"color":"var(--text-dark)","display":"flex","alignItems":"center","gap":"8px"}}>
                                 <input type="checkbox" style={{"width":"auto","transform":"scale(1.2)"}} />
                                 قوانین و مقررات باشگاه را مطالعه کرده و می‌پذیرم.
@@ -49,7 +49,7 @@ export default function Registration() {
                         <span>بدهی فعلی (ترم جاری):</span>
                         <strong style={{"color":"var(--danger)"}}>۷,۵۰۰,۰۰۰ تومان</strong>
                     </div>
-                    <button onClick={() => navigate('/financial-timeline')} style={{"width":"100%","background":"#f8fafc","color":"var(--text-dark)","border":"1px solid var(--border)","padding":"12px","borderRadius":"8px","fontWeight":"800","fontFamily":"inherit","cursor":"pointer","transition":"0.2s"}}>
+                    <button onClick={() => navigate('/financial-timeline')} style={{"width":"100%","background":"#f8fafc","color":"var(--text-dark)","border":"1px solid var(--border)","padding":"12px","borderRadius":"var(--radius-sm)","fontWeight":"800","fontFamily":"inherit","cursor":"pointer","transition":"0.2s"}}>
                         <i className="fa fa-history" style={{"color":"var(--primary)"}}></i> مشاهده تایم‌لاین مالی تراکنش‌ها
                     </button>
                 </div>

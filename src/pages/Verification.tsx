@@ -12,7 +12,7 @@ export default function Verification() {
                     مدارک</button>
             </div>
 
-            <div style={{"background":"var(--primary-light)","color":"var(--primary)","padding":"16px","borderRadius":"12px","marginBottom":"16px","fontSize":"0.8rem","fontWeight":"700","lineHeight":"1.6"}}>
+            <div style={{"background":"var(--primary-light)","color":"var(--primary)","padding":"16px","borderRadius":"var(--radius-md)","marginBottom":"16px","fontSize":"0.8rem","fontWeight":"700","lineHeight":"1.6"}}>
                 <i className="fa fa-info-circle" style={{"fontSize":"1.1rem","marginBottom":"6px","display":"block"}}></i>
                 لطفاً اطلاعات هویتی خود را دقیق وارد کنید. این اطلاعات برای استعلام از سامانه ثبت احوال استفاده می‌شود.
             </div>
@@ -29,7 +29,7 @@ export default function Verification() {
                     </div>
                     <div className="input-group" style={{"gridColumn":"1 / -1","marginTop":"8px"}}>
                         <label>آپلود تصویر روی کارت ملی</label>
-                        <div style={{"border":"2px dashed var(--border)","padding":"20px","textAlign":"center","borderRadius":"12px","background":"#f8fafc","cursor":"pointer"}}>
+                        <div style={{"border":"2px dashed var(--border)","padding":"20px","textAlign":"center","borderRadius":"var(--radius-md)","background":"#f8fafc","cursor":"pointer"}}>
                             <i className="fa fa-id-card-o" style={{"fontSize":"2rem","color":"var(--text-muted)","marginBottom":"8px"}}></i>
                             <p style={{"fontSize":"0.8rem","color":"var(--text-muted)","fontWeight":"700"}}>برای انتخاب فایل
                                 کلیک کنید</p>
@@ -38,7 +38,7 @@ export default function Verification() {
                     </div>
                     <div className="input-group" style={{"gridColumn":"1 / -1"}}>
                         <label>تصویر چهره (سلفی زنده)</label>
-                        <div style={{"border":"2px dashed var(--border)","padding":"20px","textAlign":"center","borderRadius":"12px","background":"#f8fafc","cursor":"pointer"}}>
+                        <div style={{"border":"2px dashed var(--border)","padding":"20px","textAlign":"center","borderRadius":"var(--radius-md)","background":"#f8fafc","cursor":"pointer"}}>
                             <i className="fa fa-camera" style={{"fontSize":"2rem","color":"var(--text-muted)","marginBottom":"8px"}}></i>
                             <p style={{"fontSize":"0.8rem","color":"var(--text-muted)","fontWeight":"700"}}>برای گرفتن عکس
                                 کلیک کنید</p>
