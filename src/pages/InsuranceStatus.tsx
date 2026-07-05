@@ -1,21 +1,101 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface InsuranceRecord {
+    id: number;
+    course: string;
+    insurer: string;
+    expiryDate: string;
+    remainingValidity: string;
+    isValid: boolean;
+}
+
 export default function InsuranceStatus() {
-  const navigate = useNavigate();
-  return (
-    <div id="view-insurance-status" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/specialized-hub')}><i className="fa fa-arrow-right"></i> تخصصی</button>
+    const navigate = useNavigate();
+    const [selectedCourse, setSelectedCourse] = useState('course1');
+
+    const [records] = useState<InsuranceRecord[]>([
+        {
+            id: 1,
+            course: 'course1',
+            insurer: 'فدراسیون پزشکی ورزشی',
+            expiryDate: '1403/12/29',
+            remainingValidity: '245 روز',
+            isValid: true
+        },
+        {
+            id: 2,
+            course: 'course2',
+            insurer: 'بیمه سامان (حوادث ورزشی)',
+            expiryDate: '1402/11/15',
+            remainingValidity: 'منقضی شده',
+            isValid: false
+        }
+    ]);
+
+    const filteredRecords = records.filter(r => r.course === selectedCourse || selectedCourse === 'all');
+
+    return (
+        <div id="view-insurance-status" className="view-section fade-in">
+            <div className="sticky-top-bar">
+                <button className="btn-top-action btn-back-top" onClick={() => navigate('/specialized-hub')}>
+                    <i className="fa fa-arrow-right"></i> تخصصی
+                </button>
                 <h3 className="sticky-title">وضعیت بیمه ورزشی</h3>
-                <div style={{"width":"80px"}}></div>
+                <div style={{ width: '80px' }}></div>
             </div>
-            <div className="card" style={{"padding":"20px","textAlign":"center"}}>
-                <div className="stat-icon ic-matches" style={{"width":"60px","height":"60px","fontSize":"2rem","margin":"0 auto 16px"}}>
-                    <i className="fa fa-heartbeat"></i></div>
-                <h3 style={{"marginBottom":"8px"}}>بیمه ورزشی شما فعال نیست!</h3>
-                <p style={{"color":"var(--danger)","fontSize":"0.85rem","fontWeight":"700"}}>لطفاً جهت تمدید بیمه ورزشی خود به
-                    دفتر باشگاه مراجعه کنید.</p>
+            
+            <div className="card" style={{ padding: '15px' }}>
+                <div className="input-group" style={{ marginBottom: '15px' }}>
+                    <label>انتخاب دوره</label>
+                    <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
+                        <option value="all">همه دوره‌ها</option>
+                        <option value="course1">ترم پاییز - کلاس پیشرفته الف</option>
+                        <option value="course2">ترم تابستان - کلاس مبتدی</option>
+                    </select>
+                </div>
+
+                <div className="table-responsive">
+                    <table className="data-table">
+                        <thead>
+                            <tr>
+                                <th>صادرکننده بیمه</th>
+                                <th>تصویر بیمه</th>
+                                <th>تاریخ انقضا</th>
+                                <th>اعتبار باقی مانده</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredRecords.length === 0 ? (
+                                <tr>
+                                    <td colSpan={4} style={{ textAlign: 'center', padding: '20px' }}>سابقه‌ای یافت نشد.</td>
+                                </tr>
+                            ) : (
+                                filteredRecords.map((record) => (
+                                    <tr key={record.id}>
+                                        <td data-label="صادرکننده بیمه">{record.insurer}</td>
+                                        <td data-label="تصویر بیمه">
+                                            <div style={{ width: '40px', height: '40px', background: '#eee', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                <i className="fa fa-file-image-o" style={{ color: '#ccc' }}></i>
+                                            </div>
+                                        </td>
+                                        <td data-label="تاریخ انقضا" style={{ direction: 'ltr', textAlign: 'right' }}>{record.expiryDate}</td>
+                                        <td data-label="اعتبار باقی مانده">
+                                            <span style={{
+                                                padding: '4px 8px', borderRadius: '4px', fontSize: '0.85rem', fontWeight: 'bold',
+                                                backgroundColor: record.isValid ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
+                                                color: record.isValid ? 'var(--success-color)' : 'var(--danger-color)'
+                                            }}>
+                                                {record.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-  );
+    );
 }

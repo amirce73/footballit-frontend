@@ -1,70 +1,207 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+    competitionSeason: yup.string().nullable(),
+    mainPosition: yup.string().required('پست اصلی الزامی است'),
+    playingAbility: yup.string().matches(/^[آ-یژپچگ\s،-]*$/, 'فقط حروف فارسی مجاز است').nullable(),
+    preferredFoot: yup.string().required('پای تخصصی الزامی است'),
+    hasNationalTeam: yup.boolean().default(false),
+    sportsInsuranceNumber: yup.string().matches(/^[0-9]*$/, 'شماره بیمه فقط باید عدد باشد').nullable(),
+    shirtSize: yup.string().matches(/^[A-Za-z0-9]+$/, 'سایز نامعتبر (فقط حروف انگلیسی و عدد)').nullable(),
+    footballShoeSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش معمولاً ۲ رقمی است (مانند ۴۲)').nullable(),
+    slipperSize: yup.string().matches(/^[0-9]{2}$/, 'سایز دمپایی معمولاً ۲ رقمی است').nullable(),
+    sportsWarmerSize: yup.string().matches(/^[A-Za-z0-9]+$/, 'سایز نامعتبر').nullable(),
+    sportsSlogan: yup.string().nullable(),
+    description: yup.string().nullable()
+});
+
+type FormData = yup.InferType<typeof schema>;
 
 export default function SportsInfo() {
-  const navigate = useNavigate();
-  const { user, refreshUser } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-      mainPosition: 'مهاجم',
-      dominantFoot: 'راست',
-      nationalTeamExperience: 'خیر'
-  });
+    const navigate = useNavigate();
+    const { user, refreshUser } = useAuth();
+    const [loading, setLoading] = React.useState(false);
 
-  useEffect(() => {
-      if (user) {
-          setFormData({
-              mainPosition: user.mainPosition || 'مهاجم',
-              dominantFoot: user.dominantFoot || 'راست',
-              nationalTeamExperience: user.nationalTeamExperience || 'خیر'
-          });
-      }
-  }, [user]);
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<any>({
+        resolver: yupResolver(schema),
+        mode: 'onChange',
+        defaultValues: {
+            mainPosition: 'مهاجم',
+            preferredFoot: 'راست',
+            hasNationalTeam: false
+        }
+    });
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    useEffect(() => {
+        if (user && user.sports) {
+            reset({
+                competitionSeason: user.sports.competitionSeason || '',
+                mainPosition: user.sports.mainPosition || 'مهاجم',
+                playingAbility: user.sports.playingAbility || '',
+                preferredFoot: user.sports.preferredFoot || 'راست',
+                hasNationalTeam: user.sports.hasNationalTeam || false,
+                sportsInsuranceNumber: user.sports.sportsInsuranceNumber || '',
+                shirtSize: user.sports.shirtSize || '',
+                footballShoeSize: user.sports.footballShoeSize || '',
+                slipperSize: user.sports.slipperSize || '',
+                sportsWarmerSize: user.sports.sportsWarmerSize || '',
+                sportsSlogan: user.sports.sportsSlogan || '',
+                description: user.sports.description || ''
+            });
+        }
+    }, [user, reset]);
 
-  const handleSubmit = async () => {
-      setLoading(true);
-      try {
-          await api.put('/users/sports-info', formData);
-          await refreshUser();
-          alert('اطلاعات با موفقیت ذخیره شد!');
-      } catch (error) {
-          console.error('Error saving data:', error);
-          alert('خطا در ذخیره اطلاعات');
-      } finally {
-          setLoading(false);
-      }
-  };
+    const convertPersianToEnglishDigits = (str: string) => {
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return str.replace(/[۰-۹]/g, w => persianDigits.indexOf(w).toString());
+    };
 
-  return (
-    <div id="view-sports-info" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> پروفایل</button>
-                <h3 className="sticky-title">مشخصات ورزشی</h3><button className="btn-top-action btn-submit-top" onClick={handleSubmit} disabled={loading}><i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}</button>
+    const enforceNumericLength = (e: React.FormEvent<HTMLInputElement>, maxLength: number) => {
+        const val = e.currentTarget.value;
+        const converted = convertPersianToEnglishDigits(val);
+        let digitsOnly = converted.replace(/[^0-9]/g, '');
+        if (digitsOnly.length > maxLength) {
+            digitsOnly = digitsOnly.slice(0, maxLength);
+        }
+        e.currentTarget.value = digitsOnly;
+    };
+
+    const enforceNumeric = (e: React.FormEvent<HTMLInputElement>) => {
+        const val = e.currentTarget.value;
+        const converted = convertPersianToEnglishDigits(val);
+        e.currentTarget.value = converted.replace(/[^0-9]/g, '');
+    };
+
+    const enforceEnglishAlphaNumeric = (e: React.FormEvent<HTMLInputElement>) => {
+        e.currentTarget.value = e.currentTarget.value.replace(/[^A-Za-z0-9]/g, '');
+    };
+
+    const enforcePersian = (e: React.FormEvent<HTMLInputElement>) => {
+        e.currentTarget.value = e.currentTarget.value.replace(/[^آ-یژپچگ\s،-]/g, '');
+    };
+
+    const onSubmit = async (data: FormData) => {
+        setLoading(true);
+        try {
+            await api.post('/Profile/sports-info', data);
+            await refreshUser();
+            alert('مشخصات ورزشی با موفقیت ذخیره شد!');
+        } catch (error) {
+            console.error('Error saving data:', error);
+            alert('خطا در ذخیره اطلاعات');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div id="view-sports-info" className="view-section fade-in">
+            <div className="sticky-top-bar">
+                <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
+                    <i className="fa fa-arrow-right"></i> پروفایل
+                </button>
+                <h3 className="sticky-title">مشخصات ورزشی</h3>
+                <button type="button" className="btn-top-action btn-submit-top" onClick={handleSubmit(onSubmit)} disabled={loading}>
+                    <i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}
+                </button>
             </div>
+            
             <div className="card">
-                <div className="form-grid">
-                    <div className="input-group"><label>پست اصلی</label><select name="mainPosition" value={formData.mainPosition} onChange={handleChange}>
+                <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
+                    <div className="input-group">
+                        <label className={errors.competitionSeason ? 'error-label' : ''}>فصل مسابقاتی</label>
+                        <select {...register('competitionSeason')} className={errors.competitionSeason ? 'error' : ''}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="1402-1403">1402-1403</option>
+                            <option value="1403-1404">1403-1404</option>
+                        </select>
+                        {errors.competitionSeason && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.competitionSeason.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.mainPosition ? 'error-label' : ''}>پست اصلی</label>
+                        <select {...register('mainPosition')} className={errors.mainPosition ? 'error' : ''}>
                             <option value="مهاجم">مهاجم</option>
                             <option value="هافبک">هافبک</option>
                             <option value="مدافع">مدافع</option>
                             <option value="دروازه‌بان">دروازه‌بان</option>
-                        </select></div>
-                    <div className="input-group"><label>پای تخصصی</label><select name="dominantFoot" value={formData.dominantFoot} onChange={handleChange}>
+                        </select>
+                        {errors.mainPosition && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.mainPosition.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.playingAbility ? 'error-label' : ''}>توانایی بازی در پست</label>
+                        <input type="text" {...register('playingAbility')} onInput={enforcePersian} placeholder="مثال: هافبک دفاعی، دفاع وسط" className={errors.playingAbility ? 'error' : ''} />
+                        {errors.playingAbility && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.playingAbility.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.preferredFoot ? 'error-label' : ''}>پای تخصصی</label>
+                        <select {...register('preferredFoot')} className={errors.preferredFoot ? 'error' : ''}>
                             <option value="راست">راست</option>
                             <option value="چپ">چپ</option>
                             <option value="هردو">هردو</option>
-                        </select></div>
-                    <div className="input-group"><label>سابقه بازی ملی؟</label><select name="nationalTeamExperience" value={formData.nationalTeamExperience} onChange={handleChange}>
-                            <option value="خیر">خیر</option>
-                            <option value="بله">بله</option>
-                        </select></div>
-                </div>
+                        </select>
+                        {errors.preferredFoot && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.preferredFoot.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>سابقه بازی در تیم ملی؟</label>
+                        <select {...register('hasNationalTeam', {
+                            setValueAs: v => v === 'true' || v === true
+                        })}>
+                            <option value="false">خیر</option>
+                            <option value="true">بله</option>
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.sportsInsuranceNumber ? 'error-label' : ''}>شماره بیمه ورزشی</label>
+                        <input type="text" inputMode="numeric" {...register('sportsInsuranceNumber')} onInput={enforceNumeric} className={errors.sportsInsuranceNumber ? 'error' : ''} />
+                        {errors.sportsInsuranceNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sportsInsuranceNumber.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.shirtSize ? 'error-label' : ''}>سایز شورت و پیراهن ورزشی</label>
+                        <input type="text" {...register('shirtSize')} onInput={enforceEnglishAlphaNumeric} placeholder="مثال: L, XL, M" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.shirtSize ? 'error' : ''} />
+                        {errors.shirtSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.shirtSize.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.footballShoeSize ? 'error-label' : ''}>سایز کفش فوتبال</label>
+                        <input type="text" inputMode="numeric" {...register('footballShoeSize')} onInput={(e) => enforceNumericLength(e, 2)} placeholder="مثال: 42" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.footballShoeSize ? 'error' : ''} />
+                        {errors.footballShoeSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.footballShoeSize.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.slipperSize ? 'error-label' : ''}>سایز کفش راحتی</label>
+                        <input type="text" inputMode="numeric" {...register('slipperSize')} onInput={(e) => enforceNumericLength(e, 2)} placeholder="مثال: 42" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.slipperSize ? 'error' : ''} />
+                        {errors.slipperSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.slipperSize.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.sportsWarmerSize ? 'error-label' : ''}>سایز گرمکن ورزشی</label>
+                        <input type="text" {...register('sportsWarmerSize')} onInput={enforceEnglishAlphaNumeric} placeholder="مثال: L, XL, M" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.sportsWarmerSize ? 'error' : ''} />
+                        {errors.sportsWarmerSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sportsWarmerSize.message)}</span>}
+                    </div>
+
+                    <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                        <label>شعار ورزشی</label>
+                        <input type="text" {...register('sportsSlogan')} />
+                    </div>
+
+                    <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                        <label>توضیحات</label>
+                        <textarea rows={3} {...register('description')}></textarea>
+                    </div>
+                </form>
             </div>
         </div>
-  );
+    );
 }

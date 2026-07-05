@@ -3,48 +3,121 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 
+interface DocumentFile {
+    type: string;
+    file: File | null;
+    status: 'none' | 'uploading' | 'success' | 'error';
+}
+
 export default function Documents() {
-  const navigate = useNavigate();
-  const { refreshUser } = useAuth();
-  const [loading, setLoading] = useState(false);
-  
-  const [nationalCard, setNationalCard] = useState<File | null>(null);
-  const [birthCertificate, setBirthCertificate] = useState<File | null>(null);
-  const [personalPhoto, setPersonalPhoto] = useState<File | null>(null);
+    const navigate = useNavigate();
+    const { refreshUser } = useAuth();
+    
+    const [docs, setDocs] = useState<{ [key: string]: DocumentFile }>({
+        identityCard: { type: 'شناسنامه', file: null, status: 'none' },
+        nationalCard: { type: 'کارت ملی', file: null, status: 'none' },
+        passport: { type: 'پاسپورت', file: null, status: 'none' },
+        militaryService: { type: 'کارت پایان خدمت', file: null, status: 'none' },
+        personalPhoto: { type: 'عکس پرسنلی', file: null, status: 'none' }
+    });
 
-  const handleSubmit = async () => {
-      setLoading(true);
-      const formData = new FormData();
-      if (nationalCard) formData.append('nationalCard', nationalCard);
-      if (birthCertificate) formData.append('birthCertificate', birthCertificate);
-      if (personalPhoto) formData.append('personalPhoto', personalPhoto);
+    const handleFileSelect = (key: string, file: File | null) => {
+        if (!file) return;
+        setDocs(prev => ({
+            ...prev,
+            [key]: { ...prev[key], file, status: 'none' }
+        }));
+    };
 
-      try {
-          await api.post('/users/documents', formData, {
-              headers: { 'Content-Type': 'multipart/form-data' }
-          });
-          await refreshUser();
-          alert('مدارک با موفقیت آپلود شد!');
-      } catch (error) {
-          console.error(error);
-          alert('خطا در آپلود مدارک');
-      } finally {
-          setLoading(false);
-      }
-  };
+    const handleUpload = async (key: string) => {
+        const doc = docs[key];
+        if (!doc.file) return;
 
-  return (
-    <div id="view-documents" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> پروفایل</button>
-                <h3 className="sticky-title">مستندات و مدارک</h3><button className="btn-top-action btn-submit-top" onClick={handleSubmit} disabled={loading}><i className="fa fa-check"></i> {loading ? '...' : 'آپلود'}</button>
+        setDocs(prev => ({ ...prev, [key]: { ...prev[key], status: 'uploading' } }));
+        
+        const formData = new FormData();
+        formData.append('file', doc.file);
+        formData.append('documentType', doc.type);
+
+        try {
+            await api.post('/Profile/documents', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            setDocs(prev => ({ ...prev, [key]: { ...prev[key], status: 'success' } }));
+        } catch (error) {
+            console.error(`Error uploading ${doc.type}:`, error);
+            setDocs(prev => ({ ...prev, [key]: { ...prev[key], status: 'error' } }));
+        }
+    };
+
+    const renderDocumentRow = (key: string, title: string, requiredFormats: string) => {
+        const doc = docs[key];
+        return (
+            <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', borderBottom: '1px solid var(--border-color)' }}>
+                <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{title}</div>
+                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>فرمت های مجاز: {requiredFormats}</div>
+                </div>
+                
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {doc.status === 'success' ? (
+                        <span style={{ color: 'var(--success-color)' }}><i className="fa fa-check-circle fa-2x"></i></span>
+                    ) : doc.status === 'uploading' ? (
+                        <span style={{ color: 'var(--primary-color)' }}><i className="fa fa-spinner fa-spin fa-2x"></i></span>
+                    ) : doc.status === 'error' ? (
+                        <span style={{ color: 'var(--danger-color)' }}><i className="fa fa-times-circle fa-2x"></i></span>
+                    ) : doc.file ? (
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-color)' }}>{doc.file.name}</span>
+                    ) : (
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>فایلی انتخاب نشده</span>
+                    )}
+                </div>
+
+                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                    <input 
+                        type="file" 
+                        id={`file-${key}`} 
+                        style={{ display: 'none' }} 
+                        accept=".png,.jpeg,.jpg,.pdf"
+                        onChange={(e) => handleFileSelect(key, e.target.files?.[0] || null)}
+                    />
+                    <label htmlFor={`file-${key}`} className="btn-secondary" style={{ cursor: 'pointer', padding: '8px 15px', margin: 0, display: 'inline-block' }}>
+                        <i className="fa fa-folder-open"></i> انتخاب فایل
+                    </label>
+                    <button 
+                        className="btn-primary" 
+                        onClick={() => handleUpload(key)} 
+                        disabled={!doc.file || doc.status === 'uploading'}
+                        style={{ padding: '8px 15px' }}
+                    >
+                        <i className="fa fa-upload"></i> آپلود
+                    </button>
+                </div>
             </div>
-            <div className="card">
-                <div className="form-grid">
-                    <div className="input-group"><label>اسکن کارت ملی</label><input type="file" accept="image/*" onChange={(e) => setNationalCard(e.target.files?.[0] || null)} /></div>
-                    <div className="input-group"><label>اسکن شناسنامه</label><input type="file" accept="image/*" onChange={(e) => setBirthCertificate(e.target.files?.[0] || null)} /></div>
-                    <div className="input-group" style={{"gridColumn":"1 / -1"}}><label>عکس پرسنلی (۴×۳)</label><input type="file" accept="image/*" onChange={(e) => setPersonalPhoto(e.target.files?.[0] || null)} /></div>
+        );
+    };
+
+    return (
+        <div id="view-documents" className="view-section fade-in">
+            <div className="sticky-top-bar">
+                <button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
+                    <i className="fa fa-arrow-right"></i> پروفایل
+                </button>
+                <h3 className="sticky-title">ثبت مدارک اصلی</h3>
+                <button className="btn-top-action" style={{ background: 'transparent', color: 'var(--primary-color)', border: '1px solid var(--primary-color)' }} onClick={() => navigate('/certificates')}>
+                    <i className="fa fa-file-text"></i> ثبت سایر مدارک
+                </button>
+            </div>
+            
+            <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    {renderDocumentRow('identityCard', 'شناسنامه', 'png, jpeg, jpg, pdf')}
+                    {renderDocumentRow('nationalCard', 'کارت ملی', 'png, jpeg, jpg, pdf')}
+                    {renderDocumentRow('passport', 'پاسپورت', 'png, jpeg, jpg, pdf')}
+                    {renderDocumentRow('militaryService', 'کارت پایان خدمت', 'png, jpeg, jpg, pdf')}
+                    {renderDocumentRow('personalPhoto', 'عکس پرسنلی', 'png, jpeg, jpg, pdf')}
                 </div>
             </div>
         </div>
-  );
+    );
 }

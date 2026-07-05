@@ -68,8 +68,8 @@ export default function Registration() {
                                 <option value="رده سنی ۱۶ و ۱۷ سال">رده سنی ۱۶ و ۱۷ سال</option>
                             </select>
                         </div>
-                        <div className="input-group" style={{"gridColumn":"1 / -1","background":"var(--primary-light)","padding":"12px","borderRadius":"var(--radius-base)","border":"1px solid rgba(234,179,8,0.3)","color":"var(--text-dark)"}}>
-                            <label style={{"color":"var(--text-dark)","display":"flex","alignItems":"center","gap":"8px"}}>
+                        <div className="checkbox-group" style={{"gridColumn":"1 / -1","background":"var(--primary-light)","padding":"12px","borderRadius":"var(--radius-base)","border":"1px solid rgba(234,179,8,0.3)","color":"var(--text-dark)"}}>
+                            <label style={{"color":"var(--text-dark)","display":"flex","alignItems":"center","gap":"8px", "cursor": "pointer"}}>
                                 <input type="checkbox" style={{"width":"auto","transform":"scale(1.2)"}} checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
                                 قوانین و مقررات باشگاه را مطالعه کرده و می‌پذیرم.
                             </label>

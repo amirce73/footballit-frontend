@@ -1,92 +1,127 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isValidIranianNationalId } from '../utils/validations';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import DatePickerModule from "react-multi-date-picker";
 import persianModule from "react-date-object/calendars/persian";
 import persianFaModule from "react-date-object/locales/persian_fa";
 import DateObjectModule from "react-date-object";
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 const DatePicker = (DatePickerModule as any).default || DatePickerModule;
 const persian = (persianModule as any).default || persianModule;
 const persian_fa = (persianFaModule as any).default || persianFaModule;
 const DateObject = (DateObjectModule as any).default || DateObjectModule;
 
+const schema = yup.object().shape({
+    firstName: yup.string().required('نام الزامی است').matches(/^[آ-یژپچگ\s]+$/, 'فقط حروف فارسی مجاز است'),
+    lastName: yup.string().required('نام خانوادگی الزامی است').matches(/^[آ-یژپچگ\s]+$/, 'فقط حروف فارسی مجاز است'),
+    nationalId: yup.string().length(10, 'کد ملی باید دقیقاً ۱۰ رقم باشد')
+        .matches(/^[0-9]+$/, 'فقط عدد مجاز است')
+        .test('isValidNationalId', 'کد ملی وارد شده معتبر نیست', (value) => isValidIranianNationalId(value || ''))
+        .required('کد ملی الزامی است'),
+    birthDate: yup.string().required('تاریخ تولد الزامی است'),
+    birthCertificateNo: yup.string().matches(/^[0-9]{1,10}$/, 'شماره شناسنامه حداکثر ۱۰ رقم و فقط عدد است').nullable(),
+    fatherName: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
+    gender: yup.string().required('جنسیت الزامی است'),
+    height: yup.number()
+        .transform((value, originalValue) => originalValue === "" ? null : value)
+        .min(100, 'قد نمی‌تواند کمتر از ۱۰۰ سانتی‌متر باشد')
+        .max(250, 'قد نمی‌تواند بیشتر از ۲۵۰ سانتی‌متر باشد')
+        .nullable()
+        .typeError('لطفا یک عدد معتبر وارد کنید'),
+    weight: yup.number()
+        .transform((value, originalValue) => originalValue === "" ? null : value)
+        .min(20, 'وزن نمی‌تواند کمتر از ۲۰ کیلوگرم باشد')
+        .max(150, 'وزن نمی‌تواند بیشتر از ۱۵۰ کیلوگرم باشد')
+        .nullable()
+        .typeError('لطفا یک عدد معتبر وارد کنید'),
+    bloodGroup: yup.string().nullable(),
+    healthStatus: yup.string().nullable(),
+    maritalStatus: yup.string().nullable(),
+    militaryServiceStatus: yup.string().nullable(),
+    religion: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
+    occupation: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
+    description: yup.string().nullable()
+});
+
+type FormData = yup.InferType<typeof schema>;
+
 export default function PersonalInfo() {
     const navigate = useNavigate();
     const { user, refreshUser } = useAuth();
-    const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        nationalCode: '',
-        birthDate: '',
-        fatherName: '',
-        gender: 'مرد',
-        height: '',
-        weight: ''
+    const [loading, setLoading] = React.useState(false);
+
+    const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm<any>({
+        resolver: yupResolver(schema),
+        mode: 'onChange',
+        defaultValues: {
+            gender: 'مرد'
+        }
     });
 
     useEffect(() => {
         if (user) {
-            setFormData({
+            reset({
                 firstName: user.firstName || '',
                 lastName: user.lastName || '',
-                nationalCode: user.nationalCode || '',
+                nationalId: user.nationalId || '',
                 birthDate: user.birthDate || '',
                 fatherName: user.fatherName || '',
                 gender: user.gender || 'مرد',
-                height: user.height?.toString() || '',
-                weight: user.weight?.toString() || ''
+                height: user.height || null,
+                weight: user.weight || null,
+                birthCertificateNo: user.birthCertificateNo || '',
+                bloodGroup: user.bloodGroup || '',
+                healthStatus: user.healthStatus || '',
+                maritalStatus: user.maritalStatus || '',
+                militaryServiceStatus: user.militaryServiceStatus || '',
+                religion: user.religion || '',
+                occupation: user.occupation || '',
+                description: user.description || ''
             });
         }
-    }, [user]);
+    }, [user, reset]);
 
     const convertPersianToEnglishDigits = (str: string) => {
         const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         return str.replace(/[۰-۹]/g, w => persianDigits.indexOf(w).toString());
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        
-        if (name === 'nationalCode') {
-            const englishDigits = convertPersianToEnglishDigits(value);
-            const numericValue = englishDigits.replace(/[^0-9]/g, '');
-            if (numericValue.length > 10) return;
-            setFormData({ ...formData, [name]: numericValue });
-            return;
+    const enforcePersian = (e: React.FormEvent<HTMLInputElement>) => {
+        e.currentTarget.value = e.currentTarget.value.replace(/[^آ-یژپچگ\s]/g, '');
+    };
+
+    const enforceNumeric = (e: React.FormEvent<HTMLInputElement>) => {
+        const val = e.currentTarget.value;
+        const converted = convertPersianToEnglishDigits(val);
+        e.currentTarget.value = converted.replace(/[^0-9]/g, '');
+    };
+
+    const enforceNumericLength = (e: React.FormEvent<HTMLInputElement>, maxLength: number) => {
+        enforceNumeric(e);
+        if (e.currentTarget.value.length > maxLength) {
+            e.currentTarget.value = e.currentTarget.value.slice(0, maxLength);
         }
-        
-        if (name === 'height' || name === 'weight') {
-            const englishDigits = convertPersianToEnglishDigits(value);
-            const numericValue = englishDigits.replace(/[^0-9]/g, '');
-            setFormData({ ...formData, [name]: numericValue });
-            return;
-        }
-        
-        setFormData({ ...formData, [name]: value });
     };
 
     const handleDateChange = (date: any) => {
         if (!date) {
-            setFormData({ ...formData, birthDate: '' });
+            setValue('birthDate', '', { shouldValidate: true });
             return;
         }
-        // Extract formatted date which might be in Persian digits (e.g. ۱۳۸۸/۰۷/۰۴)
         const persianDate = date.format("YYYY/MM/DD");
         const englishDate = convertPersianToEnglishDigits(persianDate);
-        setFormData({ ...formData, birthDate: englishDate });
+        setValue('birthDate', englishDate, { shouldValidate: true });
     };
 
-    const handleSubmit = async () => {
+    const onSubmit = async (data: FormData) => {
         setLoading(true);
         try {
-            await api.put('/users/personal-info', {
-                ...formData,
-                height: formData.height ? parseInt(formData.height) : null,
-                weight: formData.weight ? parseInt(formData.weight) : null
-            });
+            await api.post('/Profile/personal-info', data);
             await refreshUser();
             alert('اطلاعات با موفقیت ذخیره شد!');
         } catch (error) {
@@ -99,49 +134,151 @@ export default function PersonalInfo() {
 
     return (
         <div id="view-personal-info" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> پروفایل</button>
-                <h3 className="sticky-title">مشخصات فردی</h3><button className="btn-top-action btn-submit-top" onClick={handleSubmit} disabled={loading}><i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}</button>
+            <div className="sticky-top-bar">
+                <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
+                    <i className="fa fa-arrow-right"></i> پروفایل
+                </button>
+                <h3 className="sticky-title">مشخصات فردی</h3>
+                <button type="button" className="btn-top-action btn-submit-top" onClick={handleSubmit(onSubmit)} disabled={loading}>
+                    <i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}
+                </button>
             </div>
+            
             <div className="card">
-                <div className="form-grid">
-                    <div className="input-group"><label>نام</label><input type="text" name="firstName" value={formData.firstName} onChange={handleChange} /></div>
-                    <div className="input-group"><label>نام خانوادگی</label><input type="text" name="lastName" value={formData.lastName} onChange={handleChange} /></div>
-                    <div className="input-group"><label>کد ملی (۱۰ رقم)</label><input name="nationalCode" type="text" inputMode="numeric" placeholder="مثال: 1234567890" value={formData.nationalCode} onChange={handleChange}></input></div>
+                <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
-                        <label>تاریخ تولد</label>
-                        <DatePicker
-                            value={formData.birthDate}
-                            onChange={handleDateChange}
-                            onMonthChange={handleDateChange}
-                            onYearChange={handleDateChange}
-                            onFocusedDateChange={handleDateChange}
-                            calendar={persian}
-                            locale={persian_fa}
-                            maxDate={new DateObject({ calendar: persian })}
-                            calendarPosition="bottom"
-                            fixMainPosition={true}
-                            inputClass="date-picker-input"
-                            containerStyle={{ width: '100%' }}
-                            placeholder="انتخاب تاریخ"
+                        <label className={errors.firstName ? 'error-label' : ''}>نام</label>
+                        <input type="text" {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} />
+                        {errors.firstName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.firstName.message)}</span>}
+                    </div>
+                    
+                    <div className="input-group">
+                        <label className={errors.lastName ? 'error-label' : ''}>نام خانوادگی</label>
+                        <input type="text" {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} />
+                        {errors.lastName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.lastName.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم)</label>
+                        <input type="text" inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
+                        {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
+                    </div>
+                    
+                    <div className="input-group">
+                        <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد</label>
+                        <Controller
+                            control={control}
+                            name="birthDate"
+                            render={({ field }) => (
+                                <DatePicker
+                                    value={field.value}
+                                    onChange={handleDateChange}
+                                    calendar={persian}
+                                    locale={persian_fa}
+                                    maxDate={new DateObject({ calendar: persian })}
+                                    calendarPosition="bottom"
+                                    fixMainPosition={true}
+                                    editable={false}
+                                    inputClass={`date-picker-input ${errors.birthDate ? 'error' : ''}`}
+                                    containerStyle={{ width: '100%' }}
+                                    style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: 'transparent' }}
+                                    placeholder="انتخاب تاریخ"
+                                />
+                            )}
                         />
-                        <small style={{ "color": "var(--text-muted)", "fontSize": "0.75rem", "marginTop": "4px" }}>
-                            نکته: برای تغییر سال و ماه، روی نام آن‌ها در بالای تقویم کلیک کنید.
-                        </small>
+                        {errors.birthDate && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.birthDate.message)}</span>}
                     </div>
-                    <div className="input-group"><label>نام پدر</label><input type="text" name="fatherName" placeholder="نام پدر" value={formData.fatherName} onChange={handleChange} /></div>
-                    <div className="input-group"><label>جنسیت</label><select name="gender" value={formData.gender} onChange={handleChange}>
-                        <option value="مرد">مرد</option>
-                        <option value="زن">زن</option>
-                    </select></div>
+
                     <div className="input-group">
-                        <label>قد (سانتی‌متر)</label>
-                        <input type="text" inputMode="numeric" name="height" placeholder="مثال: 180" value={formData.height} onChange={handleChange} />
+                        <label className={errors.birthCertificateNo ? 'error-label' : ''}>شماره شناسنامه</label>
+                        <input type="text" inputMode="numeric" {...register('birthCertificateNo')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.birthCertificateNo ? 'error' : ''} />
+                        {errors.birthCertificateNo && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.birthCertificateNo.message)}</span>}
                     </div>
+
                     <div className="input-group">
-                        <label>وزن (کیلوگرم)</label>
-                        <input type="text" inputMode="numeric" name="weight" placeholder="مثال: 75" value={formData.weight} onChange={handleChange} />
+                        <label className={errors.fatherName ? 'error-label' : ''}>نام پدر</label>
+                        <input type="text" {...register('fatherName')} onInput={enforcePersian} className={errors.fatherName ? 'error' : ''} />
+                        {errors.fatherName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.fatherName.message)}</span>}
                     </div>
-                </div>
+
+                    <div className="input-group">
+                        <label className={errors.gender ? 'error-label' : ''}>جنسیت</label>
+                        <select {...register('gender')} className={errors.gender ? 'error' : ''}>
+                            <option value="مرد">مرد</option>
+                            <option value="زن">زن</option>
+                        </select>
+                        {errors.gender && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.gender.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.height ? 'error-label' : ''}>قد (سانتی‌متر)</label>
+                        <input type="text" inputMode="numeric" {...register('height')} onInput={(e) => enforceNumericLength(e, 3)} className={errors.height ? 'error' : ''} />
+                        {errors.height && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.height.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.weight ? 'error-label' : ''}>وزن (کیلوگرم)</label>
+                        <input type="text" inputMode="numeric" {...register('weight')} onInput={(e) => enforceNumericLength(e, 3)} className={errors.weight ? 'error' : ''} />
+                        {errors.weight && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.weight.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label>گروه خونی</label>
+                        <select {...register('bloodGroup')}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label>وضعیت تاهل</label>
+                        <select {...register('maritalStatus')}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="مجرد">مجرد</option>
+                            <option value="متاهل">متاهل</option>
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label>وضعیت نظام وظیفه</label>
+                        <select {...register('militaryServiceStatus')}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="مشمول">مشمول</option>
+                            <option value="معافیت تحصیلی">معافیت تحصیلی</option>
+                            <option value="معافیت دائم">معافیت دائم</option>
+                            <option value="پایان خدمت">پایان خدمت</option>
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.religion ? 'error-label' : ''}>دین و مذهب</label>
+                        <input type="text" {...register('religion')} onInput={enforcePersian} className={errors.religion ? 'error' : ''} />
+                        {errors.religion && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.religion.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.occupation ? 'error-label' : ''}>شغل</label>
+                        <input type="text" {...register('occupation')} onInput={enforcePersian} className={errors.occupation ? 'error' : ''} />
+                        {errors.occupation && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.occupation.message)}</span>}
+                    </div>
+
+                    <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                        <label>وضعیت سلامت و بیماری‌های خاص</label>
+                        <textarea rows={2} {...register('healthStatus')} placeholder="اگر بیماری خاصی دارید اینجا بنویسید"></textarea>
+                    </div>
+
+                    <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                        <label>توضیحات</label>
+                        <textarea rows={3} {...register('description')}></textarea>
+                    </div>
+                </form>
             </div>
         </div>
     );

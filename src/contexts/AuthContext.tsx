@@ -2,21 +2,64 @@ import React, { createContext, useContext, useState, useEffect, type ReactNode }
 import api from "../api";
 
 export interface User {
-  id?: number;
   firstName?: string;
   lastName?: string;
-  nationalCode?: string;
+  nationalId?: string;
   birthDate?: string;
-  mobileNumber?: string;
-  parentMobile?: string;
-  landlinePhone?: string;
-  homeAddress?: string;
-  mainPosition?: string;
-  dominantFoot?: string;
-  nationalTeamExperience?: string;
-  currentClass?: string;
-  currentTerm?: string;
-  createdAt?: string;
+  fatherName?: string;
+  gender?: string;
+  height?: number;
+  weight?: number;
+  birthCertificateNo?: string;
+  bloodGroup?: string;
+  healthStatus?: string;
+  maritalStatus?: string;
+  militaryServiceStatus?: string;
+  religion?: string;
+  occupation?: string;
+  description?: string;
+  contact?: {
+    mobile?: string;
+    guardianMobile?: string;
+    tel?: string;
+    address?: string;
+    emergencyPhone?: string;
+    email?: string;
+    telegram?: string;
+    instagram?: string;
+    linkedIn?: string;
+    facebook?: string;
+    website?: string;
+    parentsWorkAddress?: string;
+  };
+  passport?: {
+    passportNumber?: string;
+    issueDate?: string;
+    expiryDate?: string;
+    englishName?: string;
+    englishSurname?: string;
+    description?: string;
+  };
+  sports?: {
+    mainPosition?: string;
+    preferredFoot?: string;
+    hasNationalTeam?: boolean;
+    competitionSeason?: string;
+    playingAbility?: string;
+    sportsInsuranceNumber?: string;
+    shirtSize?: string;
+    footballShoeSize?: string;
+    slipperSize?: string;
+    sportsWarmerSize?: string;
+    sportsSlogan?: string;
+    description?: string;
+  };
+  club?: {
+    clubName?: string;
+    shirtNumber?: number;
+    ageCategory?: string;
+    contractStart?: string;
+  };
   [key: string]: any;
 }
 
@@ -42,7 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     try {
-      const res = await api.get('/users/me');
+      const res = await api.get('/profile/hub');
       setUser(res.data);
     } catch (err) {
       console.error(err);

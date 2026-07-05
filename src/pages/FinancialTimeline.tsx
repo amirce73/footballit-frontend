@@ -1,87 +1,114 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface FinancialRecord {
+    id: number;
+    season: string;
+    remainingDocument: string;
+    documentNumber: string;
+    documentDate: string;
+    debtor: number;
+    creditor: number;
+    description: string;
+}
+
 export default function FinancialTimeline() {
-  const navigate = useNavigate();
-  return (
-    <div id="view-financial-timeline" className="view-section fade-in">
+    const navigate = useNavigate();
+    
+    // Mock data based on the API integration plan
+    const [records] = useState<FinancialRecord[]>([
+        {
+            id: 1,
+            season: '1402-1403',
+            remainingDocument: 'شهریه ترم پاییز',
+            documentNumber: '100123',
+            documentDate: '1402/07/15',
+            debtor: 5000000,
+            creditor: 0,
+            description: 'ثبت نام اولیه کلاس'
+        },
+        {
+            id: 2,
+            season: '1402-1403',
+            remainingDocument: 'شهریه ترم پاییز',
+            documentNumber: '100145',
+            documentDate: '1402/07/20',
+            debtor: 0,
+            creditor: 2000000,
+            description: 'پرداخت قسط اول'
+        },
+        {
+            id: 3,
+            season: '1402-1403',
+            remainingDocument: 'خرید لباس',
+            documentNumber: '100189',
+            documentDate: '1402/08/01',
+            debtor: 850000,
+            creditor: 0,
+            description: 'لباس تمرین'
+        }
+    ]);
+
+    const formatCurrency = (amount: number) => {
+        return amount.toLocaleString() + ' تومان';
+    };
+
+    const totalDebtor = records.reduce((sum, r) => sum + r.debtor, 0);
+    const totalCreditor = records.reduce((sum, r) => sum + r.creditor, 0);
+    const totalRemaining = totalDebtor - totalCreditor;
+
+    return (
+        <div id="view-financial-timeline" className="view-section fade-in">
             <div className="sticky-top-bar">
-                <button className="btn-top-action btn-back-top" onClick={() => navigate('/registration')}><i className="fa fa-arrow-right"></i> ثبت‌نام</button>
-                <h3 className="sticky-title">تایم‌لاین گزارشات مالی</h3>
-                <div style={{"width":"80px"}}></div>
+                <button className="btn-top-action btn-back-top" onClick={() => navigate('/financial-hub')}>
+                    <i className="fa fa-arrow-right"></i> مالی
+                </button>
+                <h3 className="sticky-title">تایم‌لاین وضعیت مالی</h3>
+                <div style={{ padding: '5px 10px', background: 'var(--bg-color)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.9rem', fontWeight: 'bold' }}>
+                    بدهی کل: <span style={{ color: totalRemaining > 0 ? 'var(--danger-color)' : 'var(--success-color)' }}>{formatCurrency(totalRemaining)}</span>
+                </div>
             </div>
 
-            <div className="card" style={{"background":"transparent","border":"none","boxShadow":"none"}}>
+            <div className="card" style={{ background: 'transparent', border: 'none', boxShadow: 'none' }}>
                 <div className="timeline-container">
-                    <div className="timeline-item">
-                        <div className="timeline-icon-circle fail"><i className="fa fa-times"></i></div>
-                        <div className="timeline-content fail">
-                            <div className="tl-header fail">
-                                <span className="tl-title fail">شهریه ترم تابستان ۱۴۰۵</span>
-                                <span className="tl-date">۱۴۰۵/۰۳/۰۱</span>
-                            </div>
-                            <div className="tl-row"><span>مبلغ تراکنش:</span> <strong>۷,۵۰۰,۰۰۰ تومان</strong></div>
-                            <div className="tl-row"><span>بابت:</span> <strong>کلاس پیشرفته الف</strong></div>
-                            <div className="tl-status fail"><i className="fa fa-exclamation-circle"></i> پرداخت نشده (بدهی)
-                            </div>
-                        </div>
-                    </div>
+                    {records.map((record) => {
+                        const isDebt = record.debtor > 0;
+                        const statusClass = isDebt ? 'fail' : 'success';
+                        const iconClass = isDebt ? 'fa-times' : 'fa-check';
+                        const statusText = isDebt ? 'پرداخت نشده (بدهی)' : 'پرداخت موفق';
+                        const amount = isDebt ? record.debtor : record.creditor;
 
-                    <div className="timeline-item">
-                        <div className="timeline-icon-circle success"><i className="fa fa-check"></i></div>
-                        <div className="timeline-content success">
-                            <div className="tl-header success">
-                                <span className="tl-title success">خرید پکیج لباس فرم</span>
-                                <span className="tl-date">۱۴۰۵/۰۲/۱۵</span>
+                        return (
+                            <div className="timeline-item" key={record.id}>
+                                <div className={`timeline-icon-circle ${statusClass}`}>
+                                    <i className={`fa ${iconClass}`}></i>
+                                </div>
+                                <div className={`timeline-content ${statusClass}`}>
+                                    <div className={`tl-header ${statusClass}`}>
+                                        <span className={`tl-title ${statusClass}`}>{record.remainingDocument}</span>
+                                        <span className="tl-date">{record.documentDate}</span>
+                                    </div>
+                                    <div className="tl-row">
+                                        <span>مبلغ تراکنش:</span> 
+                                        <strong>{formatCurrency(amount)}</strong>
+                                    </div>
+                                    <div className="tl-row">
+                                        <span>بابت / شرح:</span> 
+                                        <strong>{record.description}</strong>
+                                    </div>
+                                    <div className="tl-row">
+                                        <span>شماره سند:</span> 
+                                        <strong>{record.documentNumber}</strong>
+                                    </div>
+                                    <div className={`tl-status ${statusClass}`}>
+                                        <i className={isDebt ? 'fa fa-exclamation-circle' : 'fa fa-check-circle'}></i> {statusText}
+                                    </div>
+                                </div>
                             </div>
-                            <div className="tl-row"><span>مبلغ تراکنش:</span> <strong>۸۵۰,۰۰۰ تومان</strong></div>
-                            <div className="tl-row"><span>شماره پیگیری:</span> <strong>۱۴۵۸۷۹۶۵۲۳</strong></div>
-                            <div className="tl-status success"><i className="fa fa-check-circle"></i> پرداخت موفق - درگاه بانک
-                                ملت</div>
-                        </div>
-                    </div>
-
-                    <div className="timeline-item">
-                        <div className="timeline-icon-circle success"><i className="fa fa-check"></i></div>
-                        <div className="timeline-content success">
-                            <div className="tl-header success">
-                                <span className="tl-title success">شهریه ترم بهار ۱۴۰۵</span>
-                                <span className="tl-date">۱۴۰۴/۱۲/۲۰</span>
-                            </div>
-                            <div className="tl-row"><span>مبلغ تراکنش:</span> <strong>۶,۸۰۰,۰۰۰ تومان</strong></div>
-                            <div className="tl-row"><span>بابت:</span> <strong>کلاس سپاهان</strong></div>
-                            <div className="tl-status success"><i className="fa fa-check-circle"></i> پرداخت موفق - فیش واریزی
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="timeline-item">
-                        <div className="timeline-icon-circle" style={{"borderColor":"var(--warning)","color":"var(--warning)"}}>
-                            <i className="fa fa-refresh"></i></div>
-                        <div className="timeline-content warning">
-                            <div className="tl-header warning">
-                                <span className="tl-title warning">هزینه اردوی تدارکاتی مشهد</span>
-                                <span className="tl-date">۱۴۰۴/۱۱/۰۵</span>
-                            </div>
-                            <div className="tl-row"><span>مبلغ تراکنش:</span> <strong>۱,۲۰۰,۰۰۰ تومان</strong></div>
-                            <div className="tl-status warning"><i className="fa fa-clock-o"></i> در حال بررسی فیش واریزی</div>
-                        </div>
-                    </div>
-
-                    <div className="timeline-item">
-                        <div className="timeline-icon-circle success"><i className="fa fa-check"></i></div>
-                        <div className="timeline-content success">
-                            <div className="tl-header success">
-                                <span className="tl-title success">شهریه ترم زمستان ۱۴۰۴</span>
-                                <span className="tl-date">۱۴۰۴/۰۹/۱۵</span>
-                            </div>
-                            <div className="tl-row"><span>مبلغ تراکنش:</span> <strong>۵,۵۰۰,۰۰۰ تومان</strong></div>
-                            <div className="tl-status success"><i className="fa fa-check-circle"></i> پرداخت موفق - درگاه سامان
-                            </div>
-                        </div>
-                    </div>
+                        );
+                    })}
                 </div>
             </div>
         </div>
-  );
+    );
 }

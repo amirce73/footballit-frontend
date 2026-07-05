@@ -30,7 +30,7 @@ export default function ProfileHub() {
                     <div className="frame-grid">
                         <div className="frame-item" onClick={() => navigate('/personal-info')}>
                             <div className="frame-icon-circle ic-blue"><i className="fa fa-id-card-o"></i></div>
-                            <span className="frame-item-label">اطلاعات فردی</span>
+                            <span className="frame-item-label">اطلاعات شخصی</span>
                         </div>
                         <div className="frame-item" onClick={() => navigate('/contact-info')}>
                             <div className="frame-icon-circle ic-green"><i className="fa fa-phone"></i></div>
