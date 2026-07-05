@@ -25,7 +25,7 @@ export default function Attendance() {
             setLoading(true);
             try {
                 const response = await api.get(`/specialized/attendance?courseId=${selectedCourse}`);
-                const mockData = [
+                const mockData: AttendanceRecord[] = [
                     { id: 1, date: '1402/05/12', day: 'دوشنبه', startTime: '16:00', endTime: '18:00', location: 'زمین چمن شماره 1', status: 'حاضر', scoreOrReason: '10' },
                     { id: 2, date: '1402/05/14', day: 'چهارشنبه', startTime: '16:00', endTime: '18:00', location: 'زمین چمن شماره 1', status: 'غایب', scoreOrReason: 'بیماری' },
                     { id: 3, date: '1402/05/19', day: 'دوشنبه', startTime: '16:00', endTime: '18:00', location: 'زمین چمن شماره 2', status: 'تاخیر', scoreOrReason: 'ترافیک (15 دقیقه)' },
@@ -34,7 +34,7 @@ export default function Attendance() {
                 setRecords(response.data && response.data.length > 0 ? response.data : mockData);
             } catch (error) {
                 console.error("Error fetching attendance:", error);
-                const mockData = [
+                const mockData: AttendanceRecord[] = [
                     { id: 1, date: '1402/05/12', day: 'دوشنبه', startTime: '16:00', endTime: '18:00', location: 'زمین چمن شماره 1', status: 'حاضر', scoreOrReason: '10' },
                     { id: 2, date: '1402/05/14', day: 'چهارشنبه', startTime: '16:00', endTime: '18:00', location: 'زمین چمن شماره 1', status: 'غایب', scoreOrReason: 'بیماری' },
                     { id: 3, date: '1402/05/19', day: 'دوشنبه', startTime: '16:00', endTime: '18:00', location: 'زمین چمن شماره 2', status: 'تاخیر', scoreOrReason: 'ترافیک (15 دقیقه)' },

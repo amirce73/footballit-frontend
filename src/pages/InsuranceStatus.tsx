@@ -86,7 +86,7 @@ export default function InsuranceStatus() {
                                                 backgroundColor: record.isValid ? 'rgba(76, 175, 80, 0.1)' : 'rgba(244, 67, 54, 0.1)',
                                                 color: record.isValid ? 'var(--success-color)' : 'var(--danger-color)'
                                             }}>
-                                                {record.status}
+                                                {record.remainingValidity}
                                             </span>
                                         </td>
                                     </tr>
