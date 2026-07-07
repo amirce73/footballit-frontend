@@ -49,7 +49,9 @@ function LocationSelector({ position, setPosition, setAddress, setLoading }: any
             });
             const data = await response.json();
             
-            if (data) {
+            if (data && data.status === 'ERROR') {
+                setAddress(`خطای کلید API: ${data.message} (محدودیت دامنه/آی‌پی)`);
+            } else if (data) {
                 var addr = data.formatted_address
                     || data.route_name
                     || data.neighbourhood
@@ -104,7 +106,9 @@ export default function MapModal({ isOpen, onClose, onConfirm }: MapModalProps) 
                 headers: { 'Api-Key': 'service.ec711af1d62c4f72b2d0b33a31a65cc1' }
             });
             const data = await response.json();
-            if (data) {
+            if (data && data.status === 'ERROR') {
+                setAddress(`خطای کلید API: ${data.message} (محدودیت دامنه/آی‌پی)`);
+            } else if (data) {
                 var addr = data.formatted_address
                     || data.route_name
                     || data.neighbourhood
