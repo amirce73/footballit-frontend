@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import StickySubmitButton from '../components/StickySubmitButton';
 import { isValidIranianNationalId } from '../utils/validations';
-import DatePickerModule from "react-multi-date-picker";
-import persianModule from "react-date-object/calendars/persian";
-import persianFaModule from "react-date-object/locales/persian_fa";
-import DateObjectModule from "react-date-object";
-
-const DatePicker = (DatePickerModule as any).default || DatePickerModule;
-const persian = (persianModule as any).default || persianModule;
-const persian_fa = (persianFaModule as any).default || persianFaModule;
-const DateObject = (DateObjectModule as any).default || DateObjectModule;
+import CustomScrollDatePicker from '../components/CustomScrollDatePicker';
 
 const schema = yup.object().shape({
     nationalId: yup.string().length(10, 'کد ملی باید دقیقاً ۱۰ رقم باشد')
@@ -28,6 +20,7 @@ type FormData = yup.InferType<typeof schema>;
 export default function Verification() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
 
     const { register, handleSubmit, control, setValue, formState: { errors } } = useForm<FormData>({
         resolver: yupResolver(schema),
@@ -94,20 +87,24 @@ export default function Verification() {
                             control={control}
                             name="birthDate"
                             render={({ field }) => (
-                                <DatePicker
-                                    value={field.value}
-                                    onChange={handleDateChange}
-                                    calendar={persian}
-                                    locale={persian_fa}
-                                    maxDate={new DateObject({ calendar: persian })}
-                                    calendarPosition="bottom"
-                                    fixMainPosition={true}
-                                    editable={false}
-                                    inputClass={`date-picker-input ${errors.birthDate ? 'error' : ''}`}
-                                    containerStyle={{ width: '100%' }}
-                                    style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: 'transparent' }}
-                                    placeholder="انتخاب تاریخ"
-                                />
+                                <>
+                                    <div 
+                                        className={`date-picker-input ${errors.birthDate ? 'error' : ''}`}
+                                        style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#fff', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                                        onClick={() => setIsDatePickerOpen(true)}
+                                    >
+                                        {field.value || <span style={{ color: '#94a3b8' }}>انتخاب تاریخ</span>}
+                                    </div>
+                                    <CustomScrollDatePicker
+                                        isOpen={isDatePickerOpen}
+                                        onClose={() => setIsDatePickerOpen(false)}
+                                        onConfirm={(dateString) => {
+                                            field.onChange(dateString);
+                                            setIsDatePickerOpen(false);
+                                        }}
+                                        initialDate={field.value}
+                                    />
+                                </>
                             )}
                         />
                         {errors.birthDate && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.birthDate.message)}</span>}

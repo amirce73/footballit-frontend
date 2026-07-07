@@ -3,20 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { isValidPassportNumber } from '../utils/validations';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
-import DatePickerModule from "react-multi-date-picker";
-import persianModule from "react-date-object/calendars/persian";
-import persianFaModule from "react-date-object/locales/persian_fa";
-import DateObjectModule from "react-date-object";
 import { useForm, Controller } from 'react-hook-form';
 import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import StickySubmitButton from '../components/StickySubmitButton';
-
-const DatePicker = (DatePickerModule as any).default || DatePickerModule;
-const persian = (persianModule as any).default || persianModule;
-const persian_fa = (persianFaModule as any).default || persianFaModule;
-const DateObject = (DateObjectModule as any).default || DateObjectModule;
+import CustomScrollDatePicker from '../components/CustomScrollDatePicker';
 
 const schema = yup.object().shape({
     passportNumber: yup.string().required('شماره گذرنامه الزامی است')
@@ -40,12 +32,14 @@ export default function PassportInfo() {
     const navigate = useNavigate();
     const { user, refreshUser } = useAuth();
     const [loading, setLoading] = React.useState(false);
+    const [isIssueDatePickerOpen, setIsIssueDatePickerOpen] = React.useState(false);
+    const [isExpiryDatePickerOpen, setIsExpiryDatePickerOpen] = React.useState(false);
 
     const methods = useForm<any>({
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
-    const { register, handleSubmit, control, setValue, reset, watch, formState: { errors } } = methods;
+    const { register, handleSubmit, control, reset, formState: { errors } } = methods;
     const { clearDraft } = useFormDraft('passportinfo', methods);
 
     useEffect(() => {
@@ -78,26 +72,6 @@ export default function PassportInfo() {
 
     const enforceEnglishOnly = (e: React.FormEvent<HTMLInputElement>) => {
         e.currentTarget.value = e.currentTarget.value.replace(/[^A-Za-z\s]/g, '');
-    };
-
-    const handleIssueDateChange = (date: any) => {
-        if (!date) {
-            setValue('issueDate', '', { shouldValidate: true });
-            return;
-        }
-        const persianDate = date.format("YYYY/MM/DD");
-        const englishDate = convertPersianToEnglishDigits(persianDate);
-        setValue('issueDate', englishDate, { shouldValidate: true });
-    };
-
-    const handleExpiryDateChange = (date: any) => {
-        if (!date) {
-            setValue('expiryDate', '', { shouldValidate: true });
-            return;
-        }
-        const persianDate = date.format("YYYY/MM/DD");
-        const englishDate = convertPersianToEnglishDigits(persianDate);
-        setValue('expiryDate', englishDate, { shouldValidate: true });
     };
 
     const onSubmit = async (data: FormData) => {
@@ -139,20 +113,25 @@ export default function PassportInfo() {
                             control={control}
                             name="issueDate"
                             render={({ field }) => (
-                                <DatePicker
-                                    value={field.value}
-                                    onChange={handleIssueDateChange}
-                                    calendar={persian}
-                                    locale={persian_fa}
-                                    maxDate={new DateObject({ calendar: persian })}
-                                    calendarPosition="bottom"
-                                    fixMainPosition={true}
-                                    editable={false}
-                                    inputClass={`date-picker-input ${errors.issueDate ? 'error' : ''}`}
-                                    containerStyle={{ width: '100%' }}
-                                    style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: 'transparent' }}
-                                    placeholder="انتخاب تاریخ"
-                                />
+                                <>
+                                    <div 
+                                        className={`date-picker-input ${errors.issueDate ? 'error' : ''}`}
+                                        style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#fff', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                                        onClick={() => setIsIssueDatePickerOpen(true)}
+                                    >
+                                        {field.value || <span style={{ color: '#94a3b8' }}>انتخاب تاریخ</span>}
+                                    </div>
+                                    <CustomScrollDatePicker
+                                        isOpen={isIssueDatePickerOpen}
+                                        onClose={() => setIsIssueDatePickerOpen(false)}
+                                        onConfirm={(dateString) => {
+                                            field.onChange(dateString);
+                                            setIsIssueDatePickerOpen(false);
+                                        }}
+                                        initialDate={field.value}
+                                        allowFuture={false}
+                                    />
+                                </>
                             )}
                         />
                         {errors.issueDate && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.issueDate.message)}</span>}
@@ -164,20 +143,25 @@ export default function PassportInfo() {
                             control={control}
                             name="expiryDate"
                             render={({ field }) => (
-                                <DatePicker
-                                    value={field.value}
-                                    onChange={handleExpiryDateChange}
-                                    calendar={persian}
-                                    locale={persian_fa}
-                                    minDate={new DateObject({ calendar: persian })}
-                                    calendarPosition="bottom"
-                                    fixMainPosition={true}
-                                    editable={false}
-                                    inputClass={`date-picker-input ${errors.expiryDate ? 'error' : ''}`}
-                                    containerStyle={{ width: '100%' }}
-                                    style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: 'transparent' }}
-                                    placeholder="انتخاب تاریخ"
-                                />
+                                <>
+                                    <div 
+                                        className={`date-picker-input ${errors.expiryDate ? 'error' : ''}`}
+                                        style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#fff', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                                        onClick={() => setIsExpiryDatePickerOpen(true)}
+                                    >
+                                        {field.value || <span style={{ color: '#94a3b8' }}>انتخاب تاریخ</span>}
+                                    </div>
+                                    <CustomScrollDatePicker
+                                        isOpen={isExpiryDatePickerOpen}
+                                        onClose={() => setIsExpiryDatePickerOpen(false)}
+                                        onConfirm={(dateString) => {
+                                            field.onChange(dateString);
+                                            setIsExpiryDatePickerOpen(false);
+                                        }}
+                                        initialDate={field.value}
+                                        allowFuture={true}
+                                    />
+                                </>
                             )}
                         />
                         {errors.expiryDate && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.expiryDate.message)}</span>}
