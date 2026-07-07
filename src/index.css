@@ -3879,3 +3879,11 @@ img {
 .view-section .card:last-of-type {
     margin-bottom: 80px;
 }
+
+@media (max-width: 768px) {
+
+    .checkbox-group label {
+        font-size: 11px;
+    }
+
+}
