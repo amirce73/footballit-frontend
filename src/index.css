@@ -3883,6 +3883,22 @@ img {
 @media (max-width: 768px) {
 
     .checkbox-group label {
+        font-size: 13px;
+    }
+
+}
+
+@media (max-width: 380px) {
+
+    .checkbox-group label {
+        font-size: 12px;
+    }
+
+}
+
+@media (max-width: 350px) {
+
+    .checkbox-group label {
         font-size: 11px;
     }
 
