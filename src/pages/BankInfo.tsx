@@ -105,7 +105,7 @@ export default function BankInfo() {
                     <i className="fa fa-arrow-right"></i> مالی
                 </button>
                 <h3 className="sticky-title">حساب‌های بانکی</h3>
-                
+                <div style={{ width: '80px' }}></div>
             </div>
             
             <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
@@ -198,15 +198,22 @@ export default function BankInfo() {
                             </div>
 
                             <div className="input-group" style={{ gridColumn: '1 / -1', marginTop: '10px' }}>
-                                <button type="submit" className="btn-primary" disabled={loading} style={{ width: '100%', padding: '12px' }}>
+                                <button type="submit" className="btn-app-primary" disabled={loading} style={{ width: '100%', padding: '12px', borderRadius: '10px', fontWeight: '800' }}>
                                     {loading ? 'در حال ثبت...' : 'ثبت حساب بانکی'}
                                 </button>
                             </div>
-                <StickySubmitButton loading={loading} text="ثبت حساب بانکی" loadingText="در حال ثبت..." />
 
             </form>
                     </div>
                 </div>
+            )}
+            {!isModalOpen && (
+                <StickySubmitButton
+                    loading={false}
+                    text="+ افزودن حساب بانکی جدید"
+                    type="button"
+                    onClick={() => setIsModalOpen(true)}
+                />
             )}
         </div>
     );

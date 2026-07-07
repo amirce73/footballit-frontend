@@ -3426,9 +3426,9 @@ img {
 .input-group input:focus,
 .input-group select:focus,
 .input-group textarea:focus {
-    border-color: var(--primary);
+    border-color: var(--success);
     background: transparent;
-    box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--success), white 10%);
     outline: none;
 }
 
@@ -3498,9 +3498,9 @@ img {
 .input-group input:focus,
 .input-group select:focus,
 .input-group textarea:focus {
-    border-color: var(--primary);
+    border-color: var(--success);
     background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.15);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
     outline: none;
 }
 
@@ -3720,12 +3720,17 @@ img {
         white-space: nowrap;
     }
 }
+
 /* Override old rmdp-container z-index */
-.rmdp-container { z-index: 1 !important; }
+.rmdp-container {
+    z-index: 1 !important;
+}
 
 
 /* Actually remove rmdp-container z-index so it doesn't trap the popup */
-.rmdp-container { z-index: auto !important; }
+.rmdp-container {
+    z-index: auto !important;
+}
 
 /* Custom styling for form select dropdowns to match inputs perfectly */
 .input-group select {
@@ -3743,7 +3748,8 @@ img {
 /* Basic styling for the native dropdown items (options) */
 .input-group select option {
     background-color: #ffffff;
-    color: #0f172a; /* var(--text-dark) */
+    color: #0f172a;
+    /* var(--text-dark) */
     font-size: 0.9rem;
     padding: 12px;
 }
@@ -3756,7 +3762,7 @@ img {
 
 .custom-select-trigger {
     padding: 12px;
-    border: 1px solid rgba(234, 179, 8, 0.5);
+    border: 1px solid;
     border-radius: var(--radius-base);
     font-family: inherit;
     font-size: 0.9rem;
@@ -3764,7 +3770,7 @@ img {
     transition: 0.2s;
     background-color: #f8fafc;
     width: 100%;
-    
+
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -3800,8 +3806,15 @@ img {
 }
 
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .custom-select-option {
@@ -3848,6 +3861,9 @@ img {
 }
 
 .sticky-submit-btn {
+    background: var(--success);
+    color: #fff;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
     width: 100%;
     padding: 14px !important;
     font-size: 1rem !important;
@@ -3863,4 +3879,3 @@ img {
 .view-section .card:last-of-type {
     margin-bottom: 80px;
 }
-
