@@ -28,76 +28,106 @@ interface ScrollColumnProps {
 
 const ScrollColumn: React.FC<ScrollColumnProps> = ({ items, value, onChange, label, isMonth }) => {
     const scrollRef = useRef<HTMLDivElement>(null);
+    const scrollTimeoutRef = useRef<any>(null);
+    const isMountedRef = useRef(false);
 
     // Initial scroll to value
     useEffect(() => {
         if (scrollRef.current) {
             const index = items.indexOf(value);
             if (index !== -1) {
-                scrollRef.current.scrollTo({ top: index * ITEM_HEIGHT, behavior: 'instant' as ScrollBehavior });
+                const targetScrollTop = index * ITEM_HEIGHT;
+                // 'auto' is universally supported for instant jump, unlike 'instant'
+                scrollRef.current.scrollTo({ top: targetScrollTop, behavior: 'auto' });
+                scrollRef.current.scrollTop = targetScrollTop; // Fallback
+                isMountedRef.current = true;
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); 
 
-    // Sync when value changes externally
+    // Sync when value changes externally, BUT avoid fighting native scroll
     useEffect(() => {
-        if (scrollRef.current) {
-            const index = items.indexOf(value);
-            if (index !== -1) {
-                scrollRef.current.scrollTo({ top: index * ITEM_HEIGHT, behavior: 'smooth' });
+        if (!isMountedRef.current || !scrollRef.current) return;
+        
+        const index = items.indexOf(value);
+        if (index !== -1) {
+            const targetScrollTop = index * ITEM_HEIGHT;
+            // Only programmatically scroll if we are significantly out of sync
+            if (Math.abs(scrollRef.current.scrollTop - targetScrollTop) > 20) {
+                scrollRef.current.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
             }
         }
     }, [value, items]);
 
-    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const scrollTop = e.currentTarget.scrollTop;
-        const index = Math.round(scrollTop / ITEM_HEIGHT);
-        if (items[index] && items[index] !== value) {
-            onChange(items[index]);
+    const handleScroll = () => {
+        if (!scrollRef.current) return;
+        
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
         }
+
+        // Use a slight debounce to ensure native scrolling has finished snapping before updating React state
+        scrollTimeoutRef.current = setTimeout(() => {
+            if (!scrollRef.current) return;
+            const scrollTop = scrollRef.current.scrollTop;
+            const index = Math.round(scrollTop / ITEM_HEIGHT);
+            if (index >= 0 && index < items.length) {
+                if (items[index] !== value) {
+                    onChange(items[index]);
+                }
+            }
+        }, 100); 
     };
 
     return (
-        <div style={{ flex: 1, position: 'relative', height: ITEM_HEIGHT * 5, overflow: 'hidden' }}>
-            {/* Gradient Mask for fading out top/bottom items */}
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: ITEM_HEIGHT, background: 'linear-gradient(to bottom, #f8fafc 0%, rgba(248, 250, 252, 0) 100%)', zIndex: 2, pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: ITEM_HEIGHT, background: 'linear-gradient(to top, #f8fafc 0%, rgba(248, 250, 252, 0) 100%)', zIndex: 2, pointerEvents: 'none' }} />
-
+        <div style={{ flex: 1, height: ITEM_HEIGHT * 5, position: 'relative', zIndex: 2, overflow: 'hidden' }}>
             <div 
                 ref={scrollRef}
-                onScroll={handleScroll}
                 className="hide-scrollbar"
-                style={{ 
-                    height: '100%', 
-                    overflowY: 'auto', 
+                onScroll={handleScroll}
+                style={{
+                    height: '100%',
+                    overflowY: 'auto',
                     scrollSnapType: 'y mandatory',
-                    padding: `0 10px`,
-                    position: 'relative',
-                    zIndex: 1
+                    scrollBehavior: 'smooth',
+                    WebkitOverflowScrolling: 'touch' // Enable buttery smooth momentum scrolling on iOS
                 }}
             >
-                <div style={{ height: ITEM_HEIGHT * 2 }} />
-                {items.map(item => (
+                {/* Top Placeholders */}
+                <div style={{ height: ITEM_HEIGHT * 2, scrollSnapAlign: 'center' }} />
+                
+                {items.map((item) => (
                     <div 
                         key={item} 
-                        style={{ 
-                            height: ITEM_HEIGHT, 
-                            scrollSnapAlign: 'center', 
-                            display: 'flex', 
-                            alignItems: 'center', 
+                        style={{
+                            height: ITEM_HEIGHT,
+                            display: 'flex',
+                            alignItems: 'center',
                             justifyContent: 'center',
-                            opacity: item === value ? 1 : 0.4,
-                            fontWeight: item === value ? '800' : '500',
+                            scrollSnapAlign: 'center',
                             fontSize: item === value ? (isMonth ? '1.1rem' : '1.3rem') : (isMonth ? '0.9rem' : '1.1rem'),
+                            fontWeight: item === value ? '800' : '500',
+                            color: item === value ? 'var(--primary)' : 'var(--text-muted)',
                             transition: 'all 0.2s ease',
-                            color: item === value ? 'var(--primary)' : 'var(--text-muted)'
+                            cursor: 'pointer',
+                            userSelect: 'none'
+                        }}
+                        onClick={() => {
+                            // Allow tapping an item to snap to it
+                            onChange(item);
+                            scrollRef.current?.scrollTo({
+                                top: items.indexOf(item) * ITEM_HEIGHT,
+                                behavior: 'smooth'
+                            });
                         }}
                     >
                         {isMonth ? PERSIAN_MONTHS[item - 1] : toPersianDigits(item)}
                     </div>
                 ))}
-                <div style={{ height: ITEM_HEIGHT * 2 }} />
+
+                {/* Bottom Placeholders */}
+                <div style={{ height: ITEM_HEIGHT * 2, scrollSnapAlign: 'center' }} />
             </div>
         </div>
     );
