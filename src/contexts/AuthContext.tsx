@@ -48,6 +48,7 @@ export interface User {
     playingAbility?: string;
     sportsInsuranceNumber?: string;
     shirtSize?: string;
+    shortsSize?: string;
     footballShoeSize?: string;
     slipperSize?: string;
     sportsWarmerSize?: string;

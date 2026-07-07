@@ -51,7 +51,7 @@ export default function InsuranceStatus() {
                     <label>انتخاب دوره</label>
                     <CustomSelect
                         value={selectedCourse}
-                        onChange={(val) => setSelectedCourse(val)}
+                        onChange={(e) => setSelectedCourse((e.target as HTMLSelectElement).value)}
                         options={[
                             { value: 'all', label: 'همه دوره‌ها' },
                             { value: 'course1', label: 'ترم پاییز - کلاس پیشرفته الف' },

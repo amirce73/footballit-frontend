@@ -40,7 +40,7 @@ export default function BankInfo() {
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
-    const { register, handleSubmit, reset, formState: { errors , watch } } = methods;
+    const { register, handleSubmit, reset, watch, formState: { errors } } = methods;
     const isDataLoaded = true;
     const { clearDraft } = useFormDraft('bankinfo', methods, isDataLoaded);
 

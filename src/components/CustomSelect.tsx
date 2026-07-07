@@ -21,9 +21,10 @@ const CustomSelect = forwardRef<HTMLSelectElement, CustomSelectProps>(
         if (!propOptions && children) {
             Children.forEach(children, child => {
                 if (isValidElement(child) && child.type === 'option') {
+                    const p = child.props as { value?: unknown; children?: React.ReactNode };
                     options.push({
-                        value: child.props.value !== undefined ? String(child.props.value) : String(child.props.children),
-                        label: child.props.children
+                        value: p.value !== undefined ? String(p.value) : String(p.children),
+                        label: p.children as React.ReactNode
                     });
                 }
             });

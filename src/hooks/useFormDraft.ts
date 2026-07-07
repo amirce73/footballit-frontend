@@ -34,7 +34,7 @@ export function useFormDraft(formId: string, methods: any, isDataLoaded: boolean
     useEffect(() => {
         if (!isDataLoaded) return;
         
-        const subscription = watch((value) => {
+        const subscription = watch((value: Record<string, unknown>) => {
             // If we are in the middle of restoring from draft, do NOT overwrite the draft with API defaults
             if (isRestoringRef.current) return;
             
