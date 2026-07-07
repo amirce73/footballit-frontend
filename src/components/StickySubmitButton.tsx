@@ -18,11 +18,16 @@ export default function StickySubmitButton({
 }: StickySubmitButtonProps) {
     const [bottomOffset, setBottomOffset] = useState(65);
 
+    const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+    const [topBarElement, setTopBarElement] = useState<Element | null>(null);
+
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
+
     useEffect(() => {
         const vv = window.visualViewport;
-        if (!vv) return;
-
-        const onResize = () => {
+        const handleResize = () => {
+            setIsDesktop(window.innerWidth >= 768);
+            if (!vv) return;
             const keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
             if (keyboardHeight > 150) {
                 setBottomOffset(keyboardHeight + 4);
@@ -31,17 +36,63 @@ export default function StickySubmitButton({
             }
         };
 
-        vv.addEventListener('resize', onResize);
-        vv.addEventListener('scroll', onResize);
+        if (vv) {
+            vv.addEventListener('resize', handleResize);
+            vv.addEventListener('scroll', handleResize);
+        }
+        window.addEventListener('resize', handleResize);
+
+        // Find the sticky top bar ON THE CURRENT PAGE using the ref
+        // We use setTimeout to ensure DOM is fully painted after page transition
+        const findTopBar = () => {
+            if (wrapperRef.current) {
+                const viewSection = wrapperRef.current.closest('.view-section');
+                if (viewSection) {
+                    const topBar = viewSection.querySelector('.sticky-top-bar');
+                    if (topBar) {
+                        setTopBarElement(topBar);
+                        return;
+                    }
+                }
+            }
+            // Fallback
+            const topBar = document.querySelector('.sticky-top-bar');
+            if (topBar) setTopBarElement(topBar);
+        };
+
+        setTimeout(findTopBar, 10);
+
         return () => {
-            vv.removeEventListener('resize', onResize);
-            vv.removeEventListener('scroll', onResize);
+            if (vv) {
+                vv.removeEventListener('resize', handleResize);
+                vv.removeEventListener('scroll', handleResize);
+            }
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
-    // Use a Portal so the button is rendered directly on body,
-    // outside any ancestor with transform/animation (which breaks position:fixed)
-    const button = (
+    // 1. DESKTOP RENDER: Portal the button into the top bar
+    if (isDesktop && topBarElement) {
+        const desktopButton = (
+            <button
+                type={type}
+                className="btn-top-action btn-submit-top"
+                disabled={loading}
+                onClick={onClick}
+            >
+                <i className="fa fa-check" style={{ marginLeft: '8px' }}></i>
+                {loading ? loadingText : text}
+            </button>
+        );
+        return (
+            <div ref={wrapperRef} className="desktop-anchor" style={{ display: 'none' }}>
+                {createPortal(desktopButton, topBarElement)}
+            </div>
+        );
+    }
+
+    // 2. MOBILE RENDER: Portal the button to document.body
+    const mobileButton = (
         <div
             className="sticky-submit-wrapper"
             style={{ bottom: `${bottomOffset}px`, transition: 'bottom 0.2s ease' }}
@@ -59,10 +110,10 @@ export default function StickySubmitButton({
     );
 
     return (
-        <>
+        <div ref={wrapperRef} className="mobile-anchor">
             {/* Spacer so the last form field isn't hidden behind the fixed button */}
-            <div style={{ height: '80px', flexShrink: 0 }} />
-            {createPortal(button, document.body)}
-        </>
+            <div style={{ height: '80px', flexShrink: 0 }} className="mobile-only-spacer" />
+            {createPortal(mobileButton, document.body)}
+        </div>
     );
 }
