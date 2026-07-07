@@ -203,8 +203,8 @@ export default function MapModal({ isOpen, onClose, onConfirm }: MapModalProps) 
                 <div style={{ height: '300px', width: '100%', borderRadius: '10px', overflow: 'hidden', position: 'relative' }}>
                     <MapContainer center={position || DEFAULT_CENTER} zoom={16} style={{ height: '100%', width: '100%', zIndex: 1 }}>
                         <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                            url="https://raster.snappmaps.ir/styles/snapp-style/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://snapp.ir">Snapp Maps</a> | Neshan API'
                         />
                         <LocationSelector position={position} setPosition={setPosition} setAddress={setAddress} setLoading={setLoading} />
                     </MapContainer>
