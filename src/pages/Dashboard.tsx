@@ -24,7 +24,7 @@ export default function Dashboard() {
                                         <i className="fa fa-phone"></i> 09123456789
                                     </a>
                                 </div>
-                                <div className="club-info" style={{ margin: 0 }}>
+                                <div className="club-info" style={{ marginRight: '18px', marginLeft: 0 }}>
                                     <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', color: 'black' }}>باشگاه فوتبال</h3>
                                     <div className="term-pill">ترم تابستان ۱۴۰۵</div>
                                     <div style={{ "fontSize": "0.75rem", "marginTop": "4px", "marginBottom": "12px", "opacity": 1, "color": "rgb(113 113 122 / var(--tw-text-opacity, 1))" }}>کلاس آموزشی</div>

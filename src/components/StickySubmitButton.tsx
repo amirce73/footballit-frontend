@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 interface StickySubmitButtonProps {
     loading: boolean;
@@ -15,45 +16,39 @@ export default function StickySubmitButton({
     onClick,
     type = 'submit'
 }: StickySubmitButtonProps) {
-    const [bottomOffset, setBottomOffset] = useState(65); // default: above bottom nav
-    const btnRef = useRef<HTMLDivElement>(null);
+    const [bottomOffset, setBottomOffset] = useState(65);
 
     useEffect(() => {
         const vv = window.visualViewport;
         if (!vv) return;
 
-        const handleResize = () => {
-            const windowHeight = window.innerHeight;
-            const viewportHeight = vv.height;
-            const keyboardHeight = windowHeight - viewportHeight;
-
-            if (keyboardHeight > 100) {
-                // Keyboard is open — place button just above keyboard
-                setBottomOffset(keyboardHeight + 5);
+        const onResize = () => {
+            const keyboardHeight = window.innerHeight - vv.height - vv.offsetTop;
+            if (keyboardHeight > 150) {
+                setBottomOffset(keyboardHeight + 4);
             } else {
-                // Keyboard is closed — place above bottom nav
                 setBottomOffset(65);
             }
         };
 
-        vv.addEventListener('resize', handleResize);
-        vv.addEventListener('scroll', handleResize);
-
+        vv.addEventListener('resize', onResize);
+        vv.addEventListener('scroll', onResize);
         return () => {
-            vv.removeEventListener('resize', handleResize);
-            vv.removeEventListener('scroll', handleResize);
+            vv.removeEventListener('resize', onResize);
+            vv.removeEventListener('scroll', onResize);
         };
     }, []);
 
-    return (
+    // Use a Portal so the button is rendered directly on body,
+    // outside any ancestor with transform/animation (which breaks position:fixed)
+    const button = (
         <div
-            ref={btnRef}
             className="sticky-submit-wrapper"
-            style={{ bottom: `${bottomOffset}px` }}
+            style={{ bottom: `${bottomOffset}px`, transition: 'bottom 0.2s ease' }}
         >
             <button
                 type={type}
-                className="btn-app-primary sticky-submit-btn"
+                className="sticky-submit-btn btn-app-primary"
                 disabled={loading}
                 onClick={onClick}
             >
@@ -61,5 +56,13 @@ export default function StickySubmitButton({
                 {loading ? loadingText : text}
             </button>
         </div>
+    );
+
+    return (
+        <>
+            {/* Spacer so the last form field isn't hidden behind the fixed button */}
+            <div style={{ height: '80px', flexShrink: 0 }} />
+            {createPortal(button, document.body)}
+        </>
     );
 }

@@ -46,8 +46,7 @@ export default function PassportInfo() {
         mode: 'onChange'
     });
     const { register, handleSubmit, control, setValue, reset, watch, formState: { errors } } = methods;
-    const isDataLoaded = !!user;
-    const { clearDraft } = useFormDraft('passportinfo', methods, isDataLoaded);
+    const { clearDraft } = useFormDraft('passportinfo', methods);
 
     useEffect(() => {
         if (user && user.passport) {

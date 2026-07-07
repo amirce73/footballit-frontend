@@ -1,54 +1,59 @@
 import { useEffect, useCallback, useRef } from 'react';
 
-export function useFormDraft(formId: string, methods: any, isDataLoaded: boolean) {
-    const { watch, reset } = methods;
+/**
+ * useFormDraft - Auto-saves form state to localStorage on every change.
+ * Restores draft AFTER the form is populated from the server (via reset).
+ * 
+ * Usage: call AFTER you call reset() from server data in useEffect.
+ * The draft restore is debounced to run after the server reset settles.
+ */
+export function useFormDraft(formId: string, methods: any) {
+    const { watch, reset, getValues } = methods;
+    const draftKey = `form-draft-${formId}`;
+    const isMountedRef = useRef(false);
     const isRestoringRef = useRef(false);
 
-    // Load draft when API data is loaded
+    // On mount: try to restore draft after a short delay
+    // (so any server-reset that happens on mount can finish first)
     useEffect(() => {
-        if (!isDataLoaded) return;
-        
-        const savedDraft = localStorage.getItem(`form-draft-${formId}`);
-        if (savedDraft) {
+        const timeoutId = setTimeout(() => {
+            const savedDraft = localStorage.getItem(draftKey);
+            if (!savedDraft) return;
             try {
                 const parsed = JSON.parse(savedDraft);
                 if (parsed && Object.keys(parsed).length > 0) {
                     isRestoringRef.current = true;
-                    // setTimeout ensures we overwrite the component's default reset from the API
-                    const timeoutId = setTimeout(() => {
-                        reset(parsed);
-                        // allow a tiny bit more time for watch to fire before unlocking
-                        setTimeout(() => {
-                            isRestoringRef.current = false;
-                        }, 50);
-                    }, 50);
-                    return () => clearTimeout(timeoutId);
+                    reset(parsed, { keepDefaultValues: true });
+                    // Release the lock after watch fires
+                    setTimeout(() => {
+                        isRestoringRef.current = false;
+                    }, 100);
                 }
             } catch (e) {
-                console.error("Failed to parse form draft", e);
+                console.error('[useFormDraft] Failed to parse draft:', e);
             }
-        }
-    }, [formId, reset, isDataLoaded]);
+        }, 300); // wait 300ms for any server reset to complete
 
-    // Save draft continuously
+        isMountedRef.current = true;
+        return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [draftKey]);
+
+    // Continuously save on every field change
     useEffect(() => {
-        if (!isDataLoaded) return;
-        
         const subscription = watch((value: Record<string, unknown>) => {
-            // If we are in the middle of restoring from draft, do NOT overwrite the draft with API defaults
-            if (isRestoringRef.current) return;
-            
-            // Don't save empty objects
+            if (isRestoringRef.current) return; // don't save during restore
+            if (!isMountedRef.current) return;
             if (value && Object.keys(value).length > 0) {
-                localStorage.setItem(`form-draft-${formId}`, JSON.stringify(value));
+                localStorage.setItem(draftKey, JSON.stringify(value));
             }
         });
         return () => subscription.unsubscribe();
-    }, [watch, formId, isDataLoaded]);
+    }, [watch, draftKey]);
 
     const clearDraft = useCallback(() => {
-        localStorage.removeItem(`form-draft-${formId}`);
-    }, [formId]);
+        localStorage.removeItem(draftKey);
+    }, [draftKey]);
 
     return { clearDraft };
 }

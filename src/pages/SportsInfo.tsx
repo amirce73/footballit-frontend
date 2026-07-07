@@ -42,8 +42,7 @@ export default function SportsInfo() {
     const [loading, setLoading] = React.useState(false);
 
     const { register, handleSubmit, reset, formState: { errors } } = methods;
-    const isDataLoaded = !!user;
-    const { clearDraft } = useFormDraft('sportsinfo', methods, isDataLoaded);
+    const { clearDraft } = useFormDraft('sportsinfo', methods);
 
     useEffect(() => {
         if (user && user.sports) {

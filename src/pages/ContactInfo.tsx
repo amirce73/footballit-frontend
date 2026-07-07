@@ -35,8 +35,7 @@ export default function ContactInfo() {
     const [loading, setLoading] = React.useState(false);
 
     const { register, handleSubmit, reset, formState: { errors } } = methods;
-    const isDataLoaded = !!user;
-    const { clearDraft } = useFormDraft('contactinfo', methods, isDataLoaded);
+    const { clearDraft } = useFormDraft('contactinfo', methods);
 
     useEffect(() => {
         if (user && user.contact) {

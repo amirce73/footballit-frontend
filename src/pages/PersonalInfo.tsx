@@ -66,8 +66,7 @@ export default function PersonalInfo() {
     const [loading, setLoading] = React.useState(false);
 
     const { register, handleSubmit, control, setValue, reset, formState: { errors } } = methods;
-    const isDataLoaded = !!user;
-    const { clearDraft } = useFormDraft('personalinfo', methods, isDataLoaded);
+    const { clearDraft } = useFormDraft('personalinfo', methods);
 
     useEffect(() => {
         if (user) {

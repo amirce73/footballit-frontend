@@ -41,8 +41,7 @@ export default function BankInfo() {
         mode: 'onChange'
     });
     const { register, handleSubmit, reset, watch, formState: { errors } } = methods;
-    const isDataLoaded = true;
-    const { clearDraft } = useFormDraft('bankinfo', methods, isDataLoaded);
+    const { clearDraft } = useFormDraft('bankinfo', methods);
 
     const fetchAccounts = async () => {
         try {
