@@ -135,19 +135,19 @@ export default function PersonalInfo() {
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
                         <label className={errors.firstName ? 'error-label' : ''}>نام</label>
-                        <input type="text" {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} />
+                        <input type="text" maxLength={50} {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} />
                         {errors.firstName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.firstName.message)}</span>}
                     </div>
                     
                     <div className="input-group">
                         <label className={errors.lastName ? 'error-label' : ''}>نام خانوادگی</label>
-                        <input type="text" {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} />
+                        <input type="text" maxLength={50} {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} />
                         {errors.lastName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.lastName.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم)</label>
-                        <input type="text" inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
+                        <input type="text" maxLength={10} inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
                         {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
                     </div>
                     
@@ -182,13 +182,13 @@ export default function PersonalInfo() {
 
                     <div className="input-group">
                         <label className={errors.birthCertificateNo ? 'error-label' : ''}>شماره شناسنامه</label>
-                        <input type="text" inputMode="numeric" {...register('birthCertificateNo')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.birthCertificateNo ? 'error' : ''} />
+                        <input type="text" maxLength={10} inputMode="numeric" {...register('birthCertificateNo')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.birthCertificateNo ? 'error' : ''} />
                         {errors.birthCertificateNo && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.birthCertificateNo.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label className={errors.fatherName ? 'error-label' : ''}>نام پدر</label>
-                        <input type="text" {...register('fatherName')} onInput={enforcePersian} className={errors.fatherName ? 'error' : ''} />
+                        <input type="text" maxLength={50} {...register('fatherName')} onInput={enforcePersian} className={errors.fatherName ? 'error' : ''} />
                         {errors.fatherName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.fatherName.message)}</span>}
                     </div>
 
@@ -203,13 +203,13 @@ export default function PersonalInfo() {
 
                     <div className="input-group">
                         <label className={errors.height ? 'error-label' : ''}>قد (سانتی‌متر)</label>
-                        <input type="text" inputMode="numeric" {...register('height')} onInput={(e) => enforceNumericLength(e, 3)} className={errors.height ? 'error' : ''} />
+                        <input type="text" maxLength={3} inputMode="numeric" {...register('height')} onInput={(e) => enforceNumericLength(e, 3)} className={errors.height ? 'error' : ''} />
                         {errors.height && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.height.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label className={errors.weight ? 'error-label' : ''}>وزن (کیلوگرم)</label>
-                        <input type="text" inputMode="numeric" {...register('weight')} onInput={(e) => enforceNumericLength(e, 3)} className={errors.weight ? 'error' : ''} />
+                        <input type="text" maxLength={3} inputMode="numeric" {...register('weight')} onInput={(e) => enforceNumericLength(e, 3)} className={errors.weight ? 'error' : ''} />
                         {errors.weight && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.weight.message)}</span>}
                     </div>
 
@@ -250,24 +250,24 @@ export default function PersonalInfo() {
 
                     <div className="input-group">
                         <label className={errors.religion ? 'error-label' : ''}>دین و مذهب</label>
-                        <input type="text" {...register('religion')} onInput={enforcePersian} className={errors.religion ? 'error' : ''} />
+                        <input type="text" maxLength={50} {...register('religion')} onInput={enforcePersian} className={errors.religion ? 'error' : ''} />
                         {errors.religion && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.religion.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label className={errors.occupation ? 'error-label' : ''}>شغل</label>
-                        <input type="text" {...register('occupation')} onInput={enforcePersian} className={errors.occupation ? 'error' : ''} />
+                        <input type="text" maxLength={50} {...register('occupation')} onInput={enforcePersian} className={errors.occupation ? 'error' : ''} />
                         {errors.occupation && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.occupation.message)}</span>}
                     </div>
 
                     <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                         <label>وضعیت سلامت و بیماری‌های خاص</label>
-                        <textarea rows={2} {...register('healthStatus')} placeholder="اگر بیماری خاصی دارید اینجا بنویسید"></textarea>
+                        <textarea rows={2} maxLength={500} {...register('healthStatus')} placeholder="اگر بیماری خاصی دارید اینجا بنویسید"></textarea>
                     </div>
 
                     <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                         <label>توضیحات</label>
-                        <textarea rows={3} {...register('description')}></textarea>
+                        <textarea rows={3} maxLength={500} {...register('description')}></textarea>
                     </div>
                 <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
 

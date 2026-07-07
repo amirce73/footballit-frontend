@@ -15,14 +15,14 @@ const schema = yup.object().shape({
     playingAbility: yup.string().matches(/^[آ-یژپچگ\s،-]*$/, 'فقط حروف فارسی مجاز است').nullable(),
     preferredFoot: yup.string().required('پای تخصصی الزامی است'),
     hasNationalTeam: yup.boolean().default(false),
-    sportsInsuranceNumber: yup.string().matches(/^[0-9]*$/, 'شماره بیمه فقط باید عدد باشد').nullable(),
+    sportsInsuranceNumber: yup.string().matches(/^[0-9]*$/, 'شماره بیمه فقط باید عدد باشد').min(5, 'شماره بیمه باید حداقل ۵ رقم باشد').max(20, 'شماره بیمه نمی‌تواند بیشتر از ۲۰ رقم باشد').nullable(),
     shirtSize: yup.string().nullable(),
     shortsSize: yup.string().nullable(),
-    footballShoeSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش معمولاً ۲ رقمی است (مانند ۴۲)').nullable(),
-    slipperSize: yup.string().matches(/^[0-9]{2}$/, 'سایز دمپایی معمولاً ۲ رقمی است').nullable(),
-    sportsWarmerSize: yup.string().matches(/^[A-Za-z0-9]+$/, 'سایز نامعتبر').nullable(),
-    sportsSlogan: yup.string().nullable(),
-    description: yup.string().nullable()
+    footballShoeSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش ۲ رقمی است (مانند ۴۲)').nullable(),
+    slipperSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش ۲ رقمی است (مانند ۴۲)').nullable(),
+    sportsWarmerSize: yup.string().nullable(),
+    sportsSlogan: yup.string().max(100, 'شعار ورزشی نمی‌تواند بیشتر از ۱۰۰ کاراکتر باشد').nullable(),
+    description: yup.string().max(500, 'توضیحات نمی‌تواند بیشتر از ۵۰۰ کاراکتر باشد').nullable()
 });
 
 type FormData = yup.InferType<typeof schema>;
@@ -115,9 +115,9 @@ export default function SportsInfo() {
                     <i className="fa fa-arrow-right"></i> پروفایل
                 </button>
                 <h3 className="sticky-title">مشخصات ورزشی</h3>
-                
+
             </div>
-            
+
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
@@ -169,7 +169,7 @@ export default function SportsInfo() {
 
                     <div className="input-group">
                         <label className={errors.sportsInsuranceNumber ? 'error-label' : ''}>شماره بیمه ورزشی</label>
-                        <input type="text" inputMode="numeric" {...register('sportsInsuranceNumber')} onInput={enforceNumeric} className={errors.sportsInsuranceNumber ? 'error' : ''} />
+                        <input type="text" maxLength={20} inputMode="numeric" {...register('sportsInsuranceNumber')} onInput={enforceNumeric} className={errors.sportsInsuranceNumber ? 'error' : ''} />
                         {errors.sportsInsuranceNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sportsInsuranceNumber.message)}</span>}
                     </div>
 
@@ -200,6 +200,19 @@ export default function SportsInfo() {
                     </div>
 
                     <div className="input-group">
+                        <label className={errors.sportsWarmerSize ? 'error-label' : ''}>سایز گرمکن ورزشی</label>
+                        <CustomSelect {...register('sportsWarmerSize')} className={errors.sportsWarmerSize ? 'error' : ''}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </CustomSelect>
+                        {errors.sportsWarmerSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sportsWarmerSize.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
                         <label className={errors.footballShoeSize ? 'error-label' : ''}>سایز کفش فوتبال</label>
                         <input type="text" inputMode="numeric" {...register('footballShoeSize')} onInput={(e) => enforceNumericLength(e, 2)} placeholder="مثال: 42" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.footballShoeSize ? 'error' : ''} />
                         {errors.footballShoeSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.footballShoeSize.message)}</span>}
@@ -211,12 +224,6 @@ export default function SportsInfo() {
                         {errors.slipperSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.slipperSize.message)}</span>}
                     </div>
 
-                    <div className="input-group">
-                        <label className={errors.sportsWarmerSize ? 'error-label' : ''}>سایز گرمکن ورزشی</label>
-                        <input type="text" {...register('sportsWarmerSize')} onInput={enforceEnglishAlphaNumeric} placeholder="مثال: L, XL, M" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.sportsWarmerSize ? 'error' : ''} />
-                        {errors.sportsWarmerSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sportsWarmerSize.message)}</span>}
-                    </div>
-
                     <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                         <label>شعار ورزشی</label>
                         <input type="text" {...register('sportsSlogan')} />
@@ -226,9 +233,9 @@ export default function SportsInfo() {
                         <label>توضیحات</label>
                         <textarea rows={3} {...register('description')}></textarea>
                     </div>
-                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+                    <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
 
-            </form>
+                </form>
             </div>
         </div>
     );

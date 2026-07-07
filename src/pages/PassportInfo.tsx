@@ -103,7 +103,7 @@ export default function PassportInfo() {
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
                         <label className={errors.passportNumber ? 'error-label' : ''}>شماره گذرنامه</label>
-                        <input type="text" placeholder="شماره گذرنامه" {...register('passportNumber')} onInput={(e) => enforceEnglishAlphaNumericLength(e, 9)} className={errors.passportNumber ? 'error' : ''} style={{ textAlign: 'left', direction: 'ltr' }} />
+                        <input type="text" maxLength={9} placeholder="شماره گذرنامه" {...register('passportNumber')} onInput={(e) => enforceEnglishAlphaNumericLength(e, 9)} className={errors.passportNumber ? 'error' : ''} style={{ textAlign: 'left', direction: 'ltr' }} />
                         {errors.passportNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.passportNumber.message)}</span>}
                     </div>
 
@@ -169,19 +169,19 @@ export default function PassportInfo() {
 
                     <div className="input-group">
                         <label className={errors.englishName ? 'error-label' : ''}>نام (انگلیسی)</label>
-                        <input type="text" style={{ textAlign: 'left', direction: 'ltr' }} {...register('englishName')} onInput={enforceEnglishOnly} className={errors.englishName ? 'error' : ''} />
+                        <input type="text" maxLength={50} style={{ textAlign: 'left', direction: 'ltr' }} {...register('englishName')} onInput={enforceEnglishOnly} className={errors.englishName ? 'error' : ''} />
                         {errors.englishName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.englishName.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label className={errors.englishSurname ? 'error-label' : ''}>نام خانوادگی (انگلیسی)</label>
-                        <input type="text" style={{ textAlign: 'left', direction: 'ltr' }} {...register('englishSurname')} onInput={enforceEnglishOnly} className={errors.englishSurname ? 'error' : ''} />
+                        <input type="text" maxLength={50} style={{ textAlign: 'left', direction: 'ltr' }} {...register('englishSurname')} onInput={enforceEnglishOnly} className={errors.englishSurname ? 'error' : ''} />
                         {errors.englishSurname && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.englishSurname.message)}</span>}
                     </div>
 
                     <div className="input-group" style={{ gridColumn: '1 / -1' }}>
                         <label>توضیحات</label>
-                        <textarea rows={3} {...register('description')}></textarea>
+                        <textarea rows={3} maxLength={500} {...register('description')}></textarea>
                     </div>
 
                     {/* Passport Image Upload */}

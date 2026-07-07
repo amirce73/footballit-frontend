@@ -78,7 +78,7 @@ export default function Verification() {
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
                         <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم)</label>
-                        <input type="text" inputMode="numeric" placeholder="مثال: ۱۲۳۴۵۶۷۸۹۰" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
+                        <input type="text" maxLength={10} inputMode="numeric" placeholder="مثال: ۱۲۳۴۵۶۷۸۹۰" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
                         {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
                     </div>
                     <div className="input-group">
