@@ -46,6 +46,8 @@ export default function Registration() {
       }
   };
 
+
+
   return (
     <div id="view-registration" className="view-section fade-in">
             <div className="sticky-top-bar">
@@ -53,29 +55,29 @@ export default function Registration() {
                 <h3 className="sticky-title">ثبت‌نام در دوره</h3>
             </div>
             <div className="registration-grid">
-                <div className="card">
+                <div className="card" style={{ overflow: 'visible' }}>
                     <div className="form-grid">
-                        <div className="input-group" style={{"gridColumn":"1 / -1"}}>
+                        <div className="input-group desktop-full-width">
                             <label>دوره انتخابی:</label>
                             <CustomSelect
+                                name="currentTerm"
                                 value={formData.currentTerm}
                                 onChange={(e) => handleChange('currentTerm', (e.target as HTMLSelectElement).value)}
-                                options={[
-                                    { value: 'ترم تابستان ۱۴۰۵', label: 'ترم تابستان ۱۴۰۵' },
-                                    { value: 'ترم پاییز ۱۴۰۵', label: 'ترم پاییز ۱۴۰۵' }
-                                ]}
-                            />
+                            >
+                                <option value="ترم تابستان ۱۴۰۵">ترم تابستان ۱۴۰۵</option>
+                                <option value="ترم پاییز ۱۴۰۵">ترم پاییز ۱۴۰۵</option>
+                            </CustomSelect>
                         </div>
-                        <div className="input-group" style={{"gridColumn":"1 / -1"}}>
+                        <div className="input-group desktop-full-width">
                             <label>کلاس / رده سنی:</label>
                             <CustomSelect
+                                name="currentClass"
                                 value={formData.currentClass}
                                 onChange={(e) => handleChange('currentClass', (e.target as HTMLSelectElement).value)}
-                                options={[
-                                    { value: 'رده سنی ۱۴ و ۱۵ سال', label: 'رده سنی ۱۴ و ۱۵ سال' },
-                                    { value: 'رده سنی ۱۶ و ۱۷ سال', label: 'رده سنی ۱۶ و ۱۷ سال' }
-                                ]}
-                            />
+                            >
+                                <option value="رده سنی ۱۴ و ۱۵ سال">رده سنی ۱۴ و ۱۵ سال</option>
+                                <option value="رده سنی ۱۶ و ۱۷ سال">رده سنی ۱۶ و ۱۷ سال</option>
+                            </CustomSelect>
                         </div>
                         <div className="checkbox-group" style={{"gridColumn":"1 / -1","background":"var(--primary-light)","padding":"12px","borderRadius":"var(--radius-base)","border":"1px solid rgba(234,179,8,0.3)","color":"var(--text-dark)"}}>
                             <label style={{"color":"var(--text-dark)","display":"flex","alignItems":"center","gap":"8px", "cursor": "pointer"}}>
