@@ -8,8 +8,11 @@ import persianModule from "react-date-object/calendars/persian";
 import persianFaModule from "react-date-object/locales/persian_fa";
 import DateObjectModule from "react-date-object";
 import { useForm, Controller } from 'react-hook-form';
+import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import CustomSelect from '../components/CustomSelect';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 const DatePicker = (DatePickerModule as any).default || DatePickerModule;
 const persian = (persianModule as any).default || persianModule;
@@ -52,16 +55,19 @@ type FormData = yup.InferType<typeof schema>;
 
 export default function PersonalInfo() {
     const navigate = useNavigate();
-    const { user, refreshUser } = useAuth();
-    const [loading, setLoading] = React.useState(false);
-
-    const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm<any>({
+    const methods = useForm<any>({
         resolver: yupResolver(schema),
         mode: 'onChange',
         defaultValues: {
             gender: 'مرد'
         }
     });
+    const { user, refreshUser } = useAuth();
+    const [loading, setLoading] = React.useState(false);
+
+    const { register, handleSubmit, control, setValue, reset, formState: { errors } } = methods;
+    const isDataLoaded = !!user;
+    const { clearDraft } = useFormDraft('personalinfo', methods, isDataLoaded);
 
     useEffect(() => {
         if (user) {
@@ -122,6 +128,7 @@ export default function PersonalInfo() {
         setLoading(true);
         try {
             await api.post('/Profile/personal-info', data);
+            clearDraft();
             await refreshUser();
             alert('اطلاعات با موفقیت ذخیره شد!');
         } catch (error) {
@@ -139,9 +146,7 @@ export default function PersonalInfo() {
                     <i className="fa fa-arrow-right"></i> پروفایل
                 </button>
                 <h3 className="sticky-title">مشخصات فردی</h3>
-                <button type="button" className="btn-top-action btn-submit-top" onClick={handleSubmit(onSubmit)} disabled={loading}>
-                    <i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}
-                </button>
+                
             </div>
             
             <div className="card">
@@ -203,10 +208,10 @@ export default function PersonalInfo() {
 
                     <div className="input-group">
                         <label className={errors.gender ? 'error-label' : ''}>جنسیت</label>
-                        <select {...register('gender')} className={errors.gender ? 'error' : ''}>
+                        <CustomSelect {...register('gender')} className={errors.gender ? 'error' : ''}>
                             <option value="مرد">مرد</option>
                             <option value="زن">زن</option>
-                        </select>
+                        </CustomSelect>
                         {errors.gender && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.gender.message)}</span>}
                     </div>
 
@@ -224,7 +229,7 @@ export default function PersonalInfo() {
 
                     <div className="input-group">
                         <label>گروه خونی</label>
-                        <select {...register('bloodGroup')}>
+                        <CustomSelect {...register('bloodGroup')}>
                             <option value="">انتخاب کنید...</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -234,27 +239,27 @@ export default function PersonalInfo() {
                             <option value="AB-">AB-</option>
                             <option value="O+">O+</option>
                             <option value="O-">O-</option>
-                        </select>
+                        </CustomSelect>
                     </div>
 
                     <div className="input-group">
                         <label>وضعیت تاهل</label>
-                        <select {...register('maritalStatus')}>
+                        <CustomSelect {...register('maritalStatus')}>
                             <option value="">انتخاب کنید...</option>
                             <option value="مجرد">مجرد</option>
                             <option value="متاهل">متاهل</option>
-                        </select>
+                        </CustomSelect>
                     </div>
 
                     <div className="input-group">
                         <label>وضعیت نظام وظیفه</label>
-                        <select {...register('militaryServiceStatus')}>
+                        <CustomSelect {...register('militaryServiceStatus')}>
                             <option value="">انتخاب کنید...</option>
                             <option value="مشمول">مشمول</option>
                             <option value="معافیت تحصیلی">معافیت تحصیلی</option>
                             <option value="معافیت دائم">معافیت دائم</option>
                             <option value="پایان خدمت">پایان خدمت</option>
-                        </select>
+                        </CustomSelect>
                     </div>
 
                     <div className="input-group">
@@ -278,7 +283,9 @@ export default function PersonalInfo() {
                         <label>توضیحات</label>
                         <textarea rows={3} {...register('description')}></textarea>
                     </div>
-                </form>
+                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+
+            </form>
             </div>
         </div>
     );

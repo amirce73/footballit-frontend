@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { useForm } from 'react-hook-form';
+import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 const schema = yup.object().shape({
     mobile: yup.string().required('موبایل الزامی است').matches(/^09[0-9]{9}$/, 'موبایل باید ۱۱ رقم باشد و با ۰۹ شروع شود'),
@@ -25,13 +27,16 @@ type FormData = yup.InferType<typeof schema>;
 
 export default function ContactInfo() {
     const navigate = useNavigate();
-    const { user, refreshUser } = useAuth();
-    const [loading, setLoading] = React.useState(false);
-
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<any>({
+    const methods = useForm<any>({
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
+    const { user, refreshUser } = useAuth();
+    const [loading, setLoading] = React.useState(false);
+
+    const { register, handleSubmit, reset, formState: { errors } } = methods;
+    const isDataLoaded = !!user;
+    const { clearDraft } = useFormDraft('contactinfo', methods, isDataLoaded);
 
     useEffect(() => {
         if (user && user.contact) {
@@ -82,6 +87,7 @@ export default function ContactInfo() {
         setLoading(true);
         try {
             await api.post('/Profile/contact-info', data);
+            clearDraft();
             await refreshUser();
             alert('اطلاعات تماس با موفقیت ذخیره شد!');
         } catch (error) {
@@ -99,9 +105,7 @@ export default function ContactInfo() {
                     <i className="fa fa-arrow-right"></i> پروفایل
                 </button>
                 <h3 className="sticky-title">اطلاعات تماس</h3>
-                <button type="button" className="btn-top-action btn-submit-top" onClick={handleSubmit(onSubmit)} disabled={loading}>
-                    <i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}
-                </button>
+                
             </div>
 
             <div className="card">
@@ -174,7 +178,9 @@ export default function ContactInfo() {
                         <label>آدرس محل کار والدین</label>
                         <textarea rows={2} {...register('parentsWorkAddress')} placeholder="آدرس دقیق"></textarea>
                     </div>
-                </form>
+                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+
+            </form>
             </div>
         </div>
     );

@@ -56,10 +56,7 @@ export default function ProfileHub() {
                             <div className="frame-icon-circle ic-blue"><i className="fa fa-shield"></i></div>
                             <span className="frame-item-label">اطلاعات باشگاهی</span>
                         </div>
-                        <div className="frame-item" onClick={() => navigate('/clothing-info')}>
-                            <div className="frame-icon-circle ic-orange"><i className="fa fa-arrows-v"></i></div>
-                            <span className="frame-item-label">سایز پوشاک</span>
-                        </div>
+
                     </div>
                 </div>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
+import CustomSelect from '../components/CustomSelect';
 
 export default function ClothingInfo() {
   const navigate = useNavigate();
@@ -51,20 +52,20 @@ export default function ClothingInfo() {
             </div>
             <div className="card">
                 <div className="form-grid">
-                    <div className="input-group"><label>سایز پیراهن</label><select name="shirtSize" value={formData.shirtSize} onChange={handleChange}>
+                    <div className="input-group"><label>سایز پیراهن</label><CustomSelect name="shirtSize" value={formData.shirtSize} onChange={handleChange}>
                             <option value="S">S</option>
                             <option value="M">M</option>
                             <option value="L">L</option>
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
-                        </select></div>
-                    <div className="input-group"><label>سایز شورت ورزشی</label><select name="shortsSize" value={formData.shortsSize} onChange={handleChange}>
+                        </CustomSelect></div>
+                    <div className="input-group"><label>سایز شورت ورزشی</label><CustomSelect name="shortsSize" value={formData.shortsSize} onChange={handleChange}>
                             <option value="S">S</option>
                             <option value="M">M</option>
                             <option value="L">L</option>
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
-                        </select></div>
+                        </CustomSelect></div>
                     <div className="input-group"><label>سایز کفش (شماره)</label><input type="number" name="shoeSize" value={formData.shoeSize} onChange={handleChange} placeholder="مثال: 42" />
                     </div>
                 </div>

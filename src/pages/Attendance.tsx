@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+import CustomSelect from '../components/CustomSelect';
 
 interface AttendanceRecord {
     id: number;
@@ -62,10 +63,10 @@ export default function Attendance() {
             <div className="card" style={{ padding: '15px' }}>
                 <div className="input-group" style={{ marginBottom: '15px' }}>
                     <label>انتخاب دوره</label>
-                    <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
+                    <CustomSelect value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
                         <option value="course1">ترم پاییز - کلاس پیشرفته الف</option>
                         <option value="course2">ترم تابستان - کلاس مبتدی</option>
-                    </select>
+                    </CustomSelect>
                 </div>
 
                 <div className="table-responsive">

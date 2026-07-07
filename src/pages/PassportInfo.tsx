@@ -8,8 +8,10 @@ import persianModule from "react-date-object/calendars/persian";
 import persianFaModule from "react-date-object/locales/persian_fa";
 import DateObjectModule from "react-date-object";
 import { useForm, Controller } from 'react-hook-form';
+import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 const DatePicker = (DatePickerModule as any).default || DatePickerModule;
 const persian = (persianModule as any).default || persianModule;
@@ -39,10 +41,13 @@ export default function PassportInfo() {
     const { user, refreshUser } = useAuth();
     const [loading, setLoading] = React.useState(false);
 
-    const { register, handleSubmit, control, setValue, reset, formState: { errors } } = useForm<any>({
+    const methods = useForm<any>({
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
+    const { register, handleSubmit, control, setValue, reset, watch, formState: { errors } } = methods;
+    const isDataLoaded = !!user;
+    const { clearDraft } = useFormDraft('passportinfo', methods, isDataLoaded);
 
     useEffect(() => {
         if (user && user.passport) {
@@ -100,6 +105,7 @@ export default function PassportInfo() {
         setLoading(true);
         try {
             await api.post('/Profile/passport-info', data);
+            clearDraft();
             await refreshUser();
             alert('اطلاعات گذرنامه با موفقیت ذخیره شد!');
         } catch (error) {
@@ -117,9 +123,7 @@ export default function PassportInfo() {
                     <i className="fa fa-arrow-right"></i> پروفایل
                 </button>
                 <h3 className="sticky-title">اطلاعات گذرنامه</h3>
-                <button type="button" className="btn-top-action btn-submit-top" onClick={handleSubmit(onSubmit)} disabled={loading}>
-                    <i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}
-                </button>
+                
             </div>
 
             <div className="card">
@@ -210,7 +214,9 @@ export default function PassportInfo() {
                             <p style={{ margin: 0, color: 'var(--text-muted)' }}>برای انتخاب فایل کلیک کنید</p>
                         </div>
                     </div>
-                </form>
+                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+
+            </form>
             </div>
         </div>
     );

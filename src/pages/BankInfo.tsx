@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { isValidIranianBankCard, isValidSheba } from '../utils/validations';
 import api from '../api';
 import { useForm } from 'react-hook-form';
+import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 interface BankAccount {
     id: number;
@@ -34,10 +36,13 @@ export default function BankInfo() {
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<any>({
+    const methods = useForm<any>({
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
+    const { register, handleSubmit, reset, formState: { errors , watch } } = methods;
+    const isDataLoaded = true;
+    const { clearDraft } = useFormDraft('bankinfo', methods, isDataLoaded);
 
     const fetchAccounts = async () => {
         try {
@@ -101,9 +106,7 @@ export default function BankInfo() {
                     <i className="fa fa-arrow-right"></i> مالی
                 </button>
                 <h3 className="sticky-title">حساب‌های بانکی</h3>
-                <button className="btn-top-action btn-submit-top" onClick={() => setIsModalOpen(true)}>
-                    <i className="fa fa-plus"></i> ثبت حساب جدید
-                </button>
+                
             </div>
             
             <div className="card" style={{ padding: '0', overflow: 'hidden' }}>
@@ -200,7 +203,9 @@ export default function BankInfo() {
                                     {loading ? 'در حال ثبت...' : 'ثبت حساب بانکی'}
                                 </button>
                             </div>
-                        </form>
+                <StickySubmitButton loading={loading} text="ثبت حساب بانکی" loadingText="در حال ثبت..." />
+
+            </form>
                     </div>
                 </div>
             )}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 export default function Registration() {
   const navigate = useNavigate();
@@ -49,7 +50,6 @@ export default function Registration() {
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> داشبورد</button>
                 <h3 className="sticky-title">ثبت‌نام در دوره</h3>
-                <button className="btn-top-action btn-submit-top" onClick={handleSubmit} disabled={loading}><i className="fa fa-check"></i> {loading ? '...' : 'تایید نهایی'}</button>
             </div>
             <div className="registration-grid">
                 <div className="card">
@@ -94,6 +94,8 @@ export default function Registration() {
                     </button>
                 </div>
             </div>
+            <StickySubmitButton loading={loading} text="ثبت نام" loadingText="در حال ثبت..." type="button" onClick={handleSubmit} />
+
         </div>
   );
 }

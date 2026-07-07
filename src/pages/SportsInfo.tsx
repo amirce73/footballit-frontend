@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
 import { useForm } from 'react-hook-form';
+import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import CustomSelect from '../components/CustomSelect';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 const schema = yup.object().shape({
     competitionSeason: yup.string().nullable(),
@@ -13,7 +16,8 @@ const schema = yup.object().shape({
     preferredFoot: yup.string().required('پای تخصصی الزامی است'),
     hasNationalTeam: yup.boolean().default(false),
     sportsInsuranceNumber: yup.string().matches(/^[0-9]*$/, 'شماره بیمه فقط باید عدد باشد').nullable(),
-    shirtSize: yup.string().matches(/^[A-Za-z0-9]+$/, 'سایز نامعتبر (فقط حروف انگلیسی و عدد)').nullable(),
+    shirtSize: yup.string().nullable(),
+    shortsSize: yup.string().nullable(),
     footballShoeSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش معمولاً ۲ رقمی است (مانند ۴۲)').nullable(),
     slipperSize: yup.string().matches(/^[0-9]{2}$/, 'سایز دمپایی معمولاً ۲ رقمی است').nullable(),
     sportsWarmerSize: yup.string().matches(/^[A-Za-z0-9]+$/, 'سایز نامعتبر').nullable(),
@@ -25,10 +29,7 @@ type FormData = yup.InferType<typeof schema>;
 
 export default function SportsInfo() {
     const navigate = useNavigate();
-    const { user, refreshUser } = useAuth();
-    const [loading, setLoading] = React.useState(false);
-
-    const { register, handleSubmit, reset, formState: { errors } } = useForm<any>({
+    const methods = useForm<any>({
         resolver: yupResolver(schema),
         mode: 'onChange',
         defaultValues: {
@@ -37,6 +38,12 @@ export default function SportsInfo() {
             hasNationalTeam: false
         }
     });
+    const { user, refreshUser } = useAuth();
+    const [loading, setLoading] = React.useState(false);
+
+    const { register, handleSubmit, reset, formState: { errors } } = methods;
+    const isDataLoaded = !!user;
+    const { clearDraft } = useFormDraft('sportsinfo', methods, isDataLoaded);
 
     useEffect(() => {
         if (user && user.sports) {
@@ -48,6 +55,7 @@ export default function SportsInfo() {
                 hasNationalTeam: user.sports.hasNationalTeam || false,
                 sportsInsuranceNumber: user.sports.sportsInsuranceNumber || '',
                 shirtSize: user.sports.shirtSize || '',
+                shortsSize: user.sports.shortsSize || '',
                 footballShoeSize: user.sports.footballShoeSize || '',
                 slipperSize: user.sports.slipperSize || '',
                 sportsWarmerSize: user.sports.sportsWarmerSize || '',
@@ -90,6 +98,7 @@ export default function SportsInfo() {
         setLoading(true);
         try {
             await api.post('/Profile/sports-info', data);
+            clearDraft();
             await refreshUser();
             alert('مشخصات ورزشی با موفقیت ذخیره شد!');
         } catch (error) {
@@ -107,31 +116,29 @@ export default function SportsInfo() {
                     <i className="fa fa-arrow-right"></i> پروفایل
                 </button>
                 <h3 className="sticky-title">مشخصات ورزشی</h3>
-                <button type="button" className="btn-top-action btn-submit-top" onClick={handleSubmit(onSubmit)} disabled={loading}>
-                    <i className="fa fa-check"></i> {loading ? '...' : 'ثبت'}
-                </button>
+                
             </div>
             
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
                         <label className={errors.competitionSeason ? 'error-label' : ''}>فصل مسابقاتی</label>
-                        <select {...register('competitionSeason')} className={errors.competitionSeason ? 'error' : ''}>
+                        <CustomSelect {...register('competitionSeason')} className={errors.competitionSeason ? 'error' : ''}>
                             <option value="">انتخاب کنید...</option>
                             <option value="1402-1403">1402-1403</option>
                             <option value="1403-1404">1403-1404</option>
-                        </select>
+                        </CustomSelect>
                         {errors.competitionSeason && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.competitionSeason.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label className={errors.mainPosition ? 'error-label' : ''}>پست اصلی</label>
-                        <select {...register('mainPosition')} className={errors.mainPosition ? 'error' : ''}>
+                        <CustomSelect {...register('mainPosition')} className={errors.mainPosition ? 'error' : ''}>
                             <option value="مهاجم">مهاجم</option>
                             <option value="هافبک">هافبک</option>
                             <option value="مدافع">مدافع</option>
                             <option value="دروازه‌بان">دروازه‌بان</option>
-                        </select>
+                        </CustomSelect>
                         {errors.mainPosition && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.mainPosition.message)}</span>}
                     </div>
 
@@ -143,22 +150,22 @@ export default function SportsInfo() {
 
                     <div className="input-group">
                         <label className={errors.preferredFoot ? 'error-label' : ''}>پای تخصصی</label>
-                        <select {...register('preferredFoot')} className={errors.preferredFoot ? 'error' : ''}>
+                        <CustomSelect {...register('preferredFoot')} className={errors.preferredFoot ? 'error' : ''}>
                             <option value="راست">راست</option>
                             <option value="چپ">چپ</option>
                             <option value="هردو">هردو</option>
-                        </select>
+                        </CustomSelect>
                         {errors.preferredFoot && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.preferredFoot.message)}</span>}
                     </div>
 
                     <div className="input-group">
                         <label>سابقه بازی در تیم ملی؟</label>
-                        <select {...register('hasNationalTeam', {
+                        <CustomSelect {...register('hasNationalTeam', {
                             setValueAs: v => v === 'true' || v === true
                         })}>
                             <option value="false">خیر</option>
                             <option value="true">بله</option>
-                        </select>
+                        </CustomSelect>
                     </div>
 
                     <div className="input-group">
@@ -168,9 +175,29 @@ export default function SportsInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.shirtSize ? 'error-label' : ''}>سایز شورت و پیراهن ورزشی</label>
-                        <input type="text" {...register('shirtSize')} onInput={enforceEnglishAlphaNumeric} placeholder="مثال: L, XL, M" style={{ textAlign: 'left', direction: 'ltr' }} className={errors.shirtSize ? 'error' : ''} />
+                        <label className={errors.shirtSize ? 'error-label' : ''}>سایز پیراهن ورزشی</label>
+                        <CustomSelect {...register('shirtSize')} className={errors.shirtSize ? 'error' : ''}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </CustomSelect>
                         {errors.shirtSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.shirtSize.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.shortsSize ? 'error-label' : ''}>سایز شورت ورزشی</label>
+                        <CustomSelect {...register('shortsSize')} className={errors.shortsSize ? 'error' : ''}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </CustomSelect>
+                        {errors.shortsSize && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.shortsSize.message)}</span>}
                     </div>
 
                     <div className="input-group">
@@ -200,7 +227,9 @@ export default function SportsInfo() {
                         <label>توضیحات</label>
                         <textarea rows={3} {...register('description')}></textarea>
                     </div>
-                </form>
+                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+
+            </form>
             </div>
         </div>
     );

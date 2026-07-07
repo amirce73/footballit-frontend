@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomSelect from '../components/CustomSelect';
 
 interface OtherDocument {
     id: number;
@@ -45,19 +46,19 @@ export default function Certificate() {
             <div className="card" style={{ padding: '15px' }}>
                 <div style={{ display: 'flex', gap: '10px', marginBottom: '15px', flexWrap: 'wrap' }}>
                     <div className="input-group" style={{ flex: '1', minWidth: '150px' }}>
-                        <select value={seasonFilter} onChange={(e) => setSeasonFilter(e.target.value)}>
+                        <CustomSelect value={seasonFilter} onChange={(e) => setSeasonFilter(e.target.value)}>
                             <option value="">همه فصل‌ها</option>
                             <option value="1402-1403">1402-1403</option>
                             <option value="1403-1404">1403-1404</option>
-                        </select>
+                        </CustomSelect>
                     </div>
                     <div className="input-group" style={{ flex: '1', minWidth: '150px' }}>
-                        <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
+                        <CustomSelect value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
                             <option value="">همه مدارک</option>
                             <option value="medical">پزشکی</option>
                             <option value="educational">تحصیلی</option>
                             <option value="other">متفرقه</option>
-                        </select>
+                        </CustomSelect>
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomSelect from '../components/CustomSelect';
 
 interface InsuranceRecord {
     id: number;
@@ -44,15 +45,19 @@ export default function InsuranceStatus() {
                 <h3 className="sticky-title">وضعیت بیمه ورزشی</h3>
                 <div style={{ width: '80px' }}></div>
             </div>
-            
+
             <div className="card" style={{ padding: '15px' }}>
                 <div className="input-group" style={{ marginBottom: '15px' }}>
                     <label>انتخاب دوره</label>
-                    <select value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
-                        <option value="all">همه دوره‌ها</option>
-                        <option value="course1">ترم پاییز - کلاس پیشرفته الف</option>
-                        <option value="course2">ترم تابستان - کلاس مبتدی</option>
-                    </select>
+                    <CustomSelect
+                        value={selectedCourse}
+                        onChange={(val) => setSelectedCourse(val)}
+                        options={[
+                            { value: 'all', label: 'همه دوره‌ها' },
+                            { value: 'course1', label: 'ترم پاییز - کلاس پیشرفته الف' },
+                            { value: 'course2', label: 'ترم تابستان - کلاس مبتدی' }
+                        ]}
+                    />
                 </div>
 
                 <div className="table-responsive">

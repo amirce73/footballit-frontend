@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
+import CustomSelect from '../components/CustomSelect';
+import StickySubmitButton from '../components/StickySubmitButton';
 
 export default function TrainingBackpack() {
     const navigate = useNavigate();
@@ -69,49 +71,51 @@ export default function TrainingBackpack() {
                     <form className="backpack-form">
                         <div className="form-group">
                             <label>رشته ورزشی</label>
-                            <select name="backpackSport" value={formData.backpackSport} onChange={handleChange} className="form-control">
+                            <CustomSelect name="backpackSport" value={formData.backpackSport} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="football">فوتبال</option>
                                 <option value="futsal">فوتسال</option>
-                            </select>
+                            </CustomSelect>
                         </div>
 
                         <div className="form-group">
                             <label>موضوع تمرین</label>
-                            <select name="backpackTopic" value={formData.backpackTopic} onChange={handleChange} className="form-control">
+                            <CustomSelect name="backpackTopic" value={formData.backpackTopic} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="tactical">تاکتیکی</option>
                                 <option value="technical">تکنیکی</option>
                                 <option value="physical">بدنسازی و آمادگی جسمانی</option>
-                            </select>
+                            </CustomSelect>
                         </div>
 
                         <div className="form-group">
                             <label>رده سنی</label>
-                            <select name="backpackAgeGroup" value={formData.backpackAgeGroup} onChange={handleChange} className="form-control">
+                            <CustomSelect name="backpackAgeGroup" value={formData.backpackAgeGroup} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="u10">زیر ۱۰ سال</option>
                                 <option value="u14">نونهالان (زیر ۱۴ سال)</option>
                                 <option value="u16">نوجوانان (زیر ۱۶ سال)</option>
                                 <option value="u18">جوانان (زیر ۱۸ سال)</option>
                                 <option value="adults">بزرگسالان</option>
-                            </select>
+                            </CustomSelect>
                         </div>
 
                         <div className="form-group">
                             <label>نوع تمرین</label>
-                            <select name="backpackTrainingType" value={formData.backpackTrainingType} onChange={handleChange} className="form-control">
+                            <CustomSelect name="backpackTrainingType" value={formData.backpackTrainingType} onChange={handleChange} className="form-control">
                                 <option value="">انتخاب کنید...</option>
                                 <option value="group">گروهی</option>
                                 <option value="individual">انفرادی</option>
                                 <option value="match">بازی تدارکاتی</option>
-                            </select>
+                            </CustomSelect>
                         </div>
 
                         <button type="button" className="btn-backpack-submit" onClick={handleSubmit} disabled={loading}>
                             {loading ? 'در حال ذخیره...' : 'ذخیره تنظیمات و مشاهده برنامه‌ها'}
                         </button>
-                    </form>
+                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+
+            </form>
                 </div>
             </div>
         </div>
