@@ -6,7 +6,7 @@ export default function Store() {
   return (
     <div id="view-store" className="view-section fade-in">
             <div className="sticky-top-bar">
-                <button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> داشبورد</button>
+                <button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">فروشگاه باشگاه</h3>
                 <div style={{"width":"80px"}}></div>
             </div>

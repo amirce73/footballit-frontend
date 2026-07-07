@@ -8,7 +8,7 @@ export default function ClubInfo() {
 
   return (
     <div id="view-club-info" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> پروفایل</button>
+            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">اطلاعات باشگاهی</h3>
                 <div style={{"width":"80px"}}></div>
             </div>

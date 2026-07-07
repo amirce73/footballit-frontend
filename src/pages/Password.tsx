@@ -40,7 +40,7 @@ export default function Password() {
   return (
     <div id="view-password" className="view-section fade-in">
             <div className="sticky-top-bar">
-                <button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> پروفایل</button>
+                <button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">تغییر رمز عبور</h3>
                 <div style={{ width: '80px' }}></div>
             </div>

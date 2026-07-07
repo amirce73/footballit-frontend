@@ -11,9 +11,7 @@ import StickySubmitButton from '../components/StickySubmitButton';
 import CustomScrollDatePicker from '../components/CustomScrollDatePicker';
 
 const schema = yup.object().shape({
-    passportNumber: yup.string().required('شماره گذرنامه الزامی است')
-        .max(9, 'شماره گذرنامه حداکثر ۹ کاراکتر است')
-        .test('isValidPassport', 'فرمت پاسپورت نامعتبر است (یک حرف انگلیسی و ۸ عدد)', (value) => isValidPassportNumber(value || '')),
+    passportNumber: yup.string().matches(/^[A-Za-z0-9]{9}$/, 'شماره گذرنامه باید ۹ کاراکتر شامل حروف انگلیسی و عدد باشد').required('شماره گذرنامه الزامی است'),
     issueDate: yup.string().required('تاریخ صدور الزامی است'),
     expiryDate: yup.string().required('تاریخ انقضا الزامی است')
         .test('is-after-issue', 'تاریخ انقضا باید پس از تاریخ صدور باشد', function (value) {
@@ -21,8 +19,8 @@ const schema = yup.object().shape({
             if (!issueDate || !value) return true;
             return value > issueDate;
         }),
-    englishName: yup.string().matches(/^[A-Za-z\s]+$/, 'فقط حروف انگلیسی مجاز است').nullable(),
-    englishSurname: yup.string().matches(/^[A-Za-z\s]+$/, 'فقط حروف انگلیسی مجاز است').nullable(),
+    englishName: yup.string().matches(/^[A-Za-z\s]*$/, 'فقط حروف انگلیسی مجاز است').required('نام انگلیسی الزامی است'),
+    englishSurname: yup.string().matches(/^[A-Za-z\s]*$/, 'فقط حروف انگلیسی مجاز است').required('نام خانوادگی انگلیسی الزامی است'),
     description: yup.string().nullable()
 });
 
@@ -93,22 +91,21 @@ export default function PassportInfo() {
         <div id="view-passport-info" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
-                    <i className="fa fa-arrow-right"></i> پروفایل
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">اطلاعات گذرنامه</h3>
                 
             </div>
 
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
-                    <div className="input-group">
-                        <label className={errors.passportNumber ? 'error-label' : ''}>شماره گذرنامه</label>
+                    <div className="input-group" style={{ gridColumn: '1 / -1' }}>
+                        <label className={errors.passportNumber ? 'error-label' : ''}>شماره گذرنامه <span className="text-danger">*</span></label>
                         <input type="text" maxLength={9} placeholder="شماره گذرنامه" {...register('passportNumber')} onInput={(e) => enforceEnglishAlphaNumericLength(e, 9)} className={errors.passportNumber ? 'error' : ''} style={{ textAlign: 'left', direction: 'ltr' }} />
                         {errors.passportNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.passportNumber.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.issueDate ? 'error-label' : ''}>تاریخ صدور</label>
+                        <label className={errors.issueDate ? 'error-label' : ''}>تاریخ صدور <span className="text-danger">*</span></label>
                         <Controller
                             control={control}
                             name="issueDate"
@@ -138,7 +135,7 @@ export default function PassportInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.expiryDate ? 'error-label' : ''}>تاریخ انقضا</label>
+                        <label className={errors.expiryDate ? 'error-label' : ''}>تاریخ انقضا <span className="text-danger">*</span></label>
                         <Controller
                             control={control}
                             name="expiryDate"
@@ -168,13 +165,13 @@ export default function PassportInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.englishName ? 'error-label' : ''}>نام (انگلیسی)</label>
+                        <label className={errors.englishName ? 'error-label' : ''}>نام (انگلیسی) <span className="text-danger">*</span></label>
                         <input type="text" maxLength={50} style={{ textAlign: 'left', direction: 'ltr' }} {...register('englishName')} onInput={enforceEnglishOnly} className={errors.englishName ? 'error' : ''} />
                         {errors.englishName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.englishName.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.englishSurname ? 'error-label' : ''}>نام خانوادگی (انگلیسی)</label>
+                        <label className={errors.englishSurname ? 'error-label' : ''}>نام خانوادگی (انگلیسی) <span className="text-danger">*</span></label>
                         <input type="text" maxLength={50} style={{ textAlign: 'left', direction: 'ltr' }} {...register('englishSurname')} onInput={enforceEnglishOnly} className={errors.englishSurname ? 'error' : ''} />
                         {errors.englishSurname && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.englishSurname.message)}</span>}
                     </div>

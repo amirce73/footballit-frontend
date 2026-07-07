@@ -22,24 +22,15 @@ const schema = yup.object().shape({
     birthCertificateNo: yup.string().matches(/^[0-9]{1,10}$/, 'شماره شناسنامه حداکثر ۱۰ رقم و فقط عدد است').nullable(),
     fatherName: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
     gender: yup.string().required('جنسیت الزامی است'),
-    height: yup.number()
-        .transform((value, originalValue) => originalValue === "" ? null : value)
-        .min(100, 'قد نمی‌تواند کمتر از ۱۰۰ سانتی‌متر باشد')
-        .max(250, 'قد نمی‌تواند بیشتر از ۲۵۰ سانتی‌متر باشد')
-        .nullable()
-        .typeError('لطفا یک عدد معتبر وارد کنید'),
-    weight: yup.number()
-        .transform((value, originalValue) => originalValue === "" ? null : value)
-        .min(20, 'وزن نمی‌تواند کمتر از ۲۰ کیلوگرم باشد')
-        .max(150, 'وزن نمی‌تواند بیشتر از ۱۵۰ کیلوگرم باشد')
-        .nullable()
-        .typeError('لطفا یک عدد معتبر وارد کنید'),
+    height: yup.string().matches(/^[0-9]*$/, 'فقط عدد مجاز است').nullable(),
+    weight: yup.string().matches(/^[0-9]*$/, 'فقط عدد مجاز است').nullable(),
     bloodGroup: yup.string().nullable(),
-    healthStatus: yup.string().nullable(),
     maritalStatus: yup.string().nullable(),
     militaryServiceStatus: yup.string().nullable(),
-    religion: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
-    occupation: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
+    religion: yup.string().required('دین الزامی است'),
+    sect: yup.string().nullable(),
+    occupation: yup.string().nullable(),
+    healthStatus: yup.string().nullable(),
     description: yup.string().nullable()
 });
 
@@ -58,7 +49,7 @@ export default function PersonalInfo() {
     const [loading, setLoading] = React.useState(false);
     const [isDatePickerOpen, setIsDatePickerOpen] = React.useState(false);
 
-    const { register, handleSubmit, control, setValue, reset, formState: { errors } } = methods;
+    const { register, handleSubmit, control, reset, formState: { errors } } = methods;
     const { clearDraft } = useFormDraft('personalinfo', methods);
 
     useEffect(() => {
@@ -78,6 +69,7 @@ export default function PersonalInfo() {
                 maritalStatus: user.maritalStatus || '',
                 militaryServiceStatus: user.militaryServiceStatus || '',
                 religion: user.religion || '',
+                sect: user.sect || '',
                 occupation: user.occupation || '',
                 description: user.description || ''
             });
@@ -125,34 +117,32 @@ export default function PersonalInfo() {
         <div id="view-personal-info" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
-                    <i className="fa fa-arrow-right"></i> پروفایل
-                </button>
-                <h3 className="sticky-title">مشخصات فردی</h3>
-                
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
+                <h3 className="sticky-title">اطلاعات فردی</h3>
             </div>
             
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
-                        <label className={errors.firstName ? 'error-label' : ''}>نام</label>
+                        <label className={errors.firstName ? 'error-label' : ''}>نام <span className="text-danger">*</span></label>
                         <input type="text" maxLength={50} {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} />
                         {errors.firstName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.firstName.message)}</span>}
                     </div>
                     
                     <div className="input-group">
-                        <label className={errors.lastName ? 'error-label' : ''}>نام خانوادگی</label>
+                        <label className={errors.lastName ? 'error-label' : ''}>نام خانوادگی <span className="text-danger">*</span></label>
                         <input type="text" maxLength={50} {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} />
                         {errors.lastName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.lastName.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم)</label>
+                        <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم) <span className="text-danger">*</span></label>
                         <input type="text" maxLength={10} inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
                         {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
                     </div>
                     
                     <div className="input-group">
-                        <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد</label>
+                        <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد <span className="text-danger">*</span></label>
                         <Controller
                             control={control}
                             name="birthDate"
@@ -193,7 +183,7 @@ export default function PersonalInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.gender ? 'error-label' : ''}>جنسیت</label>
+                        <label className={errors.gender ? 'error-label' : ''}>جنسیت <span className="text-danger">*</span></label>
                         <CustomSelect {...register('gender')} className={errors.gender ? 'error' : ''}>
                             <option value="مرد">مرد</option>
                             <option value="زن">زن</option>
@@ -249,9 +239,27 @@ export default function PersonalInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.religion ? 'error-label' : ''}>دین و مذهب</label>
-                        <input type="text" maxLength={50} {...register('religion')} onInput={enforcePersian} className={errors.religion ? 'error' : ''} />
+                        <label className={errors.religion ? 'error-label' : ''}>دین <span className="text-danger">*</span></label>
+                        <CustomSelect {...register('religion')} className={errors.religion ? 'error' : ''}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="اسلام">اسلام</option>
+                            <option value="مسیحیت">مسیحیت</option>
+                            <option value="یهودیت">یهودیت</option>
+                            <option value="زرتشتی">زرتشتی</option>
+                            <option value="سایر">سایر</option>
+                        </CustomSelect>
                         {errors.religion && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.religion.message)}</span>}
+                    </div>
+
+                    <div className="input-group">
+                        <label className={errors.sect ? 'error-label' : ''}>مذهب</label>
+                        <CustomSelect {...register('sect')} className={errors.sect ? 'error' : ''}>
+                            <option value="">انتخاب کنید...</option>
+                            <option value="شیعه">شیعه</option>
+                            <option value="سنی">سنی</option>
+                            <option value="سایر">سایر</option>
+                        </CustomSelect>
+                        {errors.sect && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sect.message)}</span>}
                     </div>
 
                     <div className="input-group">

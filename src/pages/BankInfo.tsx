@@ -102,8 +102,7 @@ export default function BankInfo() {
         <div id="view-bank-info" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/financial-hub')}>
-                    <i className="fa fa-arrow-right"></i> مالی
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">حساب‌های بانکی</h3>
                 <div style={{ width: '80px' }}></div>
             </div>

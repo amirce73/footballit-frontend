@@ -65,7 +65,7 @@ export default function Verification() {
     return (
         <div id="view-verification" className="view-section fade-in">
             <div className="sticky-top-bar">
-                <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> پروفایل</button>
+                <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">احراز هویت حساب</h3>
             </div>
 
@@ -77,12 +77,12 @@ export default function Verification() {
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
-                        <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم)</label>
+                        <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم) <span className="text-danger">*</span></label>
                         <input type="text" maxLength={10} inputMode="numeric" placeholder="مثال: ۱۲۳۴۵۶۷۸۹۰" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
                         {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
                     </div>
                     <div className="input-group">
-                        <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد(شناسنامه)</label>
+                        <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد(شناسنامه) <span className="text-danger">*</span></label>
                         <Controller
                             control={control}
                             name="birthDate"

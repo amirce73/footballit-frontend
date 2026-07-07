@@ -44,7 +44,7 @@ export default function Insurance() {
 
   return (
     <div id="view-insurance" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/specialized-hub')}><i className="fa fa-arrow-right"></i> تخصصی</button>
+            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/specialized-hub')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">فرم فشار تمرین RPE</h3><button className="btn-top-action btn-submit-top" onClick={handleSubmit} disabled={loading}><i className="fa fa-check"></i> {loading ? '...' : 'ثبت گزارش'}</button>
             </div>
             <div className="card">

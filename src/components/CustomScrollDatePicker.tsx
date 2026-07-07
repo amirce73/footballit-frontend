@@ -196,9 +196,17 @@ export default function CustomScrollDatePicker({ isOpen, onClose, onConfirm, ini
     }
     const months = Array.from({ length: maxMonths }, (_, i) => i + 1);
     
+    // A simple Jalali leap year check (approximate 33-year cycle)
+    const isLeapYear = (y: number) => {
+        const matches = [1, 5, 9, 13, 17, 22, 26, 30];
+        const mod = y % 33;
+        return matches.includes(mod);
+    };
+
     let maxDays = 31;
     if (month > 6) maxDays = 30;
-    if (month === 12) maxDays = 29; 
+    if (month === 12) maxDays = isLeapYear(year) ? 30 : 29; 
+    
     if (!allowFuture && year === todayJalali.year && month === todayJalali.month) {
         maxDays = Math.min(maxDays, todayJalali.day);
     }
@@ -225,7 +233,9 @@ export default function CustomScrollDatePicker({ isOpen, onClose, onConfirm, ini
     if (typeof document === 'undefined') return null;
 
     return ReactDOM.createPortal(
-        <div style={{
+        <div 
+            onClick={onClose}
+            style={{
             position: 'fixed',
             top: 0, left: 0, right: 0, bottom: 0,
             backgroundColor: 'rgba(15, 23, 42, 0.6)',
@@ -237,7 +247,9 @@ export default function CustomScrollDatePicker({ isOpen, onClose, onConfirm, ini
             opacity: isOpen ? 1 : 0,
             transition: 'opacity 0.3s ease'
         }}>
-            <div style={{
+            <div 
+                onClick={(e) => e.stopPropagation()}
+                style={{
                 background: '#fff',
                 borderTopLeftRadius: '28px',
                 borderTopRightRadius: '28px',
@@ -248,8 +260,11 @@ export default function CustomScrollDatePicker({ isOpen, onClose, onConfirm, ini
             }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                     <button type="button" onClick={onClose} style={{ background: 'rgba(239, 68, 68, 0.1)', border: 'none', color: 'var(--danger)', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', padding: '8px 16px', borderRadius: '12px' }}>لغو</button>
-                    <h4 style={{ margin: 0, fontSize: '1.2rem', color: 'var(--text-dark)', fontWeight: '800' }}>انتخاب تاریخ</h4>
-                    <button type="button" onClick={handleConfirm} style={{ background: 'var(--primary)', border: 'none', color: '#fff', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', padding: '8px 16px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)' }}>تایید</button>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <h4 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '800' }}>انتخاب تاریخ</h4>
+                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>امروز: {toPersianDigits(todayJalali.year)}/{toPersianDigits(todayJalali.month.toString().padStart(2, '0'))}/{toPersianDigits(todayJalali.day.toString().padStart(2, '0'))}</span>
+                    </div>
+                    <button type="button" onClick={handleConfirm} style={{ background: 'var(--primary)', border: 'none', color: '#fff', fontWeight: 'bold', fontSize: '0.95rem', cursor: 'pointer', padding: '8px 16px', borderRadius: '12px', boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)' }}>تایید</button>
                 </div>
 
                 <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', background: '#f8fafc', borderRadius: '20px', overflow: 'hidden', border: '1px solid #e2e8f0' }}>

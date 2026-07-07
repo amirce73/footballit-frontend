@@ -14,6 +14,17 @@ export default function Topbar() {
     const navigate = useNavigate();
     const { user, logout } = useAuth();
 
+    React.useEffect(() => {
+        const handleClickOutside = () => {
+            const menu = document.getElementById('profileMenu');
+            if (menu && menu.classList.contains('show')) {
+                menu.classList.remove('show');
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, []);
+
     const handleLogout = (e: React.MouseEvent) => {
         e.preventDefault();
         logout();

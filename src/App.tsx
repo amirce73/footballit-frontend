@@ -35,6 +35,26 @@ import Bulletin from './pages/Bulletin';
 import TrainingBackpack from './pages/TrainingBackpack';
 
 export default function App() {
+  React.useEffect(() => {
+    const handleFocus = (e: FocusEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) {
+        // Scroll element into view with an offset so the sticky button doesn't cover it
+        setTimeout(() => {
+          const target = e.target as HTMLElement;
+          const rect = target.getBoundingClientRect();
+          const viewHeight = window.innerHeight;
+          // If the input is near the bottom (where the sticky button is), scroll it up
+          if (rect.bottom > viewHeight - 120) {
+            window.scrollBy({ top: rect.bottom - (viewHeight - 120), behavior: 'smooth' });
+          }
+        }, 300);
+      }
+    };
+    // Use capture phase to catch focus events since they don't bubble
+    window.addEventListener('focus', handleFocus, true);
+    return () => window.removeEventListener('focus', handleFocus, true);
+  }, []);
+
   return (
     <BrowserRouter>
       <ScrollToTop />

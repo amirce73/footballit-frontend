@@ -61,8 +61,7 @@ export default function FinancialTimeline() {
         <div id="view-financial-timeline" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/financial-hub')}>
-                    <i className="fa fa-arrow-right"></i> مالی
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">تایم‌لاین وضعیت مالی</h3>
             </div>
 

@@ -101,8 +101,7 @@ export default function Documents() {
         <div id="view-documents" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
-                    <i className="fa fa-arrow-right"></i> پروفایل
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">ثبت مدارک اصلی</h3>
                 <button className="btn-top-action" style={{ background: 'transparent', color: 'var(--primary-color)', border: '1px solid var(--primary-color)' }} onClick={() => navigate('/certificates')}>
                     <i className="fa fa-file-text"></i> ثبت سایر مدارک

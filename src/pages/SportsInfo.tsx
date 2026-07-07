@@ -15,9 +15,9 @@ const schema = yup.object().shape({
     playingAbility: yup.string().matches(/^[آ-یژپچگ\s،-]*$/, 'فقط حروف فارسی مجاز است').nullable(),
     preferredFoot: yup.string().required('پای تخصصی الزامی است'),
     hasNationalTeam: yup.boolean().default(false),
-    sportsInsuranceNumber: yup.string().matches(/^[0-9]*$/, 'شماره بیمه فقط باید عدد باشد').min(5, 'شماره بیمه باید حداقل ۵ رقم باشد').max(20, 'شماره بیمه نمی‌تواند بیشتر از ۲۰ رقم باشد').nullable(),
-    shirtSize: yup.string().nullable(),
-    shortsSize: yup.string().nullable(),
+    sportsInsuranceNumber: yup.string().matches(/^[0-9]*$/, 'شماره بیمه فقط باید عدد باشد').min(5, 'شماره بیمه باید حداقل ۵ رقم باشد').max(20, 'شماره بیمه نمی‌تواند بیشتر از ۲۰ رقم باشد').required('شماره بیمه ورزشی الزامی است'),
+    shirtSize: yup.string().required('سایز پیراهن الزامی است'),
+    shortsSize: yup.string().required('سایز شورت الزامی است'),
     footballShoeSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش ۲ رقمی است (مانند ۴۲)').nullable(),
     slipperSize: yup.string().matches(/^[0-9]{2}$/, 'سایز کفش ۲ رقمی است (مانند ۴۲)').nullable(),
     sportsWarmerSize: yup.string().nullable(),
@@ -112,8 +112,7 @@ export default function SportsInfo() {
         <div id="view-sports-info" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
-                    <i className="fa fa-arrow-right"></i> پروفایل
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">مشخصات ورزشی</h3>
 
             </div>
@@ -131,7 +130,7 @@ export default function SportsInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.mainPosition ? 'error-label' : ''}>پست اصلی</label>
+                        <label className={errors.mainPosition ? 'error-label' : ''}>پست اصلی <span className="text-danger">*</span></label>
                         <CustomSelect {...register('mainPosition')} className={errors.mainPosition ? 'error' : ''}>
                             <option value="مهاجم">مهاجم</option>
                             <option value="هافبک">هافبک</option>
@@ -148,7 +147,7 @@ export default function SportsInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.preferredFoot ? 'error-label' : ''}>پای تخصصی</label>
+                        <label className={errors.preferredFoot ? 'error-label' : ''}>پای تخصصی <span className="text-danger">*</span></label>
                         <CustomSelect {...register('preferredFoot')} className={errors.preferredFoot ? 'error' : ''}>
                             <option value="راست">راست</option>
                             <option value="چپ">چپ</option>
@@ -168,13 +167,13 @@ export default function SportsInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.sportsInsuranceNumber ? 'error-label' : ''}>شماره بیمه ورزشی</label>
+                        <label className={errors.sportsInsuranceNumber ? 'error-label' : ''}>شماره بیمه ورزشی <span className="text-danger">*</span></label>
                         <input type="text" maxLength={20} inputMode="numeric" {...register('sportsInsuranceNumber')} onInput={enforceNumeric} className={errors.sportsInsuranceNumber ? 'error' : ''} />
                         {errors.sportsInsuranceNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sportsInsuranceNumber.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.shirtSize ? 'error-label' : ''}>سایز پیراهن ورزشی</label>
+                        <label className={errors.shirtSize ? 'error-label' : ''}>سایز پیراهن ورزشی <span className="text-danger">*</span></label>
                         <CustomSelect {...register('shirtSize')} className={errors.shirtSize ? 'error' : ''}>
                             <option value="">انتخاب کنید...</option>
                             <option value="S">S</option>
@@ -187,7 +186,7 @@ export default function SportsInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.shortsSize ? 'error-label' : ''}>سایز شورت ورزشی</label>
+                        <label className={errors.shortsSize ? 'error-label' : ''}>سایز شورت ورزشی <span className="text-danger">*</span></label>
                         <CustomSelect {...register('shortsSize')} className={errors.shortsSize ? 'error' : ''}>
                             <option value="">انتخاب کنید...</option>
                             <option value="S">S</option>

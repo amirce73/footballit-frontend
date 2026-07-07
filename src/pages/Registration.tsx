@@ -51,14 +51,14 @@ export default function Registration() {
   return (
     <div id="view-registration" className="view-section fade-in">
             <div className="sticky-top-bar">
-                <button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> داشبورد</button>
+                <button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">ثبت‌نام در دوره</h3>
             </div>
             <div className="registration-grid">
                 <div className="card" style={{ overflow: 'visible' }}>
                     <div className="form-grid">
                         <div className="input-group desktop-full-width">
-                            <label>دوره انتخابی:</label>
+                            <label>دوره انتخابی: <span className="text-danger">*</span></label>
                             <CustomSelect
                                 name="currentTerm"
                                 value={formData.currentTerm}

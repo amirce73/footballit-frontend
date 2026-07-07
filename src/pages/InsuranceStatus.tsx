@@ -40,8 +40,7 @@ export default function InsuranceStatus() {
         <div id="view-insurance-status" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/specialized-hub')}>
-                    <i className="fa fa-arrow-right"></i> تخصصی
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">وضعیت بیمه ورزشی</h3>
                 <div style={{ width: '80px' }}></div>
             </div>

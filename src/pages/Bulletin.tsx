@@ -5,7 +5,7 @@ export default function Bulletin() {
   const navigate = useNavigate();
   return (
     <div id="view-bulletin" className="view-section fade-in">
-            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> داشبورد</button>
+            <div className="sticky-top-bar"><button className="btn-top-action btn-back-top" onClick={() => navigate('/dashboard')}><i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">تاریخچه پیام ها</h3>
                 <div style={{"width":"80px"}}></div>
             </div>

@@ -101,8 +101,7 @@ export default function ContactInfo() {
         <div id="view-contact-info" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button type="button" className="btn-top-action btn-back-top" onClick={() => navigate('/profile-hub')}>
-                    <i className="fa fa-arrow-right"></i> پروفایل
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">اطلاعات تماس</h3>
                 
             </div>

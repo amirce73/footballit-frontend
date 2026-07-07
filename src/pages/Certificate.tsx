@@ -35,8 +35,7 @@ export default function Certificate() {
         <div id="view-certificate" className="view-section fade-in">
             <div className="sticky-top-bar">
                 <button className="btn-top-action btn-back-top" onClick={() => navigate('/documents')}>
-                    <i className="fa fa-arrow-right"></i> مدارک
-                </button>
+                    <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">سایر مدارک</h3>
                 <button className="btn-top-action btn-submit-top" onClick={() => alert('فرم افزودن مدرک باز می‌شود')}>
                     <i className="fa fa-plus"></i> مدرک جدید
