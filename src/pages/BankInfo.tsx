@@ -161,18 +161,15 @@ export default function BankInfo() {
                         
                         <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                             <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                                <label className={errors.bankName ? 'error-label' : ''}>نام بانک</label>
-                                <input type="text" placeholder="مثال: ملی" {...register('bankName')} onInput={enforcePersian} className={errors.bankName ? 'error' : ''} />
-                                {errors.bankName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.bankName.message)}</span>}
+                                <label className={errors.accountName ? 'error-label' : ''}>نام صاحب حساب <span className="text-danger">*</span></label>
+                                <input type="text" placeholder="مثال: علی علوی" {...register('accountName')} onInput={enforcePersian} className={errors.accountName ? 'error' : ''} />
+                                {errors.accountName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.accountName.message)}</span>}
                             </div>
                             
                             <div className="input-group">
-                                <label className={errors.sheba ? 'error-label' : ''}>شماره شبا (بدون IR)</label>
-                                <div style={{ display: 'flex', alignItems: 'stretch' }}>
-                                    <span style={{ padding: '12px', background: '#e2e8f0', border: '1px solid #cbd5e1', borderLeft: 'none', borderRadius: '0 8px 8px 0', fontSize: '0.9rem', color: '#64748b' }}>IR</span>
-                                    <input type="text" inputMode="numeric" placeholder="مثال: 1201234..." {...register('sheba')} onInput={(e) => enforceNumericLength(e, 24)} className={errors.sheba ? 'error' : ''} style={{ borderRadius: '8px 0 0 8px', textAlign: 'left', direction: 'ltr' }} />
-                                </div>
-                                {errors.sheba && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sheba.message)}</span>}
+                                <label className={errors.bankName ? 'error-label' : ''}>نام بانک <span className="text-danger">*</span></label>
+                                <input type="text" placeholder="مثال: ملی" {...register('bankName')} onInput={enforcePersian} className={errors.bankName ? 'error' : ''} />
+                                {errors.bankName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.bankName.message)}</span>}
                             </div>
 
                             <div className="input-group">
@@ -182,13 +179,13 @@ export default function BankInfo() {
                             </div>
 
                             <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                                <label className={errors.cardNumber ? 'error-label' : ''}>شماره کارت (۱۶ رقم)</label>
+                                <label className={errors.cardNumber ? 'error-label' : ''}>شماره کارت بانکی (۱۶ رقم) <span className="text-danger">*</span></label>
                                 <input type="text" inputMode="numeric" style={{ direction: 'ltr', textAlign: 'left' }} placeholder="xxxx-xxxx-xxxx-xxxx" {...register('cardNumber')} onInput={(e) => enforceNumericLength(e, 16)} className={errors.cardNumber ? 'error' : ''} />
                                 {errors.cardNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.cardNumber.message)}</span>}
                             </div>
 
                             <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                                <label className={errors.sheba ? 'error-label' : ''}>شماره شبا (۲۴ رقم - بدون IR)</label>
+                                <label className={errors.sheba ? 'error-label' : ''}>شماره شبا (۲۴ رقم - بدون IR) <span className="text-danger">*</span></label>
                                 <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                     <span style={{ padding: '0 10px', background: '#e2e8f0', borderRadius: '0 8px 8px 0', border: '1px solid #cbd5e1', borderLeft: 'none', height: '42px', display: 'flex', alignItems: 'center', zIndex: 1, color: '#475569', fontWeight: 'bold' }}>IR</span>
                                     <input type="text" style={{ direction: 'ltr', textAlign: 'left', borderRadius: '8px 0 0 8px', flex: 1 }} placeholder="000000000000000000000000" {...register('sheba')} onInput={(e) => enforceNumericLength(e, 24)} className={errors.sheba ? 'error' : ''} />

@@ -52,14 +52,14 @@ export default function ClothingInfo() {
             </div>
             <div className="card">
                 <div className="form-grid">
-                    <div className="input-group"><label>سایز پیراهن</label><CustomSelect name="shirtSize" value={formData.shirtSize} onChange={handleChange}>
+                    <div className="input-group"><label>سایز پیراهن <span className="text-danger">*</span></label><CustomSelect name="shirtSize" value={formData.shirtSize} onChange={handleChange}>
                             <option value="S">S</option>
                             <option value="M">M</option>
                             <option value="L">L</option>
                             <option value="XL">XL</option>
                             <option value="XXL">XXL</option>
                         </CustomSelect></div>
-                    <div className="input-group"><label>سایز شورت ورزشی</label><CustomSelect name="shortsSize" value={formData.shortsSize} onChange={handleChange}>
+                    <div className="input-group"><label>سایز شورت ورزشی <span className="text-danger">*</span></label><CustomSelect name="shortsSize" value={formData.shortsSize} onChange={handleChange}>
                             <option value="S">S</option>
                             <option value="M">M</option>
                             <option value="L">L</option>

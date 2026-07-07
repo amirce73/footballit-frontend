@@ -46,9 +46,9 @@ export default function Password() {
             </div>
             <div className="card">
                 <div className="form-grid">
-                    <div className="input-group" style={{"gridColumn":"1 / -1"}}><label>رمز عبور فعلی</label><input type="password" name="currentPassword" value={formData.currentPassword} onChange={handleChange} /></div>
-                    <div className="input-group"><label>رمز عبور جدید</label><input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} /></div>
-                    <div className="input-group"><label>تکرار رمز عبور جدید</label><input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} /></div>
+                    <div className="input-group" style={{"gridColumn":"1 / -1"}}><label>رمز عبور فعلی <span className="text-danger">*</span></label><input type="password" name="currentPassword" value={formData.currentPassword} onChange={handleChange} /></div>
+                    <div className="input-group"><label>رمز عبور جدید <span className="text-danger">*</span></label><input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} /></div>
+                    <div className="input-group"><label>تکرار رمز عبور جدید <span className="text-danger">*</span></label><input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} /></div>
                 </div>
             </div>
             <StickySubmitButton loading={loading} text="تغییر رمز عبور" loadingText="در حال تغییر..." type="button" onClick={handleSubmit} />

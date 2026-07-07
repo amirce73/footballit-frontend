@@ -120,7 +120,7 @@ export default function PersonalInfo() {
                     <i className="fa fa-arrow-right"></i> بازگشت</button>
                 <h3 className="sticky-title">اطلاعات فردی</h3>
             </div>
-            
+
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
@@ -128,7 +128,7 @@ export default function PersonalInfo() {
                         <input type="text" maxLength={50} {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} />
                         {errors.firstName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.firstName.message)}</span>}
                     </div>
-                    
+
                     <div className="input-group">
                         <label className={errors.lastName ? 'error-label' : ''}>نام خانوادگی <span className="text-danger">*</span></label>
                         <input type="text" maxLength={50} {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} />
@@ -140,7 +140,7 @@ export default function PersonalInfo() {
                         <input type="text" maxLength={10} inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
                         {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
                     </div>
-                    
+
                     <div className="input-group">
                         <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد <span className="text-danger">*</span></label>
                         <Controller
@@ -148,7 +148,7 @@ export default function PersonalInfo() {
                             name="birthDate"
                             render={({ field }) => (
                                 <>
-                                    <div 
+                                    <div
                                         className={`date-picker-input ${errors.birthDate ? 'error' : ''}`}
                                         style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#fff', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}
                                         onClick={() => setIsDatePickerOpen(true)}
@@ -257,7 +257,6 @@ export default function PersonalInfo() {
                             <option value="">انتخاب کنید...</option>
                             <option value="شیعه">شیعه</option>
                             <option value="سنی">سنی</option>
-                            <option value="سایر">سایر</option>
                         </CustomSelect>
                         {errors.sect && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sect.message)}</span>}
                     </div>
@@ -277,9 +276,9 @@ export default function PersonalInfo() {
                         <label>توضیحات</label>
                         <textarea rows={3} maxLength={500} {...register('description')}></textarea>
                     </div>
-                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+                    <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
 
-            </form>
+                </form>
             </div>
         </div>
     );

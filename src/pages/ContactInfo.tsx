@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
 import { useAuth } from '../contexts/AuthContext';
@@ -7,6 +7,7 @@ import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import StickySubmitButton from '../components/StickySubmitButton';
+import MapModal from '../components/MapModal';
 
 const schema = yup.object().shape({
     mobile: yup.string().required('موبایل الزامی است').matches(/^09[0-9]{9}$/, 'موبایل باید ۱۱ رقم باشد و با ۰۹ شروع شود'),
@@ -19,7 +20,7 @@ const schema = yup.object().shape({
     linkedIn: yup.string().nullable(),
     facebook: yup.string().nullable(),
     website: yup.string().matches(/^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/, 'آدرس وب‌سایت وارد شده نامعتبر است').nullable(),
-    address: yup.string().nullable(),
+    address: yup.string().required('آدرس الزامی است'),
     parentsWorkAddress: yup.string().nullable()
 });
 
@@ -32,9 +33,10 @@ export default function ContactInfo() {
         mode: 'onChange'
     });
     const { user, refreshUser } = useAuth();
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+    const [activeMapField, setActiveMapField] = useState<'address' | 'parentsWorkAddress' | null>(null);
 
-    const { register, handleSubmit, reset, formState: { errors } } = methods;
+    const { register, handleSubmit, reset, setValue, formState: { errors } } = methods;
     const { clearDraft } = useFormDraft('contactinfo', methods);
 
     useEffect(() => {
@@ -109,7 +111,7 @@ export default function ContactInfo() {
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
-                        <label className={errors.mobile ? 'error-label' : ''}>موبایل بازیکن</label>
+                        <label className={errors.mobile ? 'error-label' : ''}>موبایل <span className="text-danger">*</span></label>
                         <input type="text" inputMode="numeric" disabled {...register('mobile')} style={{ opacity: 0.6 }} className={errors.mobile ? 'error' : ''} />
                         <small style={{ color: "var(--text-muted)", fontSize: "0.61rem", marginTop: "4px" }}>
                             برای تغییر موبایل به پشتیبانی تیکت دهید.
@@ -130,7 +132,7 @@ export default function ContactInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.emergencyPhone ? 'error-label' : ''}>تلفن ضروری</label>
+                        <label className={errors.emergencyPhone ? 'error-label' : ''}>تلفن ضروری <span className="text-danger">*</span></label>
                         <input type="text" inputMode="numeric" {...register('emergencyPhone')} onInput={(e) => enforceNumericLength(e, 11)} className={errors.emergencyPhone ? 'error' : ''} />
                         {errors.emergencyPhone && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.emergencyPhone.message)}</span>}
                     </div>
@@ -168,18 +170,40 @@ export default function ContactInfo() {
                     </div>
 
                     <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                        <label>آدرس دقیق منزل</label>
-                        <textarea rows={2} {...register('address')} placeholder="استان، شهر، خیابان..."></textarea>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <label className={errors.address ? 'error-label' : ''} style={{ marginBottom: 0 }}>آدرس دقیق منزل <span className="text-danger">*</span></label>
+                            <button type="button" onClick={() => setActiveMapField('address')} className="btn-app-secondary" style={{ padding: '4px 8px', fontSize: '0.8rem', borderRadius: '6px' }}>
+                                <i className="fa fa-map-marker text-danger"></i> انتخاب از روی نقشه
+                            </button>
+                        </div>
+                        <textarea rows={2} {...register('address')} placeholder="استان، شهر، خیابان..." className={errors.address ? 'error' : ''}></textarea>
+                        {errors.address && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.address.message)}</span>}
                     </div>
 
                     <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                        <label>آدرس محل کار والدین</label>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                            <label style={{ marginBottom: 0 }}>آدرس محل کار والدین</label>
+                            <button type="button" onClick={() => setActiveMapField('parentsWorkAddress')} className="btn-app-secondary" style={{ padding: '4px 8px', fontSize: '0.8rem', borderRadius: '6px' }}>
+                                <i className="fa fa-map-marker text-danger"></i> انتخاب از روی نقشه
+                            </button>
+                        </div>
                         <textarea rows={2} {...register('parentsWorkAddress')} placeholder="آدرس دقیق"></textarea>
                     </div>
-                <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+                {!activeMapField && (
+                    <StickySubmitButton loading={loading} text="ثبت اطلاعات" loadingText="در حال ثبت..." />
+                )}
 
             </form>
             </div>
+            <MapModal 
+                isOpen={activeMapField !== null} 
+                onClose={() => setActiveMapField(null)} 
+                onConfirm={(addressStr) => {
+                    if (activeMapField) {
+                        setValue(activeMapField, addressStr, { shouldValidate: true });
+                    }
+                }} 
+            />
         </div>
     );
 }
