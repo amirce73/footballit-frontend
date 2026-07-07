@@ -9,10 +9,23 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import StickySubmitButton from '../components/StickySubmitButton';
 import CustomScrollDatePicker from '../components/CustomScrollDatePicker';
+import DateObjectModule from "react-date-object";
+import persianModule from "react-date-object/calendars/persian";
+
+const DateObject = (DateObjectModule as any).default || DateObjectModule;
+const persian = (persianModule as any).default || persianModule;
 
 const schema = yup.object().shape({
     passportNumber: yup.string().matches(/^[A-Za-z0-9]{9}$/, 'شماره گذرنامه باید ۹ کاراکتر شامل حروف انگلیسی و عدد باشد').required('شماره گذرنامه الزامی است'),
-    issueDate: yup.string().required('تاریخ صدور الزامی است'),
+    issueDate: yup.string().required('تاریخ صدور الزامی است')
+        .test('not-future', 'تاریخ صدور نمی‌تواند در آینده باشد', function (value) {
+            if (!value) return true;
+            const today = new DateObject({ calendar: persian });
+            const todayStr = `${today.year}/${today.month.number.toString().padStart(2, '0')}/${today.day.toString().padStart(2, '0')}`;
+            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            const englishValue = value.replace(/[۰-۹]/g, (w: string) => persianDigits.indexOf(w).toString());
+            return englishValue <= todayStr;
+        }),
     expiryDate: yup.string().required('تاریخ انقضا الزامی است')
         .test('is-after-issue', 'تاریخ انقضا باید پس از تاریخ صدور باشد', function (value) {
             const { issueDate } = this.parent;

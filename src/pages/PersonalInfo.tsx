@@ -10,6 +10,11 @@ import * as yup from 'yup';
 import CustomSelect from '../components/CustomSelect';
 import StickySubmitButton from '../components/StickySubmitButton';
 import CustomScrollDatePicker from '../components/CustomScrollDatePicker';
+import DateObjectModule from "react-date-object";
+import persianModule from "react-date-object/calendars/persian";
+
+const DateObject = (DateObjectModule as any).default || DateObjectModule;
+const persian = (persianModule as any).default || persianModule;
 
 const schema = yup.object().shape({
     firstName: yup.string().required('نام الزامی است').matches(/^[آ-یژپچگ\s]+$/, 'فقط حروف فارسی مجاز است'),
@@ -18,7 +23,15 @@ const schema = yup.object().shape({
         .matches(/^[0-9]+$/, 'فقط عدد مجاز است')
         .test('isValidNationalId', 'کد ملی وارد شده معتبر نیست', (value) => isValidIranianNationalId(value || ''))
         .required('کد ملی الزامی است'),
-    birthDate: yup.string().required('تاریخ تولد الزامی است'),
+    birthDate: yup.string().required('تاریخ تولد الزامی است')
+        .test('not-future', 'تاریخ تولد نمی‌تواند در آینده باشد', function (value) {
+            if (!value) return true;
+            const today = new DateObject({ calendar: persian });
+            const todayStr = `${today.year}/${today.month.number.toString().padStart(2, '0')}/${today.day.toString().padStart(2, '0')}`;
+            const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            const englishValue = value.replace(/[۰-۹]/g, (w: string) => persianDigits.indexOf(w).toString());
+            return englishValue <= todayStr;
+        }),
     birthCertificateNo: yup.string().matches(/^[0-9]{1,10}$/, 'شماره شناسنامه حداکثر ۱۰ رقم و فقط عدد است').nullable(),
     fatherName: yup.string().matches(/^[آ-یژپچگ\s]*$/, 'فقط حروف فارسی مجاز است').nullable(),
     gender: yup.string().required('جنسیت الزامی است'),
@@ -124,25 +137,37 @@ export default function PersonalInfo() {
             <div className="card">
                 <form className="form-grid" onSubmit={handleSubmit(onSubmit)}>
                     <div className="input-group">
-                        <label className={errors.firstName ? 'error-label' : ''}>نام <span className="text-danger">*</span></label>
-                        <input type="text" maxLength={50} {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} />
+                        <label className={errors.firstName ? 'error-label' : ''}>
+                            نام <span className="text-danger">*</span>
+                            {user?.isIdentityVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                        </label>
+                        <input type="text" maxLength={50} {...register('firstName')} onInput={enforcePersian} className={errors.firstName ? 'error' : ''} readOnly={user?.isIdentityVerified} style={user?.isIdentityVerified ? { background: '#f1f5f9', color: '#64748b' } : {}} />
                         {errors.firstName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.firstName.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.lastName ? 'error-label' : ''}>نام خانوادگی <span className="text-danger">*</span></label>
-                        <input type="text" maxLength={50} {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} />
+                        <label className={errors.lastName ? 'error-label' : ''}>
+                            نام خانوادگی <span className="text-danger">*</span>
+                            {user?.isIdentityVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                        </label>
+                        <input type="text" maxLength={50} {...register('lastName')} onInput={enforcePersian} className={errors.lastName ? 'error' : ''} readOnly={user?.isIdentityVerified} style={user?.isIdentityVerified ? { background: '#f1f5f9', color: '#64748b' } : {}} />
                         {errors.lastName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.lastName.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.nationalId ? 'error-label' : ''}>کد ملی (۱۰ رقم) <span className="text-danger">*</span></label>
-                        <input type="text" maxLength={10} inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} />
+                        <label className={errors.nationalId ? 'error-label' : ''}>
+                            کد ملی (۱۰ رقم) <span className="text-danger">*</span>
+                            {user?.isIdentityVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                        </label>
+                        <input type="text" maxLength={10} inputMode="numeric" {...register('nationalId')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.nationalId ? 'error' : ''} readOnly={user?.isIdentityVerified} style={user?.isIdentityVerified ? { background: '#f1f5f9', color: '#64748b' } : {}} />
                         {errors.nationalId && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.nationalId.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.birthDate ? 'error-label' : ''}>تاریخ تولد <span className="text-danger">*</span></label>
+                        <label className={errors.birthDate ? 'error-label' : ''}>
+                            تاریخ تولد <span className="text-danger">*</span>
+                            {user?.isIdentityVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                        </label>
                         <Controller
                             control={control}
                             name="birthDate"
@@ -150,20 +175,22 @@ export default function PersonalInfo() {
                                 <>
                                     <div
                                         className={`date-picker-input ${errors.birthDate ? 'error' : ''}`}
-                                        style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: '#fff', cursor: 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}
-                                        onClick={() => setIsDatePickerOpen(true)}
+                                        style={{ width: '100%', padding: '12px 14px', border: '1px solid #cbd5e1', borderRadius: '8px', fontSize: '0.9rem', background: user?.isIdentityVerified ? '#f1f5f9' : '#fff', color: user?.isIdentityVerified ? '#64748b' : 'inherit', cursor: user?.isIdentityVerified ? 'default' : 'pointer', minHeight: '44px', display: 'flex', alignItems: 'center' }}
+                                        onClick={() => !user?.isIdentityVerified && setIsDatePickerOpen(true)}
                                     >
                                         {field.value || <span style={{ color: '#94a3b8' }}>انتخاب تاریخ</span>}
                                     </div>
-                                    <CustomScrollDatePicker
-                                        isOpen={isDatePickerOpen}
-                                        onClose={() => setIsDatePickerOpen(false)}
-                                        onConfirm={(dateString) => {
-                                            field.onChange(dateString);
-                                            setIsDatePickerOpen(false);
-                                        }}
-                                        initialDate={field.value}
-                                    />
+                                    {!user?.isIdentityVerified && (
+                                        <CustomScrollDatePicker
+                                            isOpen={isDatePickerOpen}
+                                            onClose={() => setIsDatePickerOpen(false)}
+                                            onConfirm={(dateString) => {
+                                                field.onChange(dateString);
+                                                setIsDatePickerOpen(false);
+                                            }}
+                                            initialDate={field.value}
+                                        />
+                                    )}
                                 </>
                             )}
                         />
@@ -171,14 +198,20 @@ export default function PersonalInfo() {
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.birthCertificateNo ? 'error-label' : ''}>شماره شناسنامه</label>
-                        <input type="text" maxLength={10} inputMode="numeric" {...register('birthCertificateNo')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.birthCertificateNo ? 'error' : ''} />
+                        <label className={errors.birthCertificateNo ? 'error-label' : ''}>
+                            شماره شناسنامه
+                            {user?.isIdentityVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                        </label>
+                        <input type="text" maxLength={10} inputMode="numeric" {...register('birthCertificateNo')} onInput={(e) => enforceNumericLength(e, 10)} className={errors.birthCertificateNo ? 'error' : ''} readOnly={user?.isIdentityVerified} style={user?.isIdentityVerified ? { background: '#f1f5f9', color: '#64748b' } : {}} />
                         {errors.birthCertificateNo && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.birthCertificateNo.message)}</span>}
                     </div>
 
                     <div className="input-group">
-                        <label className={errors.fatherName ? 'error-label' : ''}>نام پدر</label>
-                        <input type="text" maxLength={50} {...register('fatherName')} onInput={enforcePersian} className={errors.fatherName ? 'error' : ''} />
+                        <label className={errors.fatherName ? 'error-label' : ''}>
+                            نام پدر
+                            {user?.isIdentityVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                        </label>
+                        <input type="text" maxLength={50} {...register('fatherName')} onInput={enforcePersian} className={errors.fatherName ? 'error' : ''} readOnly={user?.isIdentityVerified} style={user?.isIdentityVerified ? { background: '#f1f5f9', color: '#64748b' } : {}} />
                         {errors.fatherName && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.fatherName.message)}</span>}
                     </div>
 

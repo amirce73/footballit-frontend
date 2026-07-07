@@ -181,19 +181,12 @@ export default function CustomScrollDatePicker({ isOpen, onClose, onConfirm, ini
     }, [isOpen, initialDate, todayJalali]);
 
     const years = useMemo(() => {
-        if (allowFuture) {
-            // Show from 50 years in future to 50 years in past
-            return Array.from({ length: 100 }, (_, i) => todayJalali.year + 50 - i);
-        }
-        // Past only (e.g. birth dates)
-        return Array.from({ length: 110 }, (_, i) => todayJalali.year - i);
-    }, [todayJalali.year, allowFuture]);
+        const startYear = 1320;
+        const endYear = 1450;
+        return Array.from({ length: endYear - startYear + 1 }, (_, i) => endYear - i);
+    }, []);
     
-    // Only show months up to the current month if the current year is selected (and not allowing future)
     let maxMonths = 12;
-    if (!allowFuture && year === todayJalali.year) {
-        maxMonths = todayJalali.month;
-    }
     const months = Array.from({ length: maxMonths }, (_, i) => i + 1);
     
     // A simple Jalali leap year check (approximate 33-year cycle)
@@ -207,9 +200,6 @@ export default function CustomScrollDatePicker({ isOpen, onClose, onConfirm, ini
     if (month > 6) maxDays = 30;
     if (month === 12) maxDays = isLeapYear(year) ? 30 : 29; 
     
-    if (!allowFuture && year === todayJalali.year && month === todayJalali.month) {
-        maxDays = Math.min(maxDays, todayJalali.day);
-    }
     const days = Array.from({ length: maxDays }, (_, i) => i + 1);
 
     // Auto correct month or day if they go out of bounds due to year/month changing

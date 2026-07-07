@@ -22,6 +22,7 @@ export interface User {
     mobile?: string;
     guardianMobile?: string;
     tel?: string;
+    postalCode?: string;
     address?: string;
     emergencyPhone?: string;
     email?: string;
@@ -61,6 +62,9 @@ export interface User {
     ageCategory?: string;
     contractStart?: string;
   };
+  isIdentityVerified?: boolean;
+  isBankVerified?: boolean;
+  isPostalVerified?: boolean;
   [key: string]: any;
 }
 
@@ -70,6 +74,7 @@ interface AuthContextType {
   login: (newToken: string) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
+  simulateVerification: (type: 'identity' | 'bank' | 'postal', data: any) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -114,8 +119,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     await fetchUser();
   };
 
+  const simulateVerification = (type: 'identity' | 'bank' | 'postal', data: any) => {
+    if (!user) return;
+    const updatedUser = { ...user };
+    if (type === 'identity') {
+      updatedUser.isIdentityVerified = true;
+      updatedUser.firstName = data.firstName;
+      updatedUser.lastName = data.lastName;
+      updatedUser.birthDate = data.birthDate;
+      updatedUser.nationalId = data.nationalId;
+      updatedUser.fatherName = data.fatherName;
+      updatedUser.birthCertificateNo = data.birthCertificateNo;
+    } else if (type === 'bank') {
+      updatedUser.isBankVerified = true;
+      updatedUser.bankDetails = data;
+    } else if (type === 'postal') {
+      updatedUser.isPostalVerified = true;
+      if (!updatedUser.contact) updatedUser.contact = {};
+      updatedUser.contact.postalCode = data.postalCode;
+      updatedUser.contact.address = data.address;
+    }
+    setUser(updatedUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser, simulateVerification }}>
       {children}
     </AuthContext.Provider>
   );

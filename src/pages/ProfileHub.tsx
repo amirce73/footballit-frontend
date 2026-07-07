@@ -1,8 +1,35 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import messiProfile from '../images/messi-profile.jpg';
+import ImageCropperModal from '../components/ImageCropperModal';
 
 export default function ProfileHub() {
     const navigate = useNavigate();
+    const { user } = useAuth();
+    const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+    const [imageToCrop, setImageToCrop] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                setImageToCrop(event.target?.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+        if (e.target) {
+            e.target.value = '';
+        }
+    };
+
+    const handleCropConfirm = (croppedBase64: string) => {
+        setAvatarPreview(croppedBase64);
+        setImageToCrop(null);
+        // Here you would typically upload the base64 to the server
+    };
     return (
         <div id="view-profile-hub" className="view-section fade-in">
             <div className="sticky-top-bar">
@@ -12,6 +39,42 @@ export default function ProfileHub() {
             </div>
 
             <div className="profile-hub-sections-wrapper">
+                {/* Profile Picture Section */}
+                <div className="profile-header-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', background: '#fff', padding: '12px 24px', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)', marginBottom: '16px' }}>
+                    <div style={{ position: 'relative' }}>
+                        <img 
+                            src={avatarPreview || (user as any)?.avatar || messiProfile} 
+                            alt="Profile" 
+                            style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--primary)' }} 
+                            onError={(e) => { e.currentTarget.src = ''; }}
+                        />
+                        <button 
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--primary)', color: '#fff', border: 'none', borderRadius: '50%', width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 2px 5px rgba(0,0,0,0.2)' }}
+                            title="تغییر عکس پروفایل"
+                        >
+                            <i className="fa fa-camera"></i>
+                        </button>
+                        <input 
+                            type="file" 
+                            ref={fileInputRef} 
+                            onChange={handleFileChange} 
+                            accept="image/*" 
+                            style={{ display: 'none' }} 
+                        />
+                    </div>
+                    <h3 style={{ marginTop: '16px', marginBottom: '4px', color: 'var(--text-dark)' }}>{user?.firstName || "نام"} {user?.lastName || "خانوادگی"}</h3>
+                    <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.9rem' }}>{user?.nationalCode || "کد ملی ثبت نشده"}</p>
+                </div>
+
+                <ImageCropperModal
+                    isOpen={!!imageToCrop}
+                    imageUrl={imageToCrop || ''}
+                    onClose={() => setImageToCrop(null)}
+                    onConfirm={handleCropConfirm}
+                />
+
                 <div className="verify-banner unverified">
                     <div className="verify-banner-content">
                         <div className="verify-banner-icon"><i className="fa fa-shield"></i></div>

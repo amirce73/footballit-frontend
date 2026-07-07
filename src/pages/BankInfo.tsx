@@ -7,6 +7,7 @@ import { useFormDraft } from '../hooks/useFormDraft';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import StickySubmitButton from '../components/StickySubmitButton';
+import { useAuth } from '../contexts/AuthContext';
 
 interface BankAccount {
     id: number;
@@ -32,6 +33,7 @@ type FormData = yup.InferType<typeof schema>;
 
 export default function BankInfo() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [accounts, setAccounts] = useState<BankAccount[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,6 +42,16 @@ export default function BankInfo() {
         resolver: yupResolver(schema),
         mode: 'onChange'
     });
+
+    useEffect(() => {
+        if (isModalOpen && user?.isBankVerified && user.bankDetails) {
+            methods.reset({
+                ...methods.getValues(),
+                cardNumber: user.bankDetails.cardNumber,
+                sheba: user.bankDetails.sheba
+            });
+        }
+    }, [isModalOpen, user, methods]);
     const { register, handleSubmit, reset, watch, formState: { errors } } = methods;
     const { clearDraft } = useFormDraft('bankinfo', methods);
 
@@ -152,7 +164,8 @@ export default function BankInfo() {
                 }}>
                     <div className="modal-content" onClick={e => e.stopPropagation()} style={{
                         background: 'var(--surface)', padding: '20px', borderRadius: '12px', 
-                        width: '90%', maxWidth: '500px', boxShadow: 'var(--shadow-md)'
+                        width: '90%', maxWidth: '500px', boxShadow: 'var(--shadow-md)',
+                        maxHeight: '90vh', overflowY: 'auto'
                     }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                             <h3 style={{ margin: 0 }}>ثبت حساب بانکی جدید</h3>
@@ -179,16 +192,22 @@ export default function BankInfo() {
                             </div>
 
                             <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                                <label className={errors.cardNumber ? 'error-label' : ''}>شماره کارت بانکی (۱۶ رقم) <span className="text-danger">*</span></label>
-                                <input type="text" inputMode="numeric" style={{ direction: 'ltr', textAlign: 'left' }} placeholder="xxxx-xxxx-xxxx-xxxx" {...register('cardNumber')} onInput={(e) => enforceNumericLength(e, 16)} className={errors.cardNumber ? 'error' : ''} />
+                                <label className={errors.cardNumber ? 'error-label' : ''}>
+                                    شماره کارت بانکی (۱۶ رقم) <span className="text-danger">*</span>
+                                    {user?.isBankVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                                </label>
+                                <input type="text" inputMode="numeric" style={{ direction: 'ltr', textAlign: 'left', ...(user?.isBankVerified ? { background: '#f1f5f9', color: '#64748b' } : {}) }} placeholder="xxxx-xxxx-xxxx-xxxx" {...register('cardNumber')} onInput={(e) => enforceNumericLength(e, 16)} className={errors.cardNumber ? 'error' : ''} readOnly={user?.isBankVerified} />
                                 {errors.cardNumber && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.cardNumber.message)}</span>}
                             </div>
 
                             <div className="input-group" style={{ gridColumn: '1 / -1' }}>
-                                <label className={errors.sheba ? 'error-label' : ''}>شماره شبا (۲۴ رقم - بدون IR) <span className="text-danger">*</span></label>
+                                <label className={errors.sheba ? 'error-label' : ''}>
+                                    شماره شبا (۲۴ رقم - بدون IR) <span className="text-danger">*</span>
+                                    {user?.isBankVerified && <i className="fa fa-check-circle text-success" style={{ marginRight: '4px' }}></i>}
+                                </label>
                                 <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                                     <span style={{ padding: '0 10px', background: '#e2e8f0', borderRadius: '0 8px 8px 0', border: '1px solid #cbd5e1', borderLeft: 'none', height: '42px', display: 'flex', alignItems: 'center', zIndex: 1, color: '#475569', fontWeight: 'bold' }}>IR</span>
-                                    <input type="text" style={{ direction: 'ltr', textAlign: 'left', borderRadius: '8px 0 0 8px', flex: 1 }} placeholder="000000000000000000000000" {...register('sheba')} onInput={(e) => enforceNumericLength(e, 24)} className={errors.sheba ? 'error' : ''} />
+                                    <input type="text" style={{ direction: 'ltr', textAlign: 'left', borderRadius: '8px 0 0 8px', flex: 1, ...(user?.isBankVerified ? { background: '#f1f5f9', color: '#64748b' } : {}) }} placeholder="000000000000000000000000" {...register('sheba')} onInput={(e) => enforceNumericLength(e, 24)} className={errors.sheba ? 'error' : ''} readOnly={user?.isBankVerified} />
                                 </div>
                                 {errors.sheba && <span className="error-text"><i className="fa fa-exclamation-triangle"></i> {String(errors.sheba.message)}</span>}
                             </div>
