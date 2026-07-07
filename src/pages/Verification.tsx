@@ -34,6 +34,9 @@ export default function Verification() {
         mode: 'onChange'
     });
 
+    const idCardInputRef = React.useRef<HTMLInputElement>(null);
+    const selfieInputRef = React.useRef<HTMLInputElement>(null);
+
     const convertPersianToEnglishDigits = (str: string) => {
         const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
         return str.replace(/[۰-۹]/g, w => persianDigits.indexOf(w).toString());
@@ -111,20 +114,26 @@ export default function Verification() {
                     </div>
                     <div className="input-group desktop-full-width" style={{ marginTop: '8px' }}>
                         <label>تصویر روی کارت ملی</label>
-                        <div style={{ "border": "2px dashed var(--border)", "padding": "20px", "textAlign": "center", "borderRadius": "var(--radius-md)", "background": "#f8fafc", "cursor": "pointer" }}>
+                        <div 
+                            style={{ "border": "2px dashed var(--border)", "padding": "20px", "textAlign": "center", "borderRadius": "var(--radius-md)", "background": "#f8fafc", "cursor": "pointer" }}
+                            onClick={() => idCardInputRef.current?.click()}
+                        >
                             <i className="fa fa-id-card-o" style={{ "fontSize": "2rem", "color": "var(--text-muted)", "marginBottom": "8px" }}></i>
                             <p style={{ "fontSize": "0.8rem", "color": "var(--text-muted)", "fontWeight": "700" }}>برای انتخاب فایل
                                 کلیک کنید</p>
-                            <input type="file" accept="image/*" style={{ "display": "none" }} />
+                            <input ref={idCardInputRef} type="file" accept="image/*" style={{ "display": "none" }} />
                         </div>
                     </div>
                     <div className="input-group desktop-full-width">
                         <label>تصویر چهره (سلفی زنده)</label>
-                        <div style={{ "border": "2px dashed var(--border)", "padding": "20px", "textAlign": "center", "borderRadius": "var(--radius-md)", "background": "#f8fafc", "cursor": "pointer" }}>
+                        <div 
+                            style={{ "border": "2px dashed var(--border)", "padding": "20px", "textAlign": "center", "borderRadius": "var(--radius-md)", "background": "#f8fafc", "cursor": "pointer" }}
+                            onClick={() => selfieInputRef.current?.click()}
+                        >
                             <i className="fa fa-camera" style={{ "fontSize": "2rem", "color": "var(--text-muted)", "marginBottom": "8px" }}></i>
                             <p style={{ "fontSize": "0.8rem", "color": "var(--text-muted)", "fontWeight": "700" }}>برای گرفتن عکس
                                 کلیک کنید</p>
-                            <input type="file" accept="image/*" capture="user" style={{ "display": "none" }} />
+                            <input ref={selfieInputRef} type="file" accept="image/*" capture="user" style={{ "display": "none" }} />
                         </div>
                     </div>
 
