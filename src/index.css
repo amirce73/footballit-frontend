@@ -3928,3 +3928,16 @@ img {
         grid-column: 1 / -1;
     }
 }
+
+.mobile-text-400 {
+    display: none;
+}
+
+@media (max-width: 399px) {
+    .desktop-text-400 {
+        display: none;
+    }
+    .mobile-text-400 {
+        display: block;
+    }
+}

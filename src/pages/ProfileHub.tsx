@@ -17,7 +17,10 @@ export default function ProfileHub() {
                         <div className="verify-banner-icon"><i className="fa fa-shield"></i></div>
                         <div className="verify-banner-text">
                             <h4>کاربر استعلام هویتی نشده است!</h4>
-                            <p>جهت استفاده از تمامی امکانات و ثبت‌نام، مدارک خود را تکمیل کنید.</p>
+                            <p>
+                                <span className="desktop-text-400">جهت استفاده از تمامی امکانات و ثبت‌نام، مدارک خود را تکمیل کنید.</span>
+                                <span className="mobile-text-400">جهت استفاده از تمامی امکانات و ثبت‌نام<br/>مدارک خود را تکمیل کنید.</span>
+                            </p>
                         </div>
                     </div>
                     <button className="btn-verify-action" onClick={() => navigate('/verification')}>تکمیل هویت</button>
