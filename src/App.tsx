@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Topbar from './components/Layout/Topbar';
 import Sidebar from './components/Layout/Sidebar';
 import BottomNav from './components/Layout/BottomNav';
+import ScrollToTop from './components/ScrollToTop';
 import './index.css';
 
 import Login from './pages/Login';
@@ -36,6 +37,7 @@ import TrainingBackpack from './pages/TrainingBackpack';
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Topbar />
       <Sidebar />
       <main className="main-wrapper">
