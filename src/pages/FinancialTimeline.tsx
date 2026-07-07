@@ -64,8 +64,13 @@ export default function FinancialTimeline() {
                     <i className="fa fa-arrow-right"></i> مالی
                 </button>
                 <h3 className="sticky-title">تایم‌لاین وضعیت مالی</h3>
-                <div style={{ padding: '5px 10px', background: 'var(--bg-color)', borderRadius: '8px', border: '1px solid var(--border-color)', fontSize: '0.9rem', fontWeight: 'bold' }}>
-                    بدهی کل: <span style={{ color: totalRemaining > 0 ? 'var(--danger-color)' : 'var(--success-color)' }}>{formatCurrency(totalRemaining)}</span>
+            </div>
+
+            <div className="card" style={{ marginBottom: '16px', background: 'var(--surface)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }}>
+                <strong style={{ fontSize: '1rem', color: 'var(--text-dark)' }}>وضعیت کلی:</strong>
+                <div style={{ padding: '6px 12px', background: totalRemaining > 0 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(16, 185, 129, 0.1)', borderRadius: '8px', border: `1px solid ${totalRemaining > 0 ? 'var(--danger)' : 'var(--success)'}`, fontSize: '1rem', fontWeight: 'bold', color: totalRemaining > 0 ? 'var(--danger)' : 'var(--success)' }}>
+                    {totalRemaining > 0 ? 'بدهکار: ' : 'بستانکار/تسویه: '}
+                    {formatCurrency(Math.abs(totalRemaining))}
                 </div>
             </div>
 
