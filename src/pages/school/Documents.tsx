@@ -81,9 +81,22 @@ export default function Documents() {
                         accept=".png,.jpeg,.jpg,.pdf"
                         onChange={(e) => handleFileSelect(key, e.target.files?.[0] || null)}
                     />
-                    <label htmlFor={`file-${key}`} className="btn-secondary" style={{ cursor: 'pointer', padding: '8px 15px', margin: 0, display: 'inline-block' }}>
-                        <i className="fa fa-folder-open"></i> انتخاب فایل
-                    </label>
+                    <input 
+                        type="file" 
+                        id={`camera-${key}`} 
+                        style={{ display: 'none' }} 
+                        accept="image/*"
+                        capture="environment"
+                        onChange={(e) => handleFileSelect(key, e.target.files?.[0] || null)}
+                    />
+                    <div style={{ display: 'flex', gap: '5px' }}>
+                        <label htmlFor={`camera-${key}`} className="btn-secondary" style={{ cursor: 'pointer', padding: '8px 12px', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="عکس گرفتن">
+                            <i className="fa fa-camera"></i>
+                        </label>
+                        <label htmlFor={`file-${key}`} className="btn-secondary" style={{ cursor: 'pointer', padding: '8px 15px', margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <i className="fa fa-folder-open"></i> انتخاب فایل
+                        </label>
+                    </div>
                     <button 
                         className="btn-primary" 
                         onClick={() => handleUpload(key)} 

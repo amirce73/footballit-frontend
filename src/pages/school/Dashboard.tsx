@@ -27,7 +27,11 @@ export default function Dashboard() {
                                 <div className="club-info" style={{ marginRight: '18px', marginLeft: 0 }}>
                                     <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', color: 'black' }}>باشگاه فوتبال</h3>
                                     <div className="term-pill">ترم تابستان ۱۴۰۵</div>
-                                    <div style={{ "fontSize": "0.75rem", "marginTop": "4px", "marginBottom": "12px", "opacity": 1, "color": "rgb(113 113 122 / var(--tw-text-opacity, 1))" }}>کلاس آموزشی</div>
+                                    <div style={{ "fontSize": "0.75rem", "marginTop": "4px", "marginBottom": "12px", "opacity": 1, "color": "rgb(113 113 122 / var(--tw-text-opacity, 1))" }}>
+                                        کلاس آموزشی
+                                        <br />
+                                        <span style={{ fontWeight: 'bold', color: '#000', marginTop: '4px', display: 'inline-block' }}>پست: هافبک | شماره: ۱۰</span>
+                                    </div>
 
                                     <button className="beautiful-modal-btn" onClick={() => setIsModalOpen(true)}>
                                         اطلاعات باشگاه
@@ -73,32 +77,23 @@ export default function Dashboard() {
                             <div className="stat-info"><span className="stat-label">رده سنی</span><span className="stat-val">بزرگسالان</span></div>
                         </div>
                         <div className="stat-card">
-                            <div className="stat-icon ic-green"><AttendanceIcon width="24" height="24" /></div>
-                            <div className="stat-info"><span className="stat-label">حضور تمرین</span><span className="stat-val">۰ از
-                                ۰</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-orange"><InsuranceIcon width="24" height="24" /></div>
-                            <div className="stat-info"><span className="stat-label">اعتبار بیمه</span><span className="stat-val">—</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-purple"><i className="fa fa-futbol-o"></i></div>
-                            <div className="stat-info"><span className="stat-label">گل زده</span><span className="stat-val">۵</span></div>
+                            <div className="stat-icon ic-red-card"><i className="fa fa-medkit"></i></div>
+                            <div className="stat-info"><span className="stat-label">مصدومیت</span><span className="stat-val">۰</span></div>
                         </div>
                         <div className="stat-card">
                             <div className="stat-icon ic-matches"><i className="fa fa-play-circle"></i></div>
                             <div className="stat-info"><span className="stat-label">مسابقات</span><span className="stat-val">۱۴ (۸۵٪)</span></div>
                         </div>
-                        <div className="stat-card">
+                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/attendance')}>
                             <div className="stat-icon ic-green"><i className="fa fa-calendar-check-o"></i></div>
-                            <div className="stat-info"><span className="stat-label">حضور در تمرینات</span><span className="stat-val">۲۰ (۸۵٪)</span></div>
+                            <div className="stat-info"><span className="stat-label">حضور در تمرینات</span><span className="stat-val">۱۴/۲۰ (۷۰٪)</span></div>
                         </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-yellow-card"><i className="fa fa-times-rectangle"></i></div>
+                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/sports-info')}>
+                            <div className="stat-icon"><div style={{ width: '16px', height: '24px', backgroundColor: '#eab308', borderRadius: '4px' }}></div></div>
                             <div className="stat-info"><span className="stat-label">کارت زرد</span><span className="stat-val">۲</span></div>
                         </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-red-card"><i className="fa fa-times-rectangle"></i></div>
+                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/sports-info')}>
+                            <div className="stat-icon"><div style={{ width: '16px', height: '24px', backgroundColor: '#ef4444', borderRadius: '4px' }}></div></div>
                             <div className="stat-info"><span className="stat-label">کارت قرمز</span><span className="stat-val">۰</span></div>
                         </div>
                         <div className="stat-card">
@@ -108,6 +103,14 @@ export default function Dashboard() {
                         <div className="stat-card">
                             <div className="stat-icon ic-blue"><i className="fa fa-clock-o"></i></div>
                             <div className="stat-info"><span className="stat-label">دقایق بازی</span><span className="stat-val">۸۵۰</span></div>
+                        </div>
+                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/insurance-status')}>
+                            <div className="stat-icon ic-orange"><InsuranceIcon width="24" height="24" /></div>
+                            <div className="stat-info"><span className="stat-label">اعتبار بیمه</span><span className="stat-val">—</span></div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-icon ic-purple"><i className="fa fa-futbol-o"></i></div>
+                            <div className="stat-info"><span className="stat-label">گل زده</span><span className="stat-val">۵</span></div>
                         </div>
                     </div>
                 </div>

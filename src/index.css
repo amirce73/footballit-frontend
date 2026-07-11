@@ -1,4 +1,4 @@
-﻿@import "./assets/fonts/Vazirmatn/vazirmatn.css";
+@import "./assets/fonts/Vazirmatn/vazirmatn.css";
 
 .text-danger {
     color: #ef4444 !important;
@@ -52,7 +52,7 @@ img {
     --danger: #ef4444;
     --info: #3b82f6;
     --surface: #ffffff;
-    --border: var(--primary);
+    --border: #cbd5e1;
     --text-dark: #0f172a;
     --text-muted: #64748b;
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -730,9 +730,10 @@ img {
     align-items: center;
     justify-content: space-between;
     padding: 14px 16px;
-    background: #f8fafc;
-    border: 1px solid rgba(234, 179, 8, 0.3);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     font-weight: 700;
     color: var(--text-dark);
     cursor: pointer;
@@ -797,9 +798,10 @@ img {
     justify-content: space-between;
     align-items: center;
     padding: 12px;
-    border: 1px solid rgba(234, 179, 8, 0.2);
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    background: #f8fafc;
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
     transition: 0.2s;
 }
 
@@ -1160,7 +1162,8 @@ img {
     display: flex;
     align-items: center;
     gap: 8px;
-    border: 1px solid rgba(234, 179, 8, 0.3);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
 }
 
 .stat-icon {
@@ -1250,9 +1253,10 @@ img {
 }
 
 .spec-item {
-    background: #f8fafc;
-    border: 1px solid rgba(234, 179, 8, 0.3);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     padding: 12px 6px;
     /* Reduced padding inside the item */
     text-align: center;
@@ -1473,7 +1477,7 @@ img {
 
 .product-card {
     background: var(--surface);
-    border: 1px solid rgba(234, 179, 8, 0.3);
+    border: 1px solid var(--border);
     border-radius: var(--radius-md);
     overflow: hidden;
     display: flex;
@@ -1546,7 +1550,7 @@ img {
     overflow: hidden;
     position: relative;
     aspect-ratio: 1;
-    border: 1px solid rgba(234, 179, 8, 0.3);
+    border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
 }
 
@@ -1597,9 +1601,10 @@ img {
     justify-content: center;
     gap: 6px;
     padding: 10px 4px;
-    background: #f8fafc;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
     font-weight: 700;
     font-size: 0.72rem;
     color: var(--text-dark);

@@ -13,8 +13,9 @@ export default function SpecializedHub() {
 
             <div className="specialized-top-grid">
                 <div className="card" style={{"padding":"16px"}}>
-                    <div className="section-title" style={{"marginTop":"0"}}>
-                        <i className="fa fa-bar-chart" style={{"color":"var(--primary)"}}></i> شاخص هوپر (Hooper Index) - هفته اخیر
+                    <div className="section-title" style={{"marginTop":"0", "display": "flex", "justifyContent": "space-between", "alignItems": "center"}}>
+                        <div><i className="fa fa-bar-chart" style={{"color":"var(--primary)"}}></i> شاخص هوپر (Hooper Index) - هفته اخیر</div>
+                        <button className="btn-primary" style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: '4px' }}>ثبت</button>
                     </div>
                     <div className="css-chart-wrap">
                         <div className="css-bar-col">
@@ -56,8 +57,9 @@ export default function SpecializedHub() {
                 </div>
 
                 <div className="card" style={{"padding":"16px"}}>
-                    <div className="section-title" style={{"marginTop":"0"}}>
-                        <i className="fa fa-area-chart" style={{"color":"var(--warning)"}}></i> شاخص فشار تمرین (RPE) - هفته اخیر
+                    <div className="section-title" style={{"marginTop":"0", "display": "flex", "justifyContent": "space-between", "alignItems": "center"}}>
+                        <div><i className="fa fa-area-chart" style={{"color":"var(--warning)"}}></i> شاخص فشار تمرین (RPE) - هفته اخیر</div>
+                        <button className="btn-primary" style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: '4px' }}>ثبت</button>
                     </div>
                     <div className="css-chart-wrap">
                         <div className="css-bar-col">
