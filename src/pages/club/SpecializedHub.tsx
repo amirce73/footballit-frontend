@@ -3,6 +3,33 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SpecializedHub() {
   const navigate = useNavigate();
+
+  const getGradientColor = (percent: number) => {
+    if (percent === 0) return '#cbd5e1'; // empty state
+    const hue = Math.max(0, 120 - (percent * 1.2));
+    return `hsl(${hue}, 80%, 45%)`;
+  };
+
+  const hooperData = [
+    { day: 'شنبه', val: 320, max: 1000 },
+    { day: '۱شنبه', val: 510, max: 1000 },
+    { day: '۲شنبه', val: 890, max: 1000 },
+    { day: '۳شنبه', val: 450, max: 1000 },
+    { day: '۴شنبه', val: 670, max: 1000 },
+    { day: '۵شنبه', val: 540, max: 1000 },
+    { day: 'جمعه', val: 0, max: 1000 }
+  ];
+
+  const rpeData = [
+    { day: 'شنبه', val: 250, max: 1000 },
+    { day: '۱شنبه', val: 400, max: 1000 },
+    { day: '۲شنبه', val: 820, max: 1000 },
+    { day: '۳شنبه', val: 310, max: 1000 },
+    { day: '۴شنبه', val: 750, max: 1000 },
+    { day: '۵شنبه', val: 480, max: 1000 },
+    { day: 'جمعه', val: 0, max: 1000 }
+  ];
+
   return (
     <div id="view-specialized-hub" className="view-section fade-in">
             <div className="sticky-top-bar">
@@ -18,41 +45,19 @@ export default function SpecializedHub() {
                         <button className="btn-primary" style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: '4px' }}>ثبت</button>
                     </div>
                     <div className="css-chart-wrap">
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"30%"}}><span className="css-bar-val">12</span></div>
-                            </div><span className="css-bar-label">شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"50%"}}><span className="css-bar-val">18</span></div>
-                            </div><span className="css-bar-label">۱شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"80%","background":"var(--warning)"}}><span className="css-bar-val">24</span></div>
-                            </div><span className="css-bar-label">۲شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"40%"}}><span className="css-bar-val">14</span></div>
-                            </div><span className="css-bar-label">۳شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"60%"}}><span className="css-bar-val">20</span></div>
-                            </div><span className="css-bar-label">۴شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"45%"}}><span className="css-bar-val">16</span></div>
-                            </div><span className="css-bar-label">۵شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"0%"}}><span className="css-bar-val">0</span></div>
-                            </div><span className="css-bar-label">جمعه</span>
-                        </div>
+                        {hooperData.map((d, i) => {
+                            const percent = (d.val / d.max) * 100;
+                            return (
+                                <div className="css-bar-col" key={`hooper-${i}`}>
+                                    <div className="css-bar">
+                                        <div className="css-bar-fill" style={{ height: `${percent}%`, background: getGradientColor(percent) }}>
+                                            {d.val > 0 && <span className="css-bar-val">{d.val}</span>}
+                                        </div>
+                                    </div>
+                                    <span className="css-bar-label">{d.day}</span>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 
@@ -62,41 +67,19 @@ export default function SpecializedHub() {
                         <button className="btn-primary" style={{ fontSize: '0.8rem', padding: '4px 12px', borderRadius: '4px' }}>ثبت</button>
                     </div>
                     <div className="css-chart-wrap">
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"40%"}}><span className="css-bar-val">4</span></div>
-                            </div><span className="css-bar-label">شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"60%"}}><span className="css-bar-val">6</span></div>
-                            </div><span className="css-bar-label">۱شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"80%","background":"var(--warning)"}}><span className="css-bar-val">8</span></div>
-                            </div><span className="css-bar-label">۲شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"30%"}}><span className="css-bar-val">3</span></div>
-                            </div><span className="css-bar-label">۳شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"70%"}}><span className="css-bar-val">7</span></div>
-                            </div><span className="css-bar-label">۴شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"50%"}}><span className="css-bar-val">5</span></div>
-                            </div><span className="css-bar-label">۵شنبه</span>
-                        </div>
-                        <div className="css-bar-col">
-                            <div className="css-bar">
-                                <div className="css-bar-fill" style={{"height":"0%"}}><span className="css-bar-val">0</span></div>
-                            </div><span className="css-bar-label">جمعه</span>
-                        </div>
+                        {rpeData.map((d, i) => {
+                            const percent = (d.val / d.max) * 100;
+                            return (
+                                <div className="css-bar-col" key={`rpe-${i}`}>
+                                    <div className="css-bar">
+                                        <div className="css-bar-fill" style={{ height: `${percent}%`, background: getGradientColor(percent) }}>
+                                            {d.val > 0 && <span className="css-bar-val">{d.val}</span>}
+                                        </div>
+                                    </div>
+                                    <span className="css-bar-label">{d.day}</span>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

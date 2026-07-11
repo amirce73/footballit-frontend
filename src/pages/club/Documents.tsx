@@ -53,13 +53,13 @@ export default function Documents() {
     const renderDocumentRow = (key: string, title: string, requiredFormats: string) => {
         const doc = docs[key];
         return (
-            <div key={key} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '15px', borderBottom: '1px solid var(--border-color)' }}>
-                <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>{title}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>فرمت های مجاز: {requiredFormats}</div>
+            <div key={key} className="document-row">
+                <div className="doc-info-col">
+                    <div className="doc-title">{title}</div>
+                    <div className="doc-format">فرمت های مجاز: <span dir="ltr">{requiredFormats}</span></div>
                 </div>
                 
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="doc-status-col">
                     {doc.status === 'success' ? (
                         <span style={{ color: 'var(--success-color)' }}><i className="fa fa-check-circle fa-2x"></i></span>
                     ) : doc.status === 'uploading' ? (
@@ -73,7 +73,7 @@ export default function Documents() {
                     )}
                 </div>
 
-                <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <div className="doc-action-col">
                     <input 
                         type="file" 
                         id={`file-${key}`} 
