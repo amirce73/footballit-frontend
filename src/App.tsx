@@ -7,32 +7,68 @@ import ScrollToTop from './components/ScrollToTop';
 import './index.css';
 
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import ProfileHub from './pages/ProfileHub';
-import FinancialHub from './pages/FinancialHub';
-import SpecializedHub from './pages/SpecializedHub';
-import Registration from './pages/Registration';
-import Store from './pages/Store';
-import Gallery from './pages/Gallery';
-import FinancialTimeline from './pages/FinancialTimeline';
-import Verification from './pages/Verification';
-import RegistrationHistory from './pages/RegistrationHistory';
-import PersonalInfo from './pages/PersonalInfo';
-import ContactInfo from './pages/ContactInfo';
-import PassportInfo from './pages/PassportInfo';
-import BankInfo from './pages/BankInfo';
-import SportsInfo from './pages/SportsInfo';
-import ClubInfo from './pages/ClubInfo';
-import ClothingInfo from './pages/ClothingInfo';
-import Documents from './pages/Documents';
-import Password from './pages/Password';
-import Attendance from './pages/Attendance';
-import Talent from './pages/Talent';
-import Insurance from './pages/Insurance';
-import InsuranceStatus from './pages/InsuranceStatus';
-import Certificate from './pages/Certificate';
-import Bulletin from './pages/Bulletin';
-import TrainingBackpack from './pages/TrainingBackpack';
+import { useAuth } from './contexts/AuthContext';
+
+import ClubDashboard from './pages/club/Dashboard';
+import SchoolDashboard from './pages/school/Dashboard';
+import ClubProfileHub from './pages/club/ProfileHub';
+import SchoolProfileHub from './pages/school/ProfileHub';
+import ClubFinancialHub from './pages/club/FinancialHub';
+import SchoolFinancialHub from './pages/school/FinancialHub';
+import ClubSpecializedHub from './pages/club/SpecializedHub';
+import SchoolSpecializedHub from './pages/school/SpecializedHub';
+import ClubRegistration from './pages/club/Registration';
+import SchoolRegistration from './pages/school/Registration';
+import ClubStore from './pages/club/Store';
+import SchoolStore from './pages/school/Store';
+import ClubGallery from './pages/club/Gallery';
+import SchoolGallery from './pages/school/Gallery';
+import ClubFinancialTimeline from './pages/club/FinancialTimeline';
+import SchoolFinancialTimeline from './pages/school/FinancialTimeline';
+import ClubVerification from './pages/club/Verification';
+import SchoolVerification from './pages/school/Verification';
+import ClubRegistrationHistory from './pages/club/RegistrationHistory';
+import SchoolRegistrationHistory from './pages/school/RegistrationHistory';
+import ClubPersonalInfo from './pages/club/PersonalInfo';
+import SchoolPersonalInfo from './pages/school/PersonalInfo';
+import ClubContactInfo from './pages/club/ContactInfo';
+import SchoolContactInfo from './pages/school/ContactInfo';
+import ClubPassportInfo from './pages/club/PassportInfo';
+import SchoolPassportInfo from './pages/school/PassportInfo';
+import ClubBankInfo from './pages/club/BankInfo';
+import SchoolBankInfo from './pages/school/BankInfo';
+import ClubSportsInfo from './pages/club/SportsInfo';
+import SchoolSportsInfo from './pages/school/SportsInfo';
+import ClubClubInfo from './pages/club/ClubInfo';
+import SchoolClubInfo from './pages/school/ClubInfo';
+import ClubClothingInfo from './pages/club/ClothingInfo';
+import SchoolClothingInfo from './pages/school/ClothingInfo';
+import ClubDocuments from './pages/club/Documents';
+import SchoolDocuments from './pages/school/Documents';
+import ClubPassword from './pages/club/Password';
+import SchoolPassword from './pages/school/Password';
+import ClubAttendance from './pages/club/Attendance';
+import SchoolAttendance from './pages/school/Attendance';
+import ClubTalent from './pages/club/Talent';
+import SchoolTalent from './pages/school/Talent';
+import ClubInsurance from './pages/club/Insurance';
+import SchoolInsurance from './pages/school/Insurance';
+import ClubInsuranceStatus from './pages/club/InsuranceStatus';
+import SchoolInsuranceStatus from './pages/school/InsuranceStatus';
+import ClubCertificate from './pages/club/Certificate';
+import SchoolCertificate from './pages/school/Certificate';
+import ClubBulletin from './pages/club/Bulletin';
+import SchoolBulletin from './pages/school/Bulletin';
+import ClubTrainingBackpack from './pages/club/TrainingBackpack';
+import SchoolTrainingBackpack from './pages/school/TrainingBackpack';
+
+
+
+const PanelRoute = ({ ClubComponent, SchoolComponent }: { ClubComponent: any, SchoolComponent: any }) => {
+  const { panelType } = useAuth();
+  if (panelType === 'school') return <SchoolComponent />;
+  return <ClubComponent />;
+};
 
 export default function App() {
   React.useEffect(() => {
@@ -64,32 +100,32 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile-hub" element={<ProfileHub />} />
-          <Route path="/financial-hub" element={<FinancialHub />} />
-          <Route path="/specialized-hub" element={<SpecializedHub />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/store" element={<Store />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/training-backpack" element={<TrainingBackpack />} />
-          <Route path="/financial-timeline" element={<FinancialTimeline />} />
-          <Route path="/verification" element={<Verification />} />
-          <Route path="/registration-history" element={<RegistrationHistory />} />
-          <Route path="/personal-info" element={<PersonalInfo />} />
-          <Route path="/contact-info" element={<ContactInfo />} />
-          <Route path="/passport-info" element={<PassportInfo />} />
-          <Route path="/bank-info" element={<BankInfo />} />
-          <Route path="/sports-info" element={<SportsInfo />} />
-          <Route path="/club-info" element={<ClubInfo />} />
-          <Route path="/clothing-info" element={<ClothingInfo />} />
-          <Route path="/documents" element={<Documents />} />
-          <Route path="/password" element={<Password />} />
-          <Route path="/attendance" element={<Attendance />} />
-          <Route path="/talent" element={<Talent />} />
-          <Route path="/insurance" element={<Insurance />} />
-          <Route path="/insurance-status" element={<InsuranceStatus />} />
-          <Route path="/certificate" element={<Certificate />} />
-          <Route path="/bulletin" element={<Bulletin />} />
+          <Route path="/dashboard" element={<PanelRoute ClubComponent={ClubDashboard} SchoolComponent={SchoolDashboard} />} />
+          <Route path="/profile-hub" element={<PanelRoute ClubComponent={ClubProfileHub} SchoolComponent={SchoolProfileHub} />} />
+          <Route path="/financial-hub" element={<PanelRoute ClubComponent={ClubFinancialHub} SchoolComponent={SchoolFinancialHub} />} />
+          <Route path="/specialized-hub" element={<PanelRoute ClubComponent={ClubSpecializedHub} SchoolComponent={SchoolSpecializedHub} />} />
+          <Route path="/registration" element={<PanelRoute ClubComponent={ClubRegistration} SchoolComponent={SchoolRegistration} />} />
+          <Route path="/store" element={<PanelRoute ClubComponent={ClubStore} SchoolComponent={SchoolStore} />} />
+          <Route path="/gallery" element={<PanelRoute ClubComponent={ClubGallery} SchoolComponent={SchoolGallery} />} />
+          <Route path="/training-backpack" element={<PanelRoute ClubComponent={ClubTrainingBackpack} SchoolComponent={SchoolTrainingBackpack} />} />
+          <Route path="/financial-timeline" element={<PanelRoute ClubComponent={ClubFinancialTimeline} SchoolComponent={SchoolFinancialTimeline} />} />
+          <Route path="/verification" element={<PanelRoute ClubComponent={ClubVerification} SchoolComponent={SchoolVerification} />} />
+          <Route path="/registration-history" element={<PanelRoute ClubComponent={ClubRegistrationHistory} SchoolComponent={SchoolRegistrationHistory} />} />
+          <Route path="/personal-info" element={<PanelRoute ClubComponent={ClubPersonalInfo} SchoolComponent={SchoolPersonalInfo} />} />
+          <Route path="/contact-info" element={<PanelRoute ClubComponent={ClubContactInfo} SchoolComponent={SchoolContactInfo} />} />
+          <Route path="/passport-info" element={<PanelRoute ClubComponent={ClubPassportInfo} SchoolComponent={SchoolPassportInfo} />} />
+          <Route path="/bank-info" element={<PanelRoute ClubComponent={ClubBankInfo} SchoolComponent={SchoolBankInfo} />} />
+          <Route path="/sports-info" element={<PanelRoute ClubComponent={ClubSportsInfo} SchoolComponent={SchoolSportsInfo} />} />
+          <Route path="/club-info" element={<PanelRoute ClubComponent={ClubClubInfo} SchoolComponent={SchoolClubInfo} />} />
+          <Route path="/clothing-info" element={<PanelRoute ClubComponent={ClubClothingInfo} SchoolComponent={SchoolClothingInfo} />} />
+          <Route path="/documents" element={<PanelRoute ClubComponent={ClubDocuments} SchoolComponent={SchoolDocuments} />} />
+          <Route path="/password" element={<PanelRoute ClubComponent={ClubPassword} SchoolComponent={SchoolPassword} />} />
+          <Route path="/attendance" element={<PanelRoute ClubComponent={ClubAttendance} SchoolComponent={SchoolAttendance} />} />
+          <Route path="/talent" element={<PanelRoute ClubComponent={ClubTalent} SchoolComponent={SchoolTalent} />} />
+          <Route path="/insurance" element={<PanelRoute ClubComponent={ClubInsurance} SchoolComponent={SchoolInsurance} />} />
+          <Route path="/insurance-status" element={<PanelRoute ClubComponent={ClubInsuranceStatus} SchoolComponent={SchoolInsuranceStatus} />} />
+          <Route path="/certificate" element={<PanelRoute ClubComponent={ClubCertificate} SchoolComponent={SchoolCertificate} />} />
+          <Route path="/bulletin" element={<PanelRoute ClubComponent={ClubBulletin} SchoolComponent={SchoolBulletin} />} />
         </Routes>
       </main>
       <BottomNav />

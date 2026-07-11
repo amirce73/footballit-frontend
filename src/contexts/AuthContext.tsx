@@ -71,6 +71,8 @@ export interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  panelType: 'club' | 'school' | null;
+  setPanelType: (type: 'club' | 'school' | null) => void;
   login: (newToken: string) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
@@ -82,6 +84,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [panelType, setPanelTypeState] = useState<'club' | 'school' | null>(() => {
+    return (localStorage.getItem('panelType') as 'club' | 'school' | null) || null;
+  });
+
+  const setPanelType = (type: 'club' | 'school' | null) => {
+    if (type) {
+      localStorage.setItem('panelType', type);
+    } else {
+      localStorage.removeItem('panelType');
+    }
+    setPanelTypeState(type);
+  };
 
   const fetchUser = async () => {
     const token = localStorage.getItem('token');
@@ -91,7 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     try {
-      const res = await api.get('/profile/hub');
+      const res = await api.get('/users/me');
       setUser(res.data);
     } catch (err) {
       console.error(err);
@@ -112,7 +126,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('panelType');
     setUser(null);
+    setPanelTypeState(null);
   };
 
   const refreshUser = async () => {
@@ -143,7 +159,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser, simulateVerification }}>
+    <AuthContext.Provider value={{ user, loading, panelType, setPanelType, login, logout, refreshUser, simulateVerification }}>
       {children}
     </AuthContext.Provider>
   );

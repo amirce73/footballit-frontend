@@ -6,11 +6,12 @@ import './Login.css';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, setPanelType } = useAuth();
   const [mobileNumber, setMobileNumber] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [step, setStep] = useState<'phone' | 'panel_selection'>('phone');
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +34,7 @@ export default function Login() {
       // Save token and update context
       if (response.data && response.data.token) {
           await login(response.data.token);
-          // Redirect to dashboard
-          navigate('/dashboard');
+          setStep('panel_selection');
       } else {
           setError('خطا در دریافت توکن');
       }
@@ -68,36 +68,57 @@ export default function Login() {
             </div>
         )}
         
-        <form onSubmit={handleLogin} className="login-form">
-            <div className={`login-input-group ${isFocused ? 'focused' : ''} ${mobileNumber ? 'has-value' : ''}`}>
-                <div className="input-icon">
-                    <i className="fa-solid fa-mobile-screen"></i>
-                </div>
-                <input 
-                    type="tel" 
-                    value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value)}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                    dir="ltr"
-                    maxLength={11}
-                    placeholder=" "
-                />
-                <label>شماره موبایل</label>
-            </div>
-            
-            <button 
-                type="submit" 
-                className={`login-submit-btn ${loading ? 'loading' : ''}`}
-                disabled={loading}
-            >
-                {loading ? (
-                    <span className="spinner"><i className="fa-solid fa-circle-notch fa-spin"></i> در حال بررسی...</span>
-                ) : (
-                    <span>ادامه <i className="fa-solid fa-arrow-left"></i></span>
-                )}
-            </button>
-        </form>
+        {step === 'phone' ? (
+          <form onSubmit={handleLogin} className="login-form">
+              <div className={`login-input-group ${isFocused ? 'focused' : ''} ${mobileNumber ? 'has-value' : ''}`}>
+                  <div className="input-icon">
+                      <i className="fa-solid fa-mobile-screen"></i>
+                  </div>
+                  <input 
+                      type="tel" 
+                      value={mobileNumber}
+                      onChange={(e) => setMobileNumber(e.target.value)}
+                      onFocus={() => setIsFocused(true)}
+                      onBlur={() => setIsFocused(false)}
+                      dir="ltr"
+                      maxLength={11}
+                      placeholder=" "
+                  />
+                  <label>شماره موبایل</label>
+              </div>
+              
+              <button 
+                  type="submit" 
+                  className={`login-submit-btn ${loading ? 'loading' : ''}`}
+                  disabled={loading}
+              >
+                  {loading ? (
+                      <span className="spinner"><i className="fa-solid fa-circle-notch fa-spin"></i> در حال بررسی...</span>
+                  ) : (
+                      <span>ادامه <i className="fa-solid fa-arrow-left"></i></span>
+                  )}
+              </button>
+          </form>
+        ) : (
+          <div className="panel-selection-group" style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginTop: '20px' }}>
+             <button 
+                type="button" 
+                className="login-submit-btn" 
+                onClick={() => { setPanelType('club'); navigate('/dashboard'); }}
+                style={{ background: 'var(--primary)', display: 'flex', justifyContent: 'center', gap: '8px' }}
+             >
+                <i className="fa fa-shield"></i> ورود به پنل باشگاهی
+             </button>
+             <button 
+                type="button" 
+                className="login-submit-btn" 
+                onClick={() => { setPanelType('school'); navigate('/dashboard'); }}
+                style={{ background: 'var(--success)', display: 'flex', justifyContent: 'center', gap: '8px' }}
+             >
+                <i className="fa fa-graduation-cap"></i> ورود به پنل مدرسه فوتبال
+             </button>
+          </div>
+        )}
       </div>
     </div>
   );
