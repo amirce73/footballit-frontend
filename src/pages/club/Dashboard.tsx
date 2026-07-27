@@ -57,16 +57,70 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Debt Card */}
-                    <div className="debt-card status-clear">
-                        <div className="debt-info-wrap">
-                            <div className="debt-icon"><i className="fa fa-check"></i></div>
-                            <div className="debt-info">
-                                <span className="label">وضعیت مالی حساب</span>
-                                <span className="amount">بدون بدهی</span>
+                    {/* Matches Card */}
+                    <div className="card matches-card" style={{ flex: 1, padding: '16px', margin: 0, display: 'flex', flexDirection: 'column' }}>
+                        <div className="section-title" style={{ marginTop: 0, fontSize: '0.95rem', marginBottom: '16px', color: 'var(--text-dark)', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                اطلاعات مسابقات
+                            </div>
+                            <div style={{ width: '20px', height: '20px', borderRadius: '50%', backgroundColor: '#fef08a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <i className="fa fa-play" style={{ color: '#eab308', fontSize: '0.6rem', marginLeft: '2px' }}></i>
                             </div>
                         </div>
-                        <button className="btn-credit" title="افزایش اعتبار"><i className="fa fa-plus"></i> شارژ</button>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', flex: 1, alignContent: 'center' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', borderRadius: '12px', border: '1px solid #f8fafc', background: '#f8fafc' }}>
+                                <i className="fa fa-star" style={{ color: '#10b981', fontSize: '0.9rem', marginBottom: '6px' }}></i>
+                                <span style={{ color: '#10b981', fontSize: '1.05rem', fontWeight: '900', marginBottom: '2px' }}>۱۰</span>
+                                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600' }}>فیکس</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', borderRadius: '12px', border: '1px solid #f8fafc', background: '#f8fafc' }}>
+                                <i className="fa fa-exchange" style={{ color: '#eab308', fontSize: '0.9rem', marginBottom: '6px' }}></i>
+                                <span style={{ color: '#eab308', fontSize: '1.05rem', fontWeight: '900', marginBottom: '2px' }}>۴</span>
+                                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600' }}>ذخیره</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', borderRadius: '12px', border: '1px solid #f8fafc', background: '#f8fafc' }}>
+                                <i className="fa fa-bed" style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '6px' }}></i>
+                                <span style={{ color: '#ef4444', fontSize: '1.05rem', fontWeight: '900', marginBottom: '2px' }}>۱</span>
+                                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600' }}>هتلی</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', borderRadius: '12px', border: '1px solid #f8fafc', background: '#f8fafc' }}>
+                                <i className="fa fa-clock-o" style={{ color: '#3b82f6', fontSize: '0.9rem', marginBottom: '6px' }}></i>
+                                <span style={{ color: '#3b82f6', fontSize: '1.05rem', fontWeight: '900', marginBottom: '2px' }}>۸۵۰</span>
+                                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600' }}>دقایق بازی</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', borderRadius: '12px', border: '1px solid #f8fafc', background: '#f8fafc', cursor: 'pointer' }} onClick={() => navigate('/attendance')}>
+                                <i className="fa fa-calendar-check-o" style={{ color: '#8b5cf6', fontSize: '0.9rem', marginBottom: '6px' }}></i>
+                                <span style={{ color: '#8b5cf6', fontSize: '1.05rem', fontWeight: '900', marginBottom: '2px' }}>۱۴</span>
+                                <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: '600' }}>حضور</span>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 4px', borderRadius: '12px', border: '1px solid #f8fafc', background: '#f8fafc', cursor: 'pointer' }} onClick={() => navigate('/sports-info')}>
+                                <i className="fa fa-clone" style={{ color: '#f97316', fontSize: '0.9rem', marginBottom: '6px' }}></i>
+                                <span style={{ color: '#f97316', fontSize: '0.95rem', fontWeight: '900', direction: 'ltr', marginBottom: '2px' }}>0 / 2</span>
+                                <span style={{ fontSize: '0.6rem', color: 'var(--text-muted)', fontWeight: '600', textAlign: 'center' }}>کارت (ز/ق)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Left Cards Container */}
+                    <div className="left-cards-container">
+                        {/* BMI Card */}
+                        <div className="card bmi-card" style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: 0, padding: '16px' }}>
+                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '4px', fontWeight: 'bold' }}>شاخص BMI</div>
+                            <div style={{ fontSize: '1.8rem', fontWeight: '800', color: 'var(--text-dark)' }}>۲۲.۵</div>
+                            <div style={{ fontSize: '0.7rem', padding: '2px 12px', borderRadius: '12px', background: '#dcfce7', color: '#166534', marginTop: '6px', fontWeight: 'bold' }}>نرمال</div>
+                        </div>
+
+                        {/* Debt Card */}
+                        <div className="debt-card status-clear" style={{ flex: 1, margin: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '12px', gap: '12px' }}>
+                            <div className="debt-info-wrap" style={{ display: 'flex', alignItems: 'center', gap: '8px', width: '100%', justifyContent: 'center' }}>
+                                <div className="debt-icon" style={{ flexShrink: 0, width: '32px', height: '32px', fontSize: '1rem' }}><i className="fa fa-check"></i></div>
+                                <div className="debt-info" style={{ overflow: 'hidden' }}>
+                                    <span className="label" style={{ fontSize: '0.65rem', whiteSpace: 'nowrap' }}>وضعیت مالی حساب</span>
+                                    <span className="amount" style={{ fontSize: '0.9rem', whiteSpace: 'nowrap' }}>بدون بدهی</span>
+                                </div>
+                            </div>
+                            <button className="btn-credit" title="افزایش اعتبار" style={{ alignSelf: 'center', width: 'fit-content', padding: '6px 20px', fontSize: '0.75rem' }}><i className="fa fa-plus"></i> شارژ</button>
+                        </div>
                     </div>
                 </div>
 
