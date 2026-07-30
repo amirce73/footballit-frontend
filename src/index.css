@@ -3331,8 +3331,12 @@ img {
 @media (min-width: 560px) and (max-width: 1024px) {
     .dashboard-top-row {
         display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
+        /* grid-template-columns: 1fr 1fr !important; */
         gap: 12px !important;
+    }
+
+    #cards-head {
+        margin-right: 50px;
     }
 
     .club-intro-card {
@@ -4735,5 +4739,31 @@ img {
     .social-column {
         width: auto;
         flex-direction: column !important;
+    }
+}
+
+@media (min-width: 1280px) and (max-width: 1450px) {
+    .social-column {
+        grid-template-columns: none;
+        gap: 1px;
+    }
+
+    .club-intro-card {
+        height: 291px;
+    }
+
+    #cards-body {
+        margin-right: 0px !important;
+        gap: 0px !important;
+        flex: none;
+    }
+}
+
+@media (min-width: 1289) and (max-width: 1340) {
+    .social-column {
+        transform: translateX(15px);
+        margin-top: -15px;
+        display: flex;
+        flex-direction: row !important;
     }
 }

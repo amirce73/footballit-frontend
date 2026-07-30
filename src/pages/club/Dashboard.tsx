@@ -105,7 +105,7 @@ export default function Dashboard() {
                                         <div className="section-icon icon-cards"><i className="fa fa-clone"></i></div>
                                         <span className="section-title-new">کارت زرد و قرمز</span>
                                     </div>
-                                    <div className="section-body flex-around" style={{ justifyContent: 'none', gap: '10px', marginRight: '30px' }}>
+                                    <div className="section-body flex-around" id='cards-body' style={{ justifyContent: 'none', gap: '10px', marginRight: '30px' }}>
                                         <div className="card-item yellow-card-item" style={{ padding: '7px 10px' }}>
                                             <div className="card-shape yellow-shape"></div>
                                             <span className="card-val">۵</span>
