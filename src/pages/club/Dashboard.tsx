@@ -60,33 +60,89 @@ export default function Dashboard() {
                     {/* Matches Card */}
                     <div className="card matches-card new-matches-card" style={{ flex: 1, padding: 0, margin: 0, display: 'flex', flexDirection: 'column', border: 'none', background: 'transparent', boxShadow: 'none' }}>
                         <div className="new-stats-grid">
-                            
-                            {/* Section 1: Matches Performance */}
-                            <div className="stat-section-card matches-perf-card">
-                                <div className="section-head">
+
+                            <div className="mobile-matches-wrapper">
+                                {/* Mobile Unified Header */}
+                                <div className="section-head mobile-only-head">
                                     <div className="section-icon icon-matches"><i className="fa fa-trophy"></i></div>
                                     <span className="section-title-new">عملکرد در مسابقات</span>
                                 </div>
-                                <div className="section-body">
-                                    <div className="donut-wrapper">
-                                        <div className="donut-chart" style={{ background: 'conic-gradient(#10b981 0% 58%, #3b82f6 58% 84%, #94a3b8 84% 95%, #f97316 95% 100%)' }}></div>
-                                        <div className="donut-legend">
-                                            <div className="legend-item">
-                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span> فیکس</div>
-                                                <span className="val-bold">۱۱</span>
+
+                                {/* Section 1: Matches Performance */}
+                                <div className="stat-section-card matches-perf-card inner-mobile-card">
+                                    <div className="section-head desktop-only-head">
+                                        <div className="section-icon icon-matches"><i className="fa fa-trophy"></i></div>
+                                        <span className="section-title-new">عملکرد در مسابقات</span>
+                                    </div>
+                                    <div className="section-body">
+                                        <div className="donut-wrapper">
+                                            <div className="donut-chart" style={{ background: 'conic-gradient(#10b981 0% 58%, #3b82f6 58% 84%, #94a3b8 84% 95%, #f97316 95% 100%)' }}></div>
+                                            <div className="donut-legend">
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span> فیکس</div>
+                                                    <span className="val-bold">۱۱</span>
+                                                </div>
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#3b82f6' }}></span> ذخیره</div>
+                                                    <span className="val-bold">۵</span>
+                                                </div>
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#94a3b8' }}></span> هتلی</div>
+                                                    <span className="val-bold">۲</span>
+                                                </div>
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#f97316' }}></span> مصدوم</div>
+                                                    <span className="val-bold">۱</span>
+                                                </div>
                                             </div>
-                                            <div className="legend-item">
-                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#3b82f6' }}></span> ذخیره</div>
-                                                <span className="val-bold">۵</span>
-                                            </div>
-                                            <div className="legend-item">
-                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#94a3b8' }}></span> هتلی</div>
-                                                <span className="val-bold">۲</span>
-                                            </div>
-                                            <div className="legend-item">
-                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#f97316' }}></span> مصدوم</div>
-                                                <span className="val-bold">۱</span>
-                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section 3: Cards (Reverted to old design) */}
+                                <div className="stat-section-card cards-stat-card inner-mobile-card" style={{ flexDirection: 'row', height: '97px' }}>
+                                    <div className="section-head" style={{ marginBottom: '0px' }}>
+                                        <div className="section-icon icon-cards"><i className="fa fa-clone"></i></div>
+                                        <span className="section-title-new">کارت زرد و قرمز</span>
+                                    </div>
+                                    <div className="section-body flex-around" style={{ justifyContent: 'none', gap: '10px', marginRight: '30px' }}>
+                                        <div className="card-item yellow-card-item" style={{ padding: '7px 10px' }}>
+                                            <div className="card-shape yellow-shape"></div>
+                                            <span className="card-val">۵</span>
+                                        </div>
+                                        <div className="card-item red-card-item" style={{ padding: '7px 10px' }}>
+                                            <div className="card-shape red-shape"></div>
+                                            <span className="card-val">۱</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section 4: Match Stats (No Header) */}
+                                <div className="stat-section-card general-stats-card inner-mobile-card" style={{ justifyContent: 'center', height: '97px' }}>
+                                    <div className="section-body perf-grid-4">
+                                        <div className="mini-stat compact-stat-item">
+                                            <i className="fa fa-clock-o text-blue" style={{ fontSize: '1.1rem', marginBottom: '4px' }}></i>
+                                            <span className="mini-lbl">دقایق</span>
+                                            <span className="mini-val">۷۵'</span>
+                                        </div>
+                                        <div className="mini-stat compact-stat-item">
+                                            <i className="fa fa-soccer-ball-o text-green" style={{ fontSize: '1.1rem', marginBottom: '4px' }}></i>
+                                            <span className="mini-lbl">گل زده</span>
+                                            <span className="mini-val">۱۴</span>
+                                        </div>
+                                        <div className="mini-stat compact-stat-item">
+                                            <svg viewBox="0 0 512 512" fill="currentColor" className="text-orange" style={{ width: '18px', height: '18px', marginBottom: '4px' }}>
+                                                <path d="M496 256h-59l-11.8-35.4a47.9 47.9 0 0 0-45.5-32.6h-57.1l-10-30H272v64h-32v-64H96v64H64V64h32v16h144V64h176v64h-32v32h11.7c21.8 0 41.5 14.5 47.4 35.4l20.9 62.6v32zm-464 64h448v64a64 64 0 0 1-64 64H96a64 64 0 0 1-64-64v-64z" />
+                                            </svg>
+                                            <span className="mini-lbl">پاس گل</span>
+                                            <span className="mini-val">۷</span>
+                                        </div>
+                                        <div className="mini-stat compact-stat-item">
+                                            <svg viewBox="0 0 512 512" fill="currentColor" className="text-purple" style={{ width: '18px', height: '18px', marginBottom: '4px' }}>
+                                                <path d="M464 128h-32V96c0-17.7-14.3-32-32-32s-32 14.3-32 32v32h-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v64h-32V32c0-17.7-14.3-32-32-32S176 14.3 176 32v96h-32V96c0-17.7-14.3-32-32-32s-32 14.3-32 32v224c0 70.7 57.3 128 128 128h112c70.7 0 128-57.3 128-128V160c0-17.7-14.3-32-32-32z" />
+                                            </svg>
+                                            <span className="mini-lbl">کلین‌شیت</span>
+                                            <span className="mini-val">۳</span>
                                         </div>
                                     </div>
                                 </div>
@@ -119,43 +175,11 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            {/* Section 3: Cards */}
-                            <div className="stat-section-card cards-stat-card">
-                                <div className="section-head">
-                                    <div className="section-icon icon-cards"><i className="fa fa-clone"></i></div>
-                                    <span className="section-title-new">کارت زرد و قرمز</span>
-                                </div>
-                                <div className="section-body flex-around">
-                                    <div className="card-item yellow-card-item">
-                                        <div className="card-shape yellow-shape"></div>
-                                        <span className="card-val">۵</span>
-                                    </div>
-                                    <div className="card-item red-card-item">
-                                        <div className="card-shape red-shape"></div>
-                                        <span className="card-val">۱</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Section 4: Match Stats */}
-                            <div className="stat-section-card general-stats-card">
-                                <div className="section-head">
-                                    <div className="section-icon icon-stats"><i className="fa fa-line-chart"></i></div>
-                                    <span className="section-title-new">آمار بازی</span>
-                                </div>
-                                <div className="section-body perf-grid-4">
-                                    <div className="mini-stat"><span className="mini-lbl">دقایق</span><span className="mini-val text-blue">۷۵'</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">گل</span><span className="mini-val text-green">۱۴</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">پاس گل</span><span className="mini-val text-orange">۷</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">کلین‌شیت</span><span className="mini-val text-purple">۳</span></div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div> {/* End dashboard-top-row */}
 
-                <div className="dashboard-kpi-grid col-span-3" style={{ marginTop: '16px', marginBottom: '16px' }}>
+                <div className="dashboard-kpi-grid col-span-3">
 
                     {/* Financial Card (With Debt Logic) - First so it appears on the far right */}
                     {false ? (

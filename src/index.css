@@ -890,6 +890,7 @@ img {
 }
 
 .profile-card {
+    height: fit-content;
     background: linear-gradient(to bottom right, color-mix(in srgb, var(--primary), white 85%), color-mix(in srgb, var(--primary), white 95%));
     ;
     color: #fff;
@@ -4327,6 +4328,14 @@ img {
     height: 100%;
 }
 
+.desktop-only-head {
+    display: flex !important;
+}
+
+.mobile-only-head {
+    display: none !important;
+}
+
 .stat-section-card {
     background: #ffffff;
     border-radius: 16px;
@@ -4334,16 +4343,13 @@ img {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     border: 1px solid #f1f5f9;
     transition: all 0.3s ease;
-    overflow: hidden;
     position: relative;
 }
 
 .stat-section-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
     border-color: #e2e8f0;
 }
 
@@ -4602,7 +4608,28 @@ img {
 @media (min-width: 1024px) {
     .new-stats-grid {
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: auto auto;
+        align-content: start;
+    }
+
+    .mobile-matches-wrapper {
+        display: contents;
+    }
+
+    .matches-perf-card {
+        order: 1;
+    }
+
+    .practice-halo-card {
+        order: 2;
+    }
+
+    .cards-stat-card {
+        order: 3;
+    }
+
+    .general-stats-card {
+        order: 4;
     }
 }
 
@@ -4613,8 +4640,44 @@ img {
     }
 
     .new-stats-grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .practice-halo-card {
+        order: -1;
+    }
+
+    .mobile-matches-wrapper {
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        border-radius: 20px;
+        padding: 16px;
+        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.08), 0 4px 6px rgba(0, 0, 0, 0.04);
+        border: 1px solid #bfdbfe;
+        gap: 16px;
+    }
+
+    .inner-mobile-card {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+
+    .inner-mobile-card:hover {
+        transform: none !important;
+        box-shadow: none !important;
+        border-color: transparent !important;
+    }
+
+    .desktop-only-head {
+        display: none !important;
+    }
+
+    .mobile-only-head {
+        display: flex !important;
     }
 
     .perf-grid-5 {
