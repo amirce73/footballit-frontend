@@ -57,63 +57,268 @@ export default function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Debt Card */}
-                    <div className="debt-card status-clear">
-                        <div className="debt-info-wrap">
-                            <div className="debt-icon"><i className="fa fa-check"></i></div>
-                            <div className="debt-info">
-                                <span className="label">وضعیت مالی حساب</span>
-                                <span className="amount">بدون بدهی</span>
+                    {/* Matches Card */}
+                    <div className="card matches-card new-matches-card" style={{ flex: 1, padding: 0, margin: 0, display: 'flex', flexDirection: 'column', border: 'none', background: 'transparent', boxShadow: 'none' }}>
+                        <div className="new-stats-grid">
+
+                            <div className="mobile-matches-wrapper">
+                                {/* Mobile Unified Header */}
+                                <div className="section-head mobile-only-head">
+                                    <div className="section-icon icon-matches"><i className="fa fa-trophy"></i></div>
+                                    <span className="section-title-new">عملکرد در مسابقات</span>
+                                </div>
+
+                                {/* Section 1: Matches Performance */}
+                                <div className="stat-section-card matches-perf-card inner-mobile-card">
+                                    <div className="section-head desktop-only-head">
+                                        <div className="section-icon icon-matches"><i className="fa fa-trophy"></i></div>
+                                        <span className="section-title-new">عملکرد در مسابقات</span>
+                                    </div>
+                                    <div className="section-body">
+                                        <div className="donut-wrapper">
+                                            <div className="donut-chart" style={{ background: 'conic-gradient(#10b981 0% 58%, #3b82f6 58% 84%, #94a3b8 84% 95%, #f97316 95% 100%)' }}></div>
+                                            <div className="donut-legend">
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span> فیکس</div>
+                                                    <span className="val-bold">۱۱</span>
+                                                </div>
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#3b82f6' }}></span> ذخیره</div>
+                                                    <span className="val-bold">۵</span>
+                                                </div>
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#94a3b8' }}></span> هتلی</div>
+                                                    <span className="val-bold">۲</span>
+                                                </div>
+                                                <div className="legend-item">
+                                                    <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#f97316' }}></span> مصدوم</div>
+                                                    <span className="val-bold">۱</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section 3: Cards (Reverted to old design) */}
+                                <div className="stat-section-card cards-stat-card inner-mobile-card" style={{ flexDirection: 'row', height: '97px' }}>
+                                    <div className="section-head" id='cards-head' style={{ marginBottom: '0px' }}>
+                                        <div className="section-icon icon-cards"><i className="fa fa-clone"></i></div>
+                                        <span className="section-title-new">کارت زرد و قرمز</span>
+                                    </div>
+                                    <div className="section-body flex-around" style={{ justifyContent: 'none', gap: '10px', marginRight: '30px' }}>
+                                        <div className="card-item yellow-card-item" style={{ padding: '7px 10px' }}>
+                                            <div className="card-shape yellow-shape"></div>
+                                            <span className="card-val">۵</span>
+                                        </div>
+                                        <div className="card-item red-card-item" style={{ padding: '7px 10px' }}>
+                                            <div className="card-shape red-shape"></div>
+                                            <span className="card-val">۱</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Section 4: Match Stats (No Header) */}
+                                <div className="stat-section-card general-stats-card inner-mobile-card" style={{ justifyContent: 'center', height: '97px' }}>
+                                    <div className="section-body perf-grid-4">
+                                        <div className="mini-stat compact-stat-item">
+                                            <i className="fa fa-clock-o text-blue" style={{ fontSize: '1.1rem', marginBottom: '4px' }}></i>
+                                            <span className="mini-lbl">دقایق</span>
+                                            <span className="mini-val">۷۵'</span>
+                                        </div>
+                                        <div className="mini-stat compact-stat-item">
+                                            <i className="fa fa-soccer-ball-o text-green" style={{ fontSize: '1.1rem', marginBottom: '4px' }}></i>
+                                            <span className="mini-lbl">گل زده</span>
+                                            <span className="mini-val">۱۴</span>
+                                        </div>
+                                        <div className="mini-stat compact-stat-item">
+                                            <svg viewBox="0 0 512 512" fill="currentColor" className="text-orange" style={{ width: '18px', height: '18px', marginBottom: '4px' }}>
+                                                <path d="M496 256h-59l-11.8-35.4a47.9 47.9 0 0 0-45.5-32.6h-57.1l-10-30H272v64h-32v-64H96v64H64V64h32v16h144V64h176v64h-32v32h11.7c21.8 0 41.5 14.5 47.4 35.4l20.9 62.6v32zm-464 64h448v64a64 64 0 0 1-64 64H96a64 64 0 0 1-64-64v-64z" />
+                                            </svg>
+                                            <span className="mini-lbl">پاس گل</span>
+                                            <span className="mini-val">۷</span>
+                                        </div>
+                                        <div className="mini-stat compact-stat-item">
+                                            <svg viewBox="0 0 512 512" fill="currentColor" className="text-purple" style={{ width: '18px', height: '18px', marginBottom: '4px' }}>
+                                                <path d="M464 128h-32V96c0-17.7-14.3-32-32-32s-32 14.3-32 32v32h-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v64h-32V32c0-17.7-14.3-32-32-32S176 14.3 176 32v96h-32V96c0-17.7-14.3-32-32-32s-32 14.3-32 32v224c0 70.7 57.3 128 128 128h112c70.7 0 128-57.3 128-128V160c0-17.7-14.3-32-32-32z" />
+                                            </svg>
+                                            <span className="mini-lbl">کلین‌شیت</span>
+                                            <span className="mini-val">۳</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Section 2: Practice Performance (with Halo) */}
+                            <div className="stat-section-card practice-halo-card" onClick={() => navigate('/attendance')} style={{ cursor: 'pointer' }}>
+                                <div className="section-head">
+                                    <div className="section-icon icon-practice"><i className="fa fa-calendar-check-o"></i></div>
+                                    <span className="section-title-new">عملکرد در تمرینات</span>
+                                </div>
+                                <div className="section-body">
+                                    <div className="donut-wrapper">
+                                        <div className="donut-chart" style={{ background: 'conic-gradient(#10b981 0% 80%, #ef4444 80% 93%, #f97316 93% 100%)' }}></div>
+                                        <div className="donut-legend">
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span> حضور</div>
+                                                <span className="val-bold">۲۴</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#ef4444' }}></span> غیاب</div>
+                                                <span className="val-bold">۴</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#f97316' }}></span> مصدوم</div>
+                                                <span className="val-bold">۲</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> {/* End dashboard-top-row */}
+
+                <div className="dashboard-kpi-grid col-span-3">
+
+                    {/* Financial Card (With Debt Logic) - First so it appears on the far right */}
+                    {false ? (
+                        <>
+                            <div className="kpi-desktop-only" style={{ border: '1px solid #fca5a5', background: 'linear-gradient(to left, #fef2f2, #ffffff)', borderRadius: '16px', padding: '12px', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{ width: '42px', height: '42px', borderRadius: '12px', backgroundColor: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        <i className="fa fa-exclamation" style={{ color: '#dc2626', fontSize: '1.2rem' }}></i>
+                                    </div>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>وضعیت مالی</div>
+                                        <div style={{ fontSize: '0.95rem', color: '#dc2626', fontWeight: '900', marginTop: '2px' }}>۷,۵۰۰,۰۰۰ بدهی</div>
+                                    </div>
+                                </div>
+                                <button style={{ background: '#ef4444', color: 'white', border: 'none', borderRadius: '8px', padding: '6px 12px', fontSize: '0.75rem', fontWeight: 'bold', cursor: 'pointer' }}>
+                                    پرداخت
+                                </button>
+                            </div>
+                            <div className="kpi-mobile-only" style={{ border: '1px solid #fca5a5', background: 'linear-gradient(to bottom, #ffffff, #fef2f2)', borderRadius: '16px', padding: '16px', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>وضعیت مالی:</div>
+                                        <div style={{ fontSize: '1.1rem', color: '#dc2626', fontWeight: '900' }}>۷,۵۰۰,۰۰۰ بدهی</div>
+                                    </div>
+                                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#fee2e2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <i className="fa fa-exclamation" style={{ color: '#dc2626', fontSize: '1.2rem' }}></i>
+                                    </div>
+                                </div>
+                                <button style={{ width: '100%', background: '#ef4444', color: 'white', border: 'none', borderRadius: '12px', padding: '10px', fontSize: '1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+                                    پرداخت
+                                </button>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className="kpi-desktop-only" style={{ border: '1px solid #86efac', background: 'linear-gradient(to left, #f0fdf4, #ffffff)', borderRadius: '16px', padding: '12px', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                    <div style={{ width: '42px', height: '42px', borderRadius: '12px', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        <i className="fa fa-check" style={{ color: '#16a34a', fontSize: '1.2rem' }}></i>
+                                    </div>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>وضعیت مالی</div>
+                                        <div style={{ fontSize: '0.95rem', color: '#16a34a', fontWeight: '900', marginTop: '2px' }}>بدون بدهی</div>
+                                    </div>
+                                </div>
+                                <button style={{ background: '#10b981', color: 'white', border: 'none', borderRadius: '8px', padding: '6px 12px', fontSize: '0.75rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}>
+                                    <i className="fa fa-plus"></i> شارژ
+                                </button>
+                            </div>
+                            <div className="kpi-mobile-only" style={{ border: '1px solid #86efac', background: 'linear-gradient(to bottom, #ffffff, #f0fdf4)', borderRadius: '16px', padding: '16px', flexDirection: 'column', gap: '20px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>وضعیت مالی:</div>
+                                        <div style={{ fontSize: '1.1rem', color: '#16a34a', fontWeight: '900' }}>بدون بدهی</div>
+                                    </div>
+                                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <i className="fa fa-check" style={{ color: '#16a34a', fontSize: '1.2rem' }}></i>
+                                    </div>
+                                </div>
+                                <button style={{ width: '100%', background: '#10b981', color: 'white', border: 'none', borderRadius: '12px', padding: '10px', fontSize: '1rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', cursor: 'pointer' }}>
+                                    <i className="fa fa-plus"></i> شارژ
+                                </button>
+                            </div>
+                        </>
+                    )}
+
+                    {/* BMI Card - Second */}
+                    <>
+                        <div className="kpi-desktop-only" style={{ border: '1px solid #e2e8f0', background: '#ffffff', borderRadius: '16px', padding: '12px', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div style={{ width: '42px', height: '42px', borderRadius: '12px', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}>
+                                        <path d="M4 14a8 8 0 0 1 16 0" stroke="#cbd5e1" strokeWidth="3" />
+                                        <path d="M4 14a8 8 0 0 1 2.3-5.7" stroke="#3b82f6" strokeWidth="3" />
+                                        <path d="M6.3 8.3a8 8 0 0 1 5.7-2.3" stroke="#22c55e" strokeWidth="3" />
+                                        <path d="M12 6a8 8 0 0 1 5.7 2.3" stroke="#eab308" strokeWidth="3" />
+                                        <path d="M17.7 8.3a8 8 0 0 1 2.3 5.7" stroke="#ef4444" strokeWidth="3" />
+                                        <path d="M12 14l3-3" stroke="#1f2937" strokeWidth="2" />
+                                        <circle cx="12" cy="14" r="2.5" fill="#1f2937" stroke="none" />
+                                    </svg>
+                                </div>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>شاخص BMI</div>
+                                    <div style={{ fontSize: '1rem', color: '#0f172a', fontWeight: '900', marginTop: '2px' }}>نامشخص</div>
+                                </div>
                             </div>
                         </div>
-                        <button className="btn-credit" title="افزایش اعتبار"><i className="fa fa-plus"></i> شارژ</button>
+                        <div className="kpi-mobile-only" style={{ border: '1px solid #e2e8f0', background: '#ffffff', borderRadius: '16px', padding: '16px', flexDirection: 'column', gap: '20px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ textAlign: 'right' }}>
+                                    <div style={{ fontSize: '1.1rem', color: '#1e293b', fontWeight: '900' }}>BMI</div>
+                                    <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>شاخص توده بدنی</div>
+                                </div>
+                                <div style={{ width: '42px', height: '42px', borderRadius: '12px', backgroundColor: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '24px', height: '24px' }}>
+                                        <path d="M4 14a8 8 0 0 1 16 0" stroke="#cbd5e1" strokeWidth="3" />
+                                        <path d="M4 14a8 8 0 0 1 2.3-5.7" stroke="#3b82f6" strokeWidth="3" />
+                                        <path d="M6.3 8.3a8 8 0 0 1 5.7-2.3" stroke="#22c55e" strokeWidth="3" />
+                                        <path d="M12 6a8 8 0 0 1 5.7 2.3" stroke="#eab308" strokeWidth="3" />
+                                        <path d="M17.7 8.3a8 8 0 0 1 2.3 5.7" stroke="#ef4444" strokeWidth="3" />
+                                        <path d="M12 14l3-3" stroke="#1f2937" strokeWidth="2" />
+                                        <circle cx="12" cy="14" r="2.5" fill="#1f2937" stroke="none" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ padding: '6px 12px', background: '#f1f5f9', color: '#475569', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold' }}>نامشخص</div>
+                                <div style={{ fontSize: '1.5rem', color: '#1e293b', fontWeight: '900' }}>--</div>
+                            </div>
+                        </div>
+                    </>
+
+                    {/* Age Card - Third */}
+                    <div style={{ border: '1px solid #e2e8f0', background: '#ffffff', borderRadius: '16px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ width: '42px', height: '42px', borderRadius: '12px', backgroundColor: '#e0f2fe', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#3b82f6' }}>
+                                <AgeIcon width="24" height="24" />
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>رده سنی</div>
+                                <div style={{ fontSize: '1rem', color: '#0f172a', fontWeight: '900', marginTop: '2px' }}>نامشخص</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Insurance Card - Fourth */}
+                    <div style={{ border: '1px solid #e2e8f0', background: '#ffffff', borderRadius: '16px', padding: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }} onClick={() => navigate('/insurance-status')}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                            <div style={{ width: '42px', height: '42px', borderRadius: '12px', backgroundColor: '#ffedd5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#ea580c' }}>
+                                <InsuranceIcon width="24" height="24" />
+                            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <div style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 'bold' }}>اعتبار بیمه</div>
+                                <div style={{ fontSize: '1rem', color: '#0f172a', fontWeight: '900', marginTop: '2px' }}>—</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div className="stats-container-block">
-                    <div className="stats-grid">
-                        <div className="stat-card">
-                            <div className="stat-icon ic-blue"><AgeIcon width="24" height="24" /></div>
-                            <div className="stat-info"><span className="stat-label">رده سنی</span><span className="stat-val">بزرگسالان</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-red-card"><i className="fa fa-medkit"></i></div>
-                            <div className="stat-info"><span className="stat-label">مصدومیت</span><span className="stat-val">۰</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-matches"><i className="fa fa-play-circle"></i></div>
-                            <div className="stat-info"><span className="stat-label">مسابقات</span><span className="stat-val">۱۴ (۸۵٪)</span></div>
-                        </div>
-                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/attendance')}>
-                            <div className="stat-icon ic-green"><i className="fa fa-calendar-check-o"></i></div>
-                            <div className="stat-info"><span className="stat-label">حضور در تمرینات</span><span className="stat-val">۱۴/۲۰ (۷۰٪)</span></div>
-                        </div>
-                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/sports-info')}>
-                            <div className="stat-icon"><div style={{ width: '16px', height: '24px', backgroundColor: '#eab308', borderRadius: '4px' }}></div></div>
-                            <div className="stat-info"><span className="stat-label">کارت زرد</span><span className="stat-val">۲</span></div>
-                        </div>
-                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/sports-info')}>
-                            <div className="stat-icon"><div style={{ width: '16px', height: '24px', backgroundColor: '#ef4444', borderRadius: '4px' }}></div></div>
-                            <div className="stat-info"><span className="stat-label">کارت قرمز</span><span className="stat-val">۰</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-orange"><i className="fa fa-ban"></i></div>
-                            <div className="stat-info"><span className="stat-label">تعداد محرومیت</span><span className="stat-val">۰</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-blue"><i className="fa fa-clock-o"></i></div>
-                            <div className="stat-info"><span className="stat-label">دقایق بازی</span><span className="stat-val">۸۵۰</span></div>
-                        </div>
-                        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={() => navigate('/insurance-status')}>
-                            <div className="stat-icon ic-orange"><InsuranceIcon width="24" height="24" /></div>
-                            <div className="stat-info"><span className="stat-label">اعتبار بیمه</span><span className="stat-val">—</span></div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-icon ic-purple"><i className="fa fa-futbol-o"></i></div>
-                            <div className="stat-info"><span className="stat-label">گل زده</span><span className="stat-val">۵</span></div>
-                        </div>
-                    </div>
-                </div>
 
                 <div className="col-span-3 media-group-wrapper">
                     <div className="dash-action-grid">
