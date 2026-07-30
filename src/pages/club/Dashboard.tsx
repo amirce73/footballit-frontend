@@ -101,7 +101,7 @@ export default function Dashboard() {
 
                                 {/* Section 3: Cards (Reverted to old design) */}
                                 <div className="stat-section-card cards-stat-card inner-mobile-card" style={{ flexDirection: 'row', height: '97px' }}>
-                                    <div className="section-head" style={{ marginBottom: '0px' }}>
+                                    <div className="section-head" id='cards-head' style={{ marginBottom: '0px' }}>
                                         <div className="section-icon icon-cards"><i className="fa fa-clone"></i></div>
                                         <span className="section-title-new">کارت زرد و قرمز</span>
                                     </div>

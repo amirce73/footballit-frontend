@@ -892,7 +892,6 @@ img {
 .profile-card {
     height: fit-content;
     background: linear-gradient(to bottom right, color-mix(in srgb, var(--primary), white 85%), color-mix(in srgb, var(--primary), white 95%));
-    ;
     color: #fff;
     padding: 16px;
     border-radius: var(--radius-lg);
@@ -4336,6 +4335,12 @@ img {
     display: none !important;
 }
 
+@media (max-width: 500px) {
+    #cards-head {
+        margin-right: 16px;
+    }
+}
+
 .stat-section-card {
     background: #ffffff;
     border-radius: 16px;
@@ -4712,4 +4717,12 @@ img {
         padding: 8px 16px;
         gap: 8px;
     }
+}
+
+@media (max-width: 400px) {
+    .social-column {
+        transform: translateX(12px) translateY(-60px);
+        margin-bottom: -30px;
+    }
+
 }
