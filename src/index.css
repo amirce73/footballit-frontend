@@ -1155,6 +1155,32 @@ img {
     gap: 10px;
 }
 
+.dashboard-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.kpi-desktop-only {
+    display: none !important;
+}
+
+.kpi-mobile-only {
+    display: flex !important;
+}
+
+.match-stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    background-color: #f1f5f9;
+    border: 1px solid #f1f5f9;
+    border-radius: 16px;
+    overflow: hidden;
+    height: 100%;
+    flex: 1;
+}
+
 .stat-card {
     background: var(--surface);
     border-radius: var(--radius-md);
@@ -1975,6 +2001,24 @@ img {
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: auto;
         height: auto;
+    }
+
+    .dashboard-kpi-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .kpi-mobile-only {
+        display: none !important;
+    }
+
+    .kpi-desktop-only {
+        display: flex !important;
+    }
+
+    .match-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 1fr);
     }
 
     .stat-card {
@@ -3193,7 +3237,8 @@ img {
 }
 
 /* Base Flex layout for school top cards */
-.school-registration-card, .school-top-bmi-card {
+.school-registration-card,
+.school-top-bmi-card {
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -3220,11 +3265,13 @@ img {
         gap: 12px !important;
     }
 
-    .school-registration-card, .school-kpi-bmi {
+    .school-registration-card,
+    .school-kpi-bmi {
         display: none !important;
     }
 
-    .school-top-bmi-card, .school-debt-card {
+    .school-top-bmi-card,
+    .school-debt-card {
         padding: 6px 8px !important;
         gap: 8px !important;
         min-height: 80px !important;
@@ -3309,22 +3356,72 @@ img {
         flex-direction: row !important;
     }
 
-    .school-registration-card .reg-label { font-size: 1.1rem !important; }
-    .school-registration-card .reg-val { font-size: 2.4rem !important; }
-    .school-registration-card .reg-status { font-size: 0.9rem !important; padding: 4px 16px !important; }
-    .school-registration-card { padding: 16px !important; gap: 16px !important; }
+    .school-registration-card .reg-label {
+        font-size: 1.1rem !important;
+    }
 
-    .school-debt-card { padding: 16px !important; gap: 20px !important; }
-    .school-debt-card .debt-icon { width: 48px !important; height: 48px !important; font-size: 1.8rem !important; }
-    .school-debt-card .label { font-size: 0.9rem !important; }
-    .school-debt-card .amount { font-size: 1.4rem !important; font-weight: bold !important; }
-    .school-debt-card .btn-credit { padding: 10px 28px !important; font-size: 1rem !important; font-weight: bold !important; }
+    .school-registration-card .reg-val {
+        font-size: 2.4rem !important;
+    }
 
-    .school-stat-card { padding: 20px !important; }
-    .school-stat-card .stat-icon { width: 48px !important; height: 48px !important; font-size: 1.5rem !important; }
-    .school-stat-card .stat-icon svg { width: 28px !important; height: 28px !important; }
-    .school-stat-card .stat-label { font-size: 0.9rem !important; }
-    .school-stat-card .stat-val { font-size: 1.2rem !important; }
+    .school-registration-card .reg-status {
+        font-size: 0.9rem !important;
+        padding: 4px 16px !important;
+    }
+
+    .school-registration-card {
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+
+    .school-debt-card {
+        padding: 16px !important;
+        gap: 20px !important;
+    }
+
+    .school-debt-card .debt-icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.8rem !important;
+    }
+
+    .school-debt-card .label {
+        font-size: 0.9rem !important;
+    }
+
+    .school-debt-card .amount {
+        font-size: 1.4rem !important;
+        font-weight: bold !important;
+    }
+
+    .school-debt-card .btn-credit {
+        padding: 10px 28px !important;
+        font-size: 1rem !important;
+        font-weight: bold !important;
+    }
+
+    .school-stat-card {
+        padding: 20px !important;
+    }
+
+    .school-stat-card .stat-icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.5rem !important;
+    }
+
+    .school-stat-card .stat-icon svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .school-stat-card .stat-label {
+        font-size: 0.9rem !important;
+    }
+
+    .school-stat-card .stat-val {
+        font-size: 1.2rem !important;
+    }
 
     .school-stats-grid {
         grid-template-columns: repeat(5, 1fr) !important;
@@ -3335,7 +3432,7 @@ img {
 @media (min-width: 1025px) {
     .dashboard-top-row {
         display: grid !important;
-        grid-template-columns: 2fr 1.2fr 0.8fr !important;
+        grid-template-columns: 0.81fr 1.19fr !important;
         gap: 16px !important;
         align-items: stretch !important;
     }
@@ -3355,28 +3452,78 @@ img {
     .school-top-row {
         grid-template-columns: 1.5fr 1.5fr !important;
     }
-    
+
     .school-top-row .left-cards-container {
         grid-column: 2 / 3 !important;
         flex-direction: row !important;
     }
 
-    .school-registration-card .reg-label { font-size: 1.2rem !important; }
-    .school-registration-card .reg-val { font-size: 3.5rem !important; }
-    .school-registration-card .reg-status { font-size: 1.1rem !important; padding: 6px 20px !important; }
-    .school-registration-card { padding: 16px !important; gap: 24px !important; }
+    .school-registration-card .reg-label {
+        font-size: 1.2rem !important;
+    }
 
-    .school-debt-card { padding: 16px !important; gap: 20px !important; }
-    .school-debt-card .debt-icon { width: 48px !important; height: 48px !important; font-size: 1.8rem !important; }
-    .school-debt-card .label { font-size: 0.9rem !important; }
-    .school-debt-card .amount { font-size: 1.4rem !important; font-weight: bold !important; }
-    .school-debt-card .btn-credit { padding: 10px 28px !important; font-size: 1rem !important; font-weight: bold !important; }
+    .school-registration-card .reg-val {
+        font-size: 3.5rem !important;
+    }
 
-    .school-stat-card { padding: 20px !important; }
-    .school-stat-card .stat-icon { width: 48px !important; height: 48px !important; font-size: 1.5rem !important; }
-    .school-stat-card .stat-icon svg { width: 28px !important; height: 28px !important; }
-    .school-stat-card .stat-label { font-size: 0.9rem !important; }
-    .school-stat-card .stat-val { font-size: 1.2rem !important; }
+    .school-registration-card .reg-status {
+        font-size: 1.1rem !important;
+        padding: 6px 20px !important;
+    }
+
+    .school-registration-card {
+        padding: 16px !important;
+        gap: 24px !important;
+    }
+
+    .school-debt-card {
+        padding: 16px !important;
+        gap: 20px !important;
+    }
+
+    .school-debt-card .debt-icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.8rem !important;
+    }
+
+    .school-debt-card .label {
+        font-size: 0.9rem !important;
+    }
+
+    .school-debt-card .amount {
+        font-size: 1.4rem !important;
+        font-weight: bold !important;
+    }
+
+    .school-debt-card .btn-credit {
+        padding: 10px 28px !important;
+        font-size: 1rem !important;
+        font-weight: bold !important;
+    }
+
+    .school-stat-card {
+        padding: 20px !important;
+    }
+
+    .school-stat-card .stat-icon {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 1.5rem !important;
+    }
+
+    .school-stat-card .stat-icon svg {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .school-stat-card .stat-label {
+        font-size: 0.9rem !important;
+    }
+
+    .school-stat-card .stat-val {
+        font-size: 1.2rem !important;
+    }
 
     .school-stats-grid {
         grid-template-columns: repeat(5, 1fr) !important;
@@ -4121,5 +4268,313 @@ img {
 @media (max-width: 400px) {
     .profile-club-row {
         transform: translateX(-20px);
+    }
+}
+
+/* --- NEW RESPONSIVE RULES --- */
+@media (max-width: 1460px) {
+    .attendance-label-full {
+        display: none !important;
+    }
+
+    .attendance-label-short {
+        display: inline !important;
+    }
+}
+
+@media (min-width: 1461px) {
+    .attendance-label-short {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1360px) and (min-width: 1251px) {
+    .club-intro-row {
+        flex-wrap: nowrap !important;
+    }
+
+    .social-column {
+        flex-direction: column !important;
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 1250px) {
+    .club-intro-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px;
+    }
+
+    .social-column {
+        flex-direction: row !important;
+        width: 100%;
+        justify-content: flex-start !important;
+        margin-top: 8px;
+    }
+}
+
+/* --- NEW MATCH STATS GRID (Redesign) --- */
+.new-matches-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.new-stats-grid {
+    display: grid;
+    gap: 16px;
+    height: 100%;
+}
+
+.stat-section-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.stat-section-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    border-color: #e2e8f0;
+}
+
+.practice-halo-card {
+    border: 1px solid #a7f3d0;
+    box-shadow: 0 0 15px rgba(52, 211, 153, 0.25);
+}
+
+.practice-halo-card:hover {
+    box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
+    border-color: #34d399;
+}
+
+.practice-halo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(52, 211, 153, 0.1), transparent 70%);
+    pointer-events: none;
+}
+
+.section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.icon-matches {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.icon-practice {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.icon-cards {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.icon-stats {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.section-title-new {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #334155;
+}
+
+.section-body {
+    flex: 1;
+}
+
+/* Micro Layouts */
+.perf-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.perf-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.perf-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.mini-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 8px 4px;
+    text-align: center;
+    transition: 0.2s;
+    border: 1px solid transparent;
+}
+
+.mini-stat:hover {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.mini-lbl {
+    font-size: 0.65rem;
+    color: #64748b;
+    font-weight: 700;
+    margin-bottom: 4px;
+    white-space: nowrap;
+}
+
+.mini-val {
+    font-size: 0.95rem;
+    font-weight: 900;
+}
+
+.text-green {
+    color: #16a34a;
+}
+
+.text-red {
+    color: #dc2626;
+}
+
+.text-blue {
+    color: #2563eb;
+}
+
+.text-orange {
+    color: #ea580c;
+}
+
+.text-purple {
+    color: #9333ea;
+}
+
+.text-gray {
+    color: #64748b;
+}
+
+.flex-around {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+}
+
+.card-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 10px 24px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    transition: 0.2s;
+}
+
+.card-item:hover {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.card-shape {
+    width: 16px;
+    height: 24px;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.yellow-shape {
+    background: #eab308;
+    transform: rotate(-10deg);
+}
+
+.red-shape {
+    background: #ef4444;
+    transform: rotate(10deg);
+}
+
+.card-val {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #1e293b;
+}
+
+/* RESPONSIVE DESKTOP (2x2 Grid) */
+@media (min-width: 1024px) {
+    .new-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 1023px) {
+    .new-matches-card {
+        display: flex !important;
+    }
+
+    .new-stats-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .perf-grid-5 {
+        gap: 4px;
+    }
+
+    .perf-grid-4 {
+        gap: 6px;
+    }
+
+    .mini-stat {
+        padding: 6px 2px;
+    }
+
+    .mini-lbl {
+        font-size: 0.55rem;
+    }
+
+    .mini-val {
+        font-size: 0.85rem;
+    }
+
+    .card-item {
+        padding: 8px 16px;
+        gap: 8px;
     }
 }
