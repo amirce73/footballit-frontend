@@ -4726,3 +4726,15 @@ img {
     }
 
 }
+
+@media (max-width: 1023px) and (min-width: 400px) {
+    .club-intro-row {
+        flex-wrap: nowrap;
+        flex-direction: row !important;
+    }
+
+    .social-column {
+        width: auto;
+        flex-direction: column !important;
+    }
+}
