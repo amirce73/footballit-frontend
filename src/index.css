@@ -4349,17 +4349,14 @@ img {
 }
 
 .stat-section-card:hover {
-    transform: translateY(-2px);
     border-color: #e2e8f0;
 }
 
 .practice-halo-card {
     border: 1px solid #a7f3d0;
-    box-shadow: 0 0 15px rgba(52, 211, 153, 0.25);
 }
 
 .practice-halo-card:hover {
-    box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
     border-color: #34d399;
 }
 
@@ -4370,7 +4367,6 @@ img {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at top right, rgba(52, 211, 153, 0.1), transparent 70%);
     pointer-events: none;
 }
 
@@ -4651,25 +4647,37 @@ img {
     .mobile-matches-wrapper {
         display: flex;
         flex-direction: column;
-        background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        background: #ffffff;
         border-radius: 20px;
         padding: 16px;
         box-shadow: 0 8px 20px rgba(59, 130, 246, 0.08), 0 4px 6px rgba(0, 0, 0, 0.04);
         border: 1px solid #bfdbfe;
-        gap: 16px;
+    }
+
+    .mobile-matches-wrapper>.mobile-only-head {
+        border-bottom: 1px solid #bfdbfe;
+        padding-bottom: 12px;
+        margin-bottom: 4px;
     }
 
     .inner-mobile-card {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        padding: 0 !important;
+        padding: 16px 0 !important;
+    }
+
+    .inner-mobile-card:last-child {
+        padding-bottom: 0 !important;
+    }
+
+    .inner-mobile-card:not(:last-child) {
+        border-bottom: 1px dashed #bfdbfe !important;
     }
 
     .inner-mobile-card:hover {
         transform: none !important;
         box-shadow: none !important;
-        border-color: transparent !important;
     }
 
     .desktop-only-head {
