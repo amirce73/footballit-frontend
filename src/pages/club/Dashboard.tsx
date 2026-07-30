@@ -67,12 +67,28 @@ export default function Dashboard() {
                                     <div className="section-icon icon-matches"><i className="fa fa-trophy"></i></div>
                                     <span className="section-title-new">عملکرد در مسابقات</span>
                                 </div>
-                                <div className="section-body perf-grid-5">
-                                    <div className="mini-stat"><span className="mini-lbl">فیکس</span><span className="mini-val text-green">۱۱</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">ذخیره</span><span className="mini-val text-blue">۵</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">هتلی</span><span className="mini-val text-gray">۲</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">مصدوم</span><span className="mini-val text-orange">۱</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">محروم</span><span className="mini-val text-red">۰</span></div>
+                                <div className="section-body">
+                                    <div className="donut-wrapper">
+                                        <div className="donut-chart" style={{ background: 'conic-gradient(#10b981 0% 58%, #3b82f6 58% 84%, #94a3b8 84% 95%, #f97316 95% 100%)' }}></div>
+                                        <div className="donut-legend">
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span> فیکس</div>
+                                                <span className="val-bold">۱۱</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#3b82f6' }}></span> ذخیره</div>
+                                                <span className="val-bold">۵</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#94a3b8' }}></span> هتلی</div>
+                                                <span className="val-bold">۲</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#f97316' }}></span> مصدوم</div>
+                                                <span className="val-bold">۱</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -82,10 +98,24 @@ export default function Dashboard() {
                                     <div className="section-icon icon-practice"><i className="fa fa-calendar-check-o"></i></div>
                                     <span className="section-title-new">عملکرد در تمرینات</span>
                                 </div>
-                                <div className="section-body perf-grid-3">
-                                    <div className="mini-stat"><span className="mini-lbl">حضور</span><span className="mini-val text-green">۲۴</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">غیاب</span><span className="mini-val text-red">۴</span></div>
-                                    <div className="mini-stat"><span className="mini-lbl">مصدوم</span><span className="mini-val text-orange">۲</span></div>
+                                <div className="section-body">
+                                    <div className="donut-wrapper">
+                                        <div className="donut-chart" style={{ background: 'conic-gradient(#10b981 0% 80%, #ef4444 80% 93%, #f97316 93% 100%)' }}></div>
+                                        <div className="donut-legend">
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#10b981' }}></span> حضور</div>
+                                                <span className="val-bold">۲۴</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#ef4444' }}></span> غیاب</div>
+                                                <span className="val-bold">۴</span>
+                                            </div>
+                                            <div className="legend-item">
+                                                <div className="legend-title"><span className="legend-dot" style={{ backgroundColor: '#f97316' }}></span> مصدوم</div>
+                                                <span className="val-bold">۲</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
